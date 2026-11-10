@@ -3,12 +3,262 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SELLABISH</title>
+<title>SELLABISH: viral marketing for people who can't be marketed to</title>
+<meta name="description" content="Viral marketing run by someone as hard to sell to as your customer. Jayden spots fake before it goes live, because she'd scroll past it too.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SELLABISH: viral marketing for people who can't be marketed to">
+<meta property="og:description" content="Viral marketing run by someone as hard to sell to as your customer.">
+<meta property="og:url" content="https://sellabish.com/">
+<meta property="og:image" content="https://sellabish.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23ff2e93' font-family='Impact,Arial Black,sans-serif'%3Esb%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="fonts/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/permanent-marker-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-html,body{margin:0;height:100%;background:#000}
-body{display:flex;align-items:center;justify-content:center;min-height:100svh;font-family:Impact,"Arial Black",sans-serif;color:#ff2fa0;letter-spacing:.04em;text-align:center}
-h1{font-size:clamp(2.5rem,14vw,7rem);margin:0;text-transform:uppercase}
+@font-face{font-family:"Archivo Black";src:url(fonts/archivo-black-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Permanent Marker";src:url(fonts/permanent-marker-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Sedgwick";src:url(fonts/sedgwick-ave-display-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Archivo";src:url(fonts/archivo-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Archivo";src:url(fonts/archivo-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+
+/* Z-INDEX LADDER (one page, one ladder): background art 0 < content 1 < header 10 < toast 20 */
+:root{
+  --black:#000;
+  --pink:#ff2e93;
+  --blush:#ffd3e9;
+  --paper:#fff;
+  --bar:3.5rem;
+  --pad:1.25rem;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar) + .5rem);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--black);color:var(--paper);font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:1.0625rem;line-height:1.55;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+.on-pink :focus-visible{outline-color:var(--black)}
+
+/* grit: a little messy, a little polished */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.14;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* HEADER */
+.bar{position:sticky;top:0;z-index:10;height:var(--bar);display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0 var(--pad);padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right));background:var(--black);border-bottom:2px solid var(--pink)}
+.bar-name{font-family:Sedgwick,"Permanent Marker",cursive;font-size:1.7rem;color:var(--pink);text-decoration:none;line-height:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.55rem 1.3rem;border:2px solid var(--pink);background:var(--pink);color:var(--black);font-family:"Archivo Black",Impact,sans-serif;font-size:1rem;letter-spacing:.02em;text-decoration:none;cursor:pointer;border-radius:0;transition:background .15s,color .15s}
+.btn:hover{background:var(--black);color:var(--pink)}
+.on-pink .btn{background:var(--black);border-color:var(--black);color:var(--pink)}
+.on-pink .btn:hover{background:var(--pink);color:var(--black)}
+.btn-ghost{background:transparent;color:var(--pink)}
+.btn-ghost:hover{background:var(--pink);color:var(--black)}
+.on-pink .btn-ghost{background:transparent;color:var(--black)}
+.on-pink .btn-ghost:hover{background:var(--black);color:var(--pink)}
+
+/* HERO */
+.hero{min-height:calc(100svh - var(--bar));display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1.75rem;padding:2rem var(--pad) 3rem;text-align:center;position:relative;z-index:1}
+.mark{all:unset;box-sizing:border-box;display:grid;place-items:center;cursor:pointer;max-width:100%;padding:1rem;-webkit-tap-highlight-color:transparent}
+.mark:focus-visible{outline:3px solid var(--paper);outline-offset:6px}
+.face{grid-area:1/1;visibility:hidden}
+.face.active{visibility:visible}
+
+/* face 1: cheeky luxury, SELLABISH */
+.f-luxury{font-weight:400;font-size:min(6.6vw,4.2rem);letter-spacing:.3em;color:var(--pink);border:1px solid var(--pink);padding:1.4em 1.1em 1.4em calc(1.1em + .3em);position:relative;max-width:100%}
+.f-luxury::before{content:"";position:absolute;inset:6px;border:1px solid rgba(255,46,147,.45);pointer-events:none}
+.f-luxury span{display:block;font-family:Archivo,sans-serif;font-weight:400}
+
+/* face 2: street graffiti, sellabish */
+.f-street{font-family:Sedgwick,"Permanent Marker",cursive;font-size:min(19vw,8rem);line-height:1;color:var(--pink);transform:rotate(-5deg);text-shadow:.05em .05em 0 var(--paper);padding:.3em .2em}
+
+/* face 3: the blend, sell a bish */
+.f-blend{font-family:"Archivo Black",Impact,sans-serif;font-size:min(26vw,19svh);line-height:.86;text-transform:uppercase;display:flex;flex-direction:column;align-items:center}
+.f-blend .l1{color:var(--pink)}
+.f-blend .l2{font-family:"Permanent Marker",cursive;text-transform:lowercase;font-size:.42em;line-height:1;color:var(--paper);transform:rotate(-8deg);margin:.08em 0 .12em}
+.f-blend .l3{color:var(--paper);text-shadow:.045em .045em 0 var(--pink);position:relative}
+.f-blend .l3::after{content:"";position:absolute;left:-2%;right:-2%;bottom:-.12em;height:.09em;background:var(--pink);transform:rotate(-1.5deg);border-radius:.05em}
+
+/* the one orchestrated moment: the name lands */
+@keyframes land{from{clip-path:inset(100% 0 0 0);transform:translateY(.25em) scale(1.04)}to{clip-path:inset(0 0 0 0);transform:none}}
+.face.active.land{animation:land .55s cubic-bezier(.2,.9,.2,1) backwards}
+.f-street.active.land{animation-name:land-street}
+@keyframes land-street{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+.hero-sub{margin:0;max-width:30rem;font-size:clamp(1.1rem,4.4vw,1.4rem);line-height:1.4;font-weight:600}
+.hint{margin:0;font-family:"Permanent Marker",cursive;color:var(--pink);font-size:1.15rem}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:4.5rem var(--pad)}
+.wrap{max-width:40rem;margin:0 auto}
+h2{margin:0 0 1.25rem;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(1.9rem,7.2vw,3.2rem);line-height:1.02;text-transform:uppercase;letter-spacing:.005em}
+p{margin:0 0 1.1rem}
+.on-pink{background:var(--pink);color:var(--black)}
+.scrawl{font-family:"Permanent Marker",cursive;font-size:1.35rem;line-height:1.3;margin:1.5rem 0 0}
+
+/* the filter */
+.test{display:grid;gap:.75rem;margin:2rem 0 1.5rem;padding:0;border:0}
+.test legend{padding:0;margin:0 0 .75rem;font-weight:600}
+.opt{display:flex;align-items:center;gap:.9rem;min-height:3.5rem;padding:.75rem 1rem;background:var(--black);color:var(--paper);border:2px solid var(--black);cursor:pointer}
+.opt input{flex:none;width:1.5rem;height:1.5rem;margin:0;accent-color:var(--pink);cursor:pointer}
+.opt:has(input:checked){background:var(--paper);color:var(--black)}
+.opt:has(input:focus-visible){outline:3px solid var(--paper);outline-offset:3px}
+.result{margin:0 0 1.25rem;padding:1.25rem;background:var(--black);color:var(--paper)}
+.score{display:block;font-family:"Archivo Black",Impact,sans-serif;font-size:clamp(2.4rem,11vw,4rem);line-height:1;color:var(--pink)}
+.verdict{display:block;margin-top:.5rem;font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
+.note{min-height:1.6em;margin:.9rem 0 0;font-weight:600}
+
+/* closing */
+.close{text-align:center;padding-bottom:5rem}
+.close .wrap{display:flex;flex-direction:column;align-items:center}
+.foot{padding:2rem var(--pad) calc(2rem + env(safe-area-inset-bottom));border-top:2px solid var(--pink);font-size:.9rem;text-align:center;color:var(--blush)}
+.foot p{margin:.25rem 0}
+
+@media (min-width:760px){
+  :root{--pad:2rem}
+  body{font-size:1.15rem}
+  section{padding:6.5rem var(--pad)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .face.active.land{animation:none}
+  .btn{transition:none}
+}
 </style>
 </head>
-<body><h1>sellabish</h1></body>
+<body id="top">
+
+<header class="bar">
+  <a class="bar-name" href="#top" aria-label="sellabish, back to top">sellabish</a>
+  <a class="btn js-hire" href="#hire">Hire us</a>
+</header>
+
+<main>
+  <section class="hero" aria-label="SELLABISH">
+    <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">SELLABISH, sell a bish, sellabish</h1>
+    <button class="mark" id="mark" type="button" aria-label="Change the logo style. Showing: sell a bish, the blend.">
+      <span class="face f-luxury" data-style="luxury" aria-hidden="true"><span>SELLABISH</span></span>
+      <span class="face f-street" data-style="street" aria-hidden="true">sellabish</span>
+      <span class="face f-blend active" data-style="blend" aria-hidden="true"><span class="l1">sell</span><span class="l2">a</span><span class="l3">bish</span></span>
+    </button>
+    <p class="hero-sub">Viral marketing run by someone as hard to sell to as your customer.</p>
+    <p class="hint">Tap the name. It has three faces.</p>
+    <a class="btn js-hire" href="#hire">Hire us</a>
+  </section>
+
+  <section class="on-pink" id="why">
+    <div class="wrap">
+      <h2>Your customer can smell a pitch from three scrolls away.</h2>
+      <p>The scripted "real" review. The borrowed slang. The post that cares too loudly. They spot it, screenshot it and send it to the group chat.</p>
+      <p>The people who spot it fastest are the same people you most want to reach.</p>
+      <p class="scrawl">So we start where most marketers stop: with her.</p>
+    </div>
+  </section>
+
+  <section id="jayden">
+    <div class="wrap">
+      <h2>Jayden is who you're trying to reach.</h2>
+      <p>Same radar. Same taste. Same zero patience for anything trying too hard.</p>
+      <p>Jayden runs SELLABISH, and she knows what will get scrolled past before it goes live, because she'd scroll past it too. She doesn't copy how your customer talks. She is that customer, working for you.</p>
+    </div>
+  </section>
+
+  <section class="on-pink" id="filter">
+    <div class="wrap">
+      <h2>Five tests before anything ships.</h2>
+      <p>This is the filter every piece of ours has to pass. Run your own post, ad or caption through it. Check what's true.</p>
+      <form id="test" onsubmit="return false">
+        <fieldset class="test" style="margin:0;padding:0;border:0">
+          <legend>Mine passes if&hellip;</legend>
+          <label class="opt"><input type="checkbox" name="t"><span>They wouldn't screenshot it to mock it.</span></label>
+          <label class="opt"><input type="checkbox" name="t"><span>A friend would actually send it to them.</span></label>
+          <label class="opt"><input type="checkbox" name="t"><span>It's sincere and it has an edge.</span></label>
+          <label class="opt"><input type="checkbox" name="t"><span>Every claim in it is already true.</span></label>
+          <label class="opt"><input type="checkbox" name="t"><span>It doesn't use slang we borrowed.</span></label>
+        </fieldset>
+      </form>
+      <p class="result" role="status" aria-live="polite"><span class="score" id="score">0 of 5</span><span class="verdict" id="verdict">Check what's true about yours.</span></p>
+      <div class="row">
+        <button class="btn" id="share" type="button">Share your score</button>
+        <a class="btn btn-ghost js-hire" href="#hire">Have Jayden run it</a>
+      </div>
+      <p class="note" id="note" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="close" id="hire">
+    <div class="wrap">
+      <h2>Make something she'd send to a friend.</h2>
+      <p>If it would survive her scroll, it can travel.</p>
+      <a class="btn js-hire" href="#hire">Hire us</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>SELLABISH is run by Jayden.</p>
+  <p>Any AI imagery we use is labeled as AI.</p>
+</footer>
+
+<script>
+(function(){
+  // The one place to set where "Hire us" goes (a link, mailto:, or booking page).
+  var HIRE_URL = "";
+
+  if (HIRE_URL) document.querySelectorAll(".js-hire").forEach(function(a){ a.href = HIRE_URL; });
+
+  /* Logo: three faces, deep-linkable (#luxury, #street, #blend) */
+  var order = ["luxury","street","blend"];
+  var names = {luxury:"SELLABISH, cheeky luxury", street:"sellabish, street", blend:"sell a bish, the blend"};
+  var mark = document.getElementById("mark");
+  var faces = {};
+  mark.querySelectorAll(".face").forEach(function(f){ faces[f.dataset.style] = f; });
+  var current = "blend";
+  function show(style, animate){
+    current = style;
+    order.forEach(function(s){
+      faces[s].classList.toggle("active", s === style);
+      faces[s].classList.remove("land");
+    });
+    if (animate) { void faces[style].offsetWidth; faces[style].classList.add("land"); }
+    mark.setAttribute("aria-label", "Change the logo style. Showing: " + names[style] + ".");
+  }
+  var h = (location.hash || "").slice(1);
+  if (order.indexOf(h) > -1) show(h, true); else show("blend", true);
+  mark.addEventListener("click", function(){
+    var next = order[(order.indexOf(current) + 1) % order.length];
+    show(next, true);
+    try { history.replaceState(null, "", "#" + next); } catch(e){}
+  });
+
+  /* The filter */
+  var boxes = Array.prototype.slice.call(document.querySelectorAll("#test input"));
+  var scoreEl = document.getElementById("score"), verdictEl = document.getElementById("verdict"), note = document.getElementById("note");
+  function verdictFor(n){
+    if (n === 5) return "Ship it.";
+    if (n >= 3) return "Close. Fix what's unchecked before it goes out.";
+    if (n >= 1) return "Not yet. It would get scrolled past.";
+    return "Check what's true about yours.";
+  }
+  function update(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    scoreEl.textContent = n + " of 5";
+    verdictEl.textContent = verdictFor(n);
+    note.textContent = "";
+    return n;
+  }
+  boxes.forEach(function(b){ b.addEventListener("change", update); });
+  document.getElementById("share").addEventListener("click", function(){
+    var n = update();
+    var text = "I ran my post through the SELLABISH filter: " + n + " of 5. " + verdictFor(n);
+    var url = "https://sellabish.com/#filter";
+    if (navigator.share) {
+      navigator.share({title:"SELLABISH filter", text:text, url:url}).catch(function(){});
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text + " " + url).then(function(){ note.textContent = "Copied. Paste it anywhere."; }, function(){ note.textContent = "Couldn't copy. Screenshot your score instead."; });
+    } else {
+      note.textContent = "Screenshot your score and send it.";
+    }
+  });
+})();
+</script>
+</body>
 </html>
