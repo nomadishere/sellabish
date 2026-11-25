@@ -142,7 +142,7 @@ window.__sw=0;
 function swoosh(dist){var a=ac();if(!a)return;window.__sw++;var d=Math.max(1.6,Math.min(2.6,1.6+dist*1.0)),n=a.sampleRate*d,b=a.createBuffer(1,n,a.sampleRate),x=b.getChannelData(0);for(var i=0;i<n;i++)x[i]=(Math.random()*2-1)*(1-i/n);
  var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='bandpass';f.Q.value=2.2;f.frequency.setValueAtTime(300,a.currentTime);f.frequency.exponentialRampToValueAtTime(1100+dist*500,a.currentTime+d*.7);f.frequency.exponentialRampToValueAtTime(500,a.currentTime+d);
  var g2=a.createGain();g2.gain.setValueAtTime(.0001,a.currentTime);g2.gain.exponentialRampToValueAtTime(.1,a.currentTime+d*.45);g2.gain.exponentialRampToValueAtTime(.0001,a.currentTime+d);s.connect(f);f.connect(g2);g2.connect(a.destination);s.start();
- var o=a.createOscillator(),og=a.createGain();o.type='sine';o.frequency.setValueAtTime(520,a.currentTime+d*.55);o.frequency.exponentialRampToValueAtTime(1040,a.currentTime+d);og.gain.setValueAtTime(.0001,a.currentTime+d*.55);og.gain.exponentialRampToValueAtTime(.025,a.currentTime+d*.8);og.gain.exponentialRampToValueAtTime(.0001,a.currentTime+d+.25);o.connect(og);og.connect(a.destination);o.start(a.currentTime+d*.55);o.stop(a.currentTime+d+.3)}
+}
 function chime(){var a=AC;if(!a||a.state!=='running')return;var o=a.createOscillator(),g2=a.createGain();o.type='sine';o.frequency.value=[784,880,988,1175][Math.floor(Math.random()*4)];g2.gain.setValueAtTime(.0001,a.currentTime);g2.gain.exponentialRampToValueAtTime(.025,a.currentTime+.4);g2.gain.exponentialRampToValueAtTime(.0001,a.currentTime+2.4);o.connect(g2);g2.connect(a.destination);o.start();o.stop(a.currentTime+2.5)}
 /* ---- fly, card, trail ---- */
 function setHot(i){HOT.fill(0);if(i<0)return;HOT[i]=2;var nb=NB[i];if(!nb)return;for(var q=0;q<nb.length;q++){loadUpTo(nb[q]);HOT[nb[q]]=1}}
@@ -221,7 +221,7 @@ function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.
  /* spin: fling decays; slow drift only when nothing is selected and nobody is touching */
  var touching=Object.keys(ptrs).length>0;
  if(!touching){if(sel<0&&Date.now()-lastInteract>8000&&cam.k<1.8)cam.ay+=.0016;if(sel>=0&&Date.now()-lastInteract>1500)cam.ay+=.0035;cam.ay+=spinV.x;cam.ax=Math.max(-1.4,Math.min(1.4,cam.ax+spinV.y));spinV.x*=.93;spinV.y*=.93;if(Math.abs(spinV.x)<1e-5)spinV.x=0;if(Math.abs(spinV.y)<1e-5)spinV.y=0}
- var _f=Date.now()<boostT;cam.k+=(tgt.k-cam.k)*(_f?.016:.1);cam.fx+=(tgt.fx-cam.fx)*(_f?.015:.1);cam.fy+=(tgt.fy-cam.fy)*(_f?.05:.1);cam.fz+=(tgt.fz-cam.fz)*(_f?.05:.1);
+ var _f=Date.now()<boostT;cam.k+=(tgt.k-cam.k)*(_f?.016:.1);cam.fx+=(tgt.fx-cam.fx)*(_f?.015:.1);cam.fy+=(tgt.fy-cam.fy)*(_f?.015:.1);cam.fz+=(tgt.fz-cam.fz)*(_f?.015:.1);
  var tv=targetV();if(tv>=loaded)loadUpTo(Math.min(TOTAL-1,tv));Vs+=(tv-Vs)*.07;
  g.clearRect(0,0,W,H);var cx=W/2,cy=H*.46,S=Math.min(W,H)*.5*cam.k,ca=Math.cos(cam.ay),sa=Math.sin(cam.ay),cb=Math.cos(cam.ax),sb=Math.sin(cam.ax),kr=Math.min(cam.k,3.4),ka=Math.min(cam.k,3),zf=Math.max(0,Math.min(1,(cam.k-1)/3.2));
  var local=cam.k>2.2,nS=0,bf=[],bm=[],bn=[],cands=[],near=-1,nd=1e9;
