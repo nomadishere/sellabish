@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v1.14</title><style>
+<title>Indra's roots web v1.15</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -84,7 +84,7 @@ canvas.hov{cursor:pointer}canvas.drag{cursor:grabbing}
 <input id="g_em" type="email" placeholder="email" autocomplete="email"><input id="g_pw" type="password" placeholder="password" autocomplete="current-password">
 <div><button id="g_in">Sign in</button><button id="g_up">First time: create password</button></div><div class="gm" id="g_m"></div>
 <div style="margin-top:6px"><button id="g_skip" style="opacity:.6;font-size:.72rem">Look at the web without signing in</button></div></div></div>
-<div id="unl" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:132px;z-index:25;padding:7px 18px;border-radius:18px;border:1px solid rgba(63,214,196,.7);background:rgba(8,8,8,.7);color:#3FD6C4;font:.8rem Georgia,serif;letter-spacing:.06em">Unlock</div><div id="media"><span class="mx" id="mx">×</span><iframe id="mf" allow="autoplay;fullscreen" allowfullscreen></iframe><div class="mt"><span id="mtt"></span><span id="mbig" style="text-decoration:underline">bigger</span></div><div class="ml" id="ml"></div></div>
+<div id="unl" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:132px;z-index:25;padding:7px 18px;border-radius:18px;border:1px solid rgba(63,214,196,.7);background:rgba(8,8,8,.7);color:#3FD6C4;font:.8rem Georgia,serif;letter-spacing:.06em">Unlock</div><div id="media"><span class="mx" id="mx">×</span><iframe id="mf" allow="autoplay;fullscreen" allowfullscreen></iframe><div class="mt"><span id="mtt"></span><span id="mbig" style="text-decoration:underline">bigger</span><a id="mopen" target="_blank" rel="noopener" style="margin-left:12px;padding:6px 12px;border:1px solid #3FD6C4;border-radius:14px;color:#3FD6C4;text-decoration:none;white-space:nowrap">Open in Drive ↗</a></div><div class="ml" id="ml"></div></div>
 <div class="trail" id="trail"></div>
 <div class="t-card card" id="card"><h3 class="t-gold" id="ct"></h3><p id="cp"></p><div class="row" id="crow"></div></div>
 <div class="t-pad"><button class="main" id="b1">Fly</button><button id="b2" class="on">Trail</button><button id="b3">Voice</button><button id="b4">Weigh</button><button id="b5" class="on">Words</button></div>
@@ -248,7 +248,7 @@ function mediaFor(i){var box=ids('media');if(i<0||!TERM[i]){box.classList.remove
  (NM[t]||[]).forEach(function(x){if(!mlist.some(function(m){return m.small===x[2]||m.medium===x[2]||m.full===x[2]}))mlist.push({t:(x[0]||x[1]||'').replace(/^Wife moment: /,'').slice(0,60),small:x[2],k:x[1]})});
  if(!mlist.length){box.classList.remove('show');return}
  var ml=ids('ml');ml.innerHTML='';mlist.forEach(function(m,k){var sp=document.createElement('span');sp.textContent=((m.k==='audio'?'\u266a ':m.k==='image'?'\u25a3 ':'\u25b6 ')+(m.t||'media')).slice(0,36);sp.onclick=function(){playM(k)};ml.appendChild(sp)});box.classList.add('show');playM(0)}
-function playM(k){mcur=k;var m=mlist[k];ids('mf').src='https://drive.google.com/file/d/'+(m.small||m.medium)+'/preview';ids('mtt').textContent=m.t||'';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)})}
+function playM(k){mcur=k;var m=mlist[k];ids('mf').src='https://drive.google.com/file/d/'+(m.small||m.medium)+'/preview';ids('mtt').textContent=m.t||'';ids('mopen').href='https://drive.google.com/file/d/'+(m.medium||m.small||m.full||'')+'/view';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)})}
 ids('mbig').onclick=function(){var m=mlist[mcur];if(m){ids('mf').src='https://drive.google.com/file/d/'+(m.medium||m.small)+'/preview'}};
 ids('mx').onclick=function(){ids('media').classList.remove('show');ids('mf').src='about:blank'};
 /* speech modes: pace and length of what you say pick the search */
