@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v1.10</title><style>
+<title>Indra's roots web v1.11</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -117,7 +117,7 @@ var PX=new Float32Array(TOTAL),PY=new Float32Array(TOTAL),PP=new Float32Array(TO
 function mix(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t)})}
 function hueA(s){var B=[110,190,255],G=[217,180,90],S=[236,228,206];if(s>=.88)return B;if(s>=.6)return mix(B,G,(.88-s)/.28);if(s>=.3)return G;return mix(G,S,(.3-s)/.3)}
 /* sprites: soft glow + orb, drawn once, stamped many times (this is what makes 5,466 points fast on a phone) */
-var SPR=[],TC=[],TYC=[[255,238,200],[240,200,104],[110,190,255],[255,138,190],[84,222,186],[255,166,104],[190,150,255],[120,230,230],[84,140,225],[255,120,90],[170,172,184]],TYM=[1.35,1.15,.8,.95,.95,1.4,1.2,1.1,.55,.9,.5],MIN=[0,0,1,0,0,0,0,0,1,0,1];
+var SPR=[],TC=[],TYC=[[255,248,220],[255,196,50],[60,150,255],[255,90,170],[50,232,128],[255,138,36],[172,108,255],[36,236,236],[196,202,232],[255,66,66],[196,236,64]],TYM=[2,1.7,1,1.3,1.3,2.2,1.9,1.5,.5,1.2,.45],MIN=[0,0,1,0,0,0,0,0,1,0,1];
 (function(){for(var t=0;t<TYC.length;t++)for(var b=0;b<9;b++){var imp=b===8,s=imp?.95:(b+.5)/8,rgb=TYC[t],c=document.createElement('canvas');c.width=c.height=128;var x=c.getContext('2d');
  var ga=.1+.45*s*s,gl=x.createRadialGradient(64,64,0,64,64,64);gl.addColorStop(0,'rgba('+rgb+','+ga+')');gl.addColorStop(.4,'rgba('+rgb+','+ga*.35+')');gl.addColorStop(1,'rgba('+rgb+',0)');x.fillStyle=gl;x.fillRect(0,0,128,128);
  var o=x.createRadialGradient(58,57,2,64,64,20);o.addColorStop(0,'rgba(255,250,236,.97)');o.addColorStop(.45,'rgba('+rgb+',.9)');o.addColorStop(1,'rgba(20,14,4,.9)');x.fillStyle=o;x.beginPath();x.arc(64,64,20,0,7);x.fill();SPR.push(c);TC.push('rgb('+rgb+')')}})();
@@ -126,7 +126,7 @@ var TYN=['group','root','thing','feeling','quality','person','place','media','su
 /* dust kinds: small stars around a node. item = [text, kind, optional link]. kinds below, each its own color */
 var DK=['memory','special moment','sentence','question','statement','joke','trigger word','core belief','media','text'],DKC=['255,138,190','255,214,120','255,240,200','150,200,255','200,200,200','255,166,104','190,150,255','240,200,104','120,230,230','84,222,186'];
 function wt(i){return Math.max(1,Math.min(10,Math.round(1+9*SC[i])))}
-function rad(i){return (.9+Math.pow(SC[i],1.8)*7.4)*TYM[FAM[i]]}
+function rad(i){return (.9+Math.pow(SC[i],1.6)*9)*TYM[FAM[i]]}
 /* camera */
 var cam={ay:0,ax:.25,k:1.55,fx:0,fy:0,fz:0},tgt={k:1.55,fx:0,fy:0,fz:0},Vs=IMPN+60;
 var LOCK=-1,sel=-1,hover=-1,trail=[],showTrail=true,showWords=true,weighed=0,T=0,lastInteract=0,nearCand=-1,nearSince=0,lastFly=0,nShown=0,fpsE=16,spinV={x:0,y:0},samples=[];
@@ -164,7 +164,7 @@ function tapDust(x,y,type){if(sel<0||cam.k<=2.2)return false;var dl=DUST[TERM[se
  if(best<0)return false;var it=dl[best];SENTCARD={node:sel,txt:it[0],until:Date.now()+20000,title:DK[it[1]%DK.length]};showCard(sel);return true}
 function tap(x,y,type){var now=Date.now();if(tapDust(x,y,type)){lastTap=0;return}var hit=pick(x,y,type==='mouse'?10:22);
  if(hit<0&&now-lastTap<380&&Math.hypot(x-lastTapX,y-lastTapY)<40){home();lastTap=0;return}
- lastTap=now;lastTapX=x;lastTapY=y;if(hit>=0&&hit===sel&&LOCK===sel){LOCK=-1;lastInteract=Date.now();spinV={x:0,y:0};return}if(hit>=0)flyTo(hit,true);else{LOCK=-1;sel=-1;HOT.fill(0);showCard(-1)}}
+ lastTap=now;lastTapX=x;lastTapY=y;if(hit>=0&&hit===sel&&LOCK===sel){LOCK=-1;lastInteract=Date.now();spinV={x:0,y:0};return}if(hit>=0)flyTo(hit,true,true);else{LOCK=-1;sel=-1;HOT.fill(0);showCard(-1)}}
 /* swoosh: filtered noise sweep, pitch rises with distance flown */
 var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
 ['pointerdown','keydown'].forEach(function(ev){addEventListener(ev,ac,{once:true,passive:true})});
@@ -176,7 +176,7 @@ function swoosh(dist){var a=ac();if(!a)return;window.__sw++;var d=Math.max(1.6,M
 function chime(){var a=AC;if(!a||a.state!=='running')return;var o=a.createOscillator(),g2=a.createGain();o.type='sine';o.frequency.value=[784,880,988,1175][Math.floor(Math.random()*4)];g2.gain.setValueAtTime(.0001,a.currentTime);g2.gain.exponentialRampToValueAtTime(.025,a.currentTime+.4);g2.gain.exponentialRampToValueAtTime(.0001,a.currentTime+2.4);o.connect(g2);g2.connect(a.destination);o.start();o.stop(a.currentTime+2.5)}
 /* ---- fly, card, trail ---- */
 function setHot(i){HOT.fill(0);if(i<0)return;HOT[i]=2;var nb=NB[i];if(!nb)return;for(var q=0;q<nb.length;q++){loadUpTo(nb[q]);HOT[nb[q]]=1}}
-var boostT=0;function flyTo(i,push){boostT=Date.now()+6000;loadUpTo(i);var dd=sel>=0?Math.hypot(X[i]-X[sel],Y[i]-Y[sel],Z[i]-Z[sel]):.6;if(i!==sel)swoosh(dd);sel=i;LOCK=i;setHot(i);tgt.fx=X[i];tgt.fy=Y[i];tgt.fz=Z[i];tgt.k=Math.max(tgt.k,3.2);spinV={x:0,y:0};
+var boostT=0;function flyTo(i,push,fast){boostT=fast?0:Date.now()+6000;loadUpTo(i);var dd=sel>=0?Math.hypot(X[i]-X[sel],Y[i]-Y[sel],Z[i]-Z[sel]):.6;if(i!==sel)swoosh(dd);sel=i;LOCK=i;setHot(i);tgt.fx=X[i];tgt.fy=Y[i];tgt.fz=Z[i];tgt.k=Math.max(tgt.k,3.2);spinV={x:0,y:0};
  if(push&&trail[trail.length-1]!==i){trail.push(i);if(trail.length>14)trail.shift()}drawChips();showCard(i);mediaFor(i);lastInteract=Date.now();lastFly=Date.now();return TERM[i]}
 function showCard(i){var c=ids('card');if(i<0){c.classList.remove('show');return}ids('ct').textContent=TERM[i];
  var s=TYN[FAM[i]]+((FAM[i]===2||FAM[i]===8)?' · weight '+WT[i]+' of 10':' · '+AN[i]+' linked');if(NK[i]&&NK[i].length)s+=' · also: '+NK[i].slice(0,2).join(', ');
@@ -306,7 +306,7 @@ function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.
   if(a<=.02){PV[i]=0;continue}
   var Xr=X[i]-cam.fx,Yr=Y[i]-cam.fy,Zr=Z[i]-cam.fz,x=Xr*ca+Zr*sa,z=-Xr*sa+Zr*ca,y=Yr*cb-z*sb;z=Yr*sb+z*cb;var den=1.9-z*.55*ka;if(den<.3){PV[i]=0;continue}var p=1/den,sx=cx+x*S*p*1.7,sy=cy+y*S*p*1.7;
   if(sx<-40||sx>W+40||sy<-40||sy>H+40){PV[i]=0;continue}
-  PV[i]=1;PX[i]=sx;PY[i]=sy;PP[i]=p;PZ[i]=z;PA[i]=a;PR[i]=Math.min(70,rad(i)*p*(.72+kr*.3));nS++;
+  PV[i]=1;PX[i]=sx;PY[i]=sy;PP[i]=p;PZ[i]=z;PA[i]=a;PR[i]=Math.min(70,rad(i)*p*(.72+kr*.3));if(i===sel)PR[i]=Math.max(PR[i],6);nS++;
   if(z<-.3)bf.push(i);else if(z<.3)bm.push(i);else bn.push(i)}
  nShown=nS;
  /* hairlines: blue between the heaviest, faint gold elsewhere (only once you zoom), bright gold around the selected word */
