@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v1.16</title><style>
+<title>Indra's roots web v1.17</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -67,7 +67,7 @@ canvas.hov{cursor:pointer}canvas.drag{cursor:grabbing}
 #gate .gm.ok{color:#9ee6c4}
 #media{position:fixed;left:10px;right:10px;bottom:244px;z-index:20;display:none;max-width:420px;margin:0 auto;background:rgba(8,8,8,.62);backdrop-filter:blur(6px);border:1px solid rgba(232,200,114,.3);border-radius:14px;padding:8px}
 #media.show{display:block}
-#media iframe{width:100%;height:150px;border:0;border-radius:10px;background:#000}
+#media iframe,#media video,#media img{width:100%;height:150px;border:0;border-radius:10px;background:#000;object-fit:contain}
 #media .ml{display:flex;gap:6px;overflow-x:auto;margin-top:6px}
 #media .ml span{white-space:nowrap;font-size:.68rem;padding:4px 9px;border-radius:12px;border:1px solid rgba(232,200,114,.35);color:#ecdfc3}
 #media .ml span.on{background:rgba(232,200,114,.25)}
@@ -84,7 +84,7 @@ canvas.hov{cursor:pointer}canvas.drag{cursor:grabbing}
 <input id="g_em" type="email" placeholder="email" autocomplete="email"><input id="g_pw" type="password" placeholder="password" autocomplete="current-password">
 <div><button id="g_in">Sign in</button><button id="g_up">First time: create password</button></div><div class="gm" id="g_m"></div>
 <div style="margin-top:6px"><button id="g_skip" style="opacity:.6;font-size:.72rem">Look at the web without signing in</button></div></div></div>
-<div id="unl" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:132px;z-index:25;padding:7px 18px;border-radius:18px;border:1px solid rgba(63,214,196,.7);background:rgba(8,8,8,.7);color:#3FD6C4;font:.8rem Georgia,serif;letter-spacing:.06em">Unlock</div><div id="media"><span class="mx" id="mx">×</span><iframe id="mf" allow="autoplay;fullscreen" allowfullscreen></iframe><div class="mt"><span id="mtt"></span><span id="mbig" style="text-decoration:underline">bigger</span><a id="mopen" target="_blank" rel="noopener" style="margin-left:12px;padding:6px 12px;border:1px solid #3FD6C4;border-radius:14px;color:#3FD6C4;text-decoration:none;white-space:nowrap">Open in Drive ↗</a></div><div class="ml" id="ml"></div></div>
+<div id="unl" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:132px;z-index:25;padding:7px 18px;border-radius:18px;border:1px solid rgba(63,214,196,.7);background:rgba(8,8,8,.7);color:#3FD6C4;font:.8rem Georgia,serif;letter-spacing:.06em">Unlock</div><div id="media"><span class="mx" id="mx">×</span><iframe id="mf" allow="autoplay;fullscreen" allowfullscreen></iframe><video id="mv" controls playsinline loop muted style="display:none"></video><img id="mi" alt="" style="display:none"><div class="mt"><span id="mtt"></span><span id="mbig" style="text-decoration:underline">bigger</span><a id="mopen" target="_blank" rel="noopener" style="margin-left:12px;padding:6px 12px;border:1px solid #3FD6C4;border-radius:14px;color:#3FD6C4;text-decoration:none;white-space:nowrap">Open in Drive ↗</a></div><div class="ml" id="ml"></div></div>
 <div class="trail" id="trail"></div>
 <div class="t-card card" id="card"><h3 class="t-gold" id="ct"></h3><p id="cp"></p><div class="row" id="crow"></div></div>
 <div class="t-pad"><button class="main" id="b1">Fly</button><button id="b2" class="on">Trail</button><button id="b3">Voice</button><button id="b4">Weigh</button><button id="b5" class="on">Words</button></div>
@@ -121,7 +121,7 @@ var SPR=[],TC=[],TYC=[[255,248,220],[255,196,50],[60,150,255],[255,90,170],[50,2
 (function(){for(var t=0;t<TYC.length;t++)for(var b=0;b<9;b++){var imp=b===8,s=imp?.95:(b+.5)/8,rgb=TYC[t],c=document.createElement('canvas');c.width=c.height=128;var x=c.getContext('2d');
  var ga=.1+.45*s*s,gl=x.createRadialGradient(64,64,0,64,64,64);gl.addColorStop(0,'rgba('+rgb+','+ga+')');gl.addColorStop(.4,'rgba('+rgb+','+ga*.35+')');gl.addColorStop(1,'rgba('+rgb+',0)');x.fillStyle=gl;x.fillRect(0,0,128,128);
  var o=x.createRadialGradient(58,57,2,64,64,20);o.addColorStop(0,'rgba(255,250,236,.97)');o.addColorStop(.45,'rgba('+rgb+',.9)');o.addColorStop(1,'rgba(20,14,4,.9)');x.fillStyle=o;x.beginPath();x.arc(64,64,20,0,7);x.fill();SPR.push(c);TC.push('rgb('+rgb+')')}})();
-var DUST={},MEDIA=[],NM={},DUSTPOS=[],DUSTN=0;
+var DUST={},MEDIA=[],NM={},DUSTPOS=[],DUSTN=0,MKEY=null,THUMB={},THL=false;
 var TYN=['group','root','thing','feeling','quality','person','place','media','sub thing','trigger word','agent'];
 /* dust kinds: small stars around a node. item = [text, kind, optional link]. kinds below, each its own color */
 var DK=['memory','special moment','sentence','question','statement','joke','trigger word','core belief','media','chat turn'],DKC=['255,138,190','255,214,120','255,240,200','150,200,255','200,200,200','255,166,104','190,150,255','240,200,104','120,230,230','84,222,186'];
@@ -163,9 +163,19 @@ function home(){PANX=PANY=0;LOCK=-1;sel=-1;HOT.fill(0);tgt.k=1.55;tgt.fx=tgt.fy=
 /* picking: the closest orb to the finger wins; fingers get a bigger target than a mouse */
 function pick(x,y,slack){var best=-1,bs=1e9;for(var i=0;i<loaded;i++){if(!PV[i]||PA[i]<.35)continue;var d=Math.hypot(x-PX[i],y-PY[i]),al=Math.max(PR[i],slack);if(d<al){var s=d/al-SC[i]*.15;if(s<bs){bs=s;best=i}}}return best}
 
+
+function b64b(b){var s=atob(b),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+function decBuf(buf){var u=new Uint8Array(buf);return crypto.subtle.importKey('raw',b64b(MKEY),'AES-GCM',false,['decrypt']).then(function(k){return crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},k,u.slice(12))})}
+function loadThumbs(){if(THL||!MKEY||!(window.crypto&&crypto.subtle))return;THL=true;fetch('t.bin').then(function(r){return r.arrayBuffer()}).then(decBuf).then(function(b){THUMB=JSON.parse(new TextDecoder().decode(b));if(sel>=0)mediaFor(sel)}).catch(function(){THL=false})}
+var LCACHE={};
+function showLocal(id){var tv=THUMB[id]||'';var isV=tv.slice(0,2)==='v:';var mv=ids('mv'),mi=ids('mi'),mf=ids('mf');mf.style.display='none';mv.style.display='none';mi.style.display='none';mf.src='about:blank';mv.pause&&mv.pause();
+ var go=function(u){if(isV){mv.src=u;mv.style.display='block';var p=mv.play();p&&p.catch&&p.catch(function(){})}else{mi.src=u;mi.style.display='block'}};
+ if(LCACHE[id]){go(LCACHE[id]);return}
+ mi.src=tv.slice(2);mi.style.display='block';
+ fetch('m/'+id+'.bin').then(function(r){return r.arrayBuffer()}).then(decBuf).then(function(b){var u=URL.createObjectURL(new Blob([b],{type:isV?'video/mp4':'image/jpeg'}));LCACHE[id]=u;if(mcur>=0&&(mlist[mcur].small||mlist[mcur].medium||mlist[mcur].full)===id)go(u)}).catch(function(){})}
 /* media tiles: little, medium or big cards float around the node, size follows zoom */
 var TILEPOS=[],TIMG={};
-function tileImg(m,w){var id=m.small||m.medium||m.full;if(!id)return null;var key=id+'_'+w,o=TIMG[key];if(o===undefined){o=TIMG[key]={im:new Image(),ok:false,bad:false};o.im.onload=function(){o.ok=true};o.im.onerror=function(){o.bad=true};o.im.src='https://drive.google.com/thumbnail?id='+id+'&sz=w'+w}return o}
+function tileImg(m,w){var id=m.small||m.medium||m.full;if(!id)return null;if(THUMB[id]){var o2=TIMG['L'+id];if(!o2){o2=TIMG['L'+id]={im:new Image(),ok:false,bad:false};o2.im.onload=function(){o2.ok=true};o2.im.src=THUMB[id].slice(2)}return o2}var key=id+'_'+w,o=TIMG[key];if(o===undefined){o=TIMG[key]={im:new Image(),ok:false,bad:false};o.im.onload=function(){o.ok=true};o.im.onerror=function(){o.bad=true};o.im.src='https://drive.google.com/thumbnail?id='+id+'&sz=w'+w}return o}
 function drawTiles(){TILEPOS=[];if(sel<0||!PV[sel]||cam.k<2.6||!mlist.length)return;var n=Math.min(mlist.length,40),sz=Math.max(36,Math.min(170,36+(cam.k-2.6)*6)),w=sz<64?120:sz<112?240:480,cx0=PX[sel],cy0=PY[sel];
  for(var q=0;q<n;q++){var m=mlist[q],a=q*2.39996+T*.04,r=(sz*.95+30)*(1+Math.sqrt(q)*.62),x=cx0+Math.cos(a)*r,y=cy0+Math.sin(a)*r*.82;if(x<-sz||x>W+sz||y<-sz||y>H+sz)continue;
   var hw=sz/2,hh=sz*(m.k==='audio'?.5:.62)/1;g.save();g.globalAlpha=.92;g.fillStyle='rgba(10,12,16,.82)';g.strokeStyle=q===mcur?'#E8C66A':'rgba(63,214,196,.8)';g.lineWidth=q===mcur?2:1.2;g.beginPath();if(g.roundRect)g.roundRect(x-hw,y-hh/2*1.2,sz,hh*1.2,6);else g.rect(x-hw,y-hh/2*1.2,sz,hh*1.2);g.fill();g.stroke();g.clip();
@@ -241,7 +251,7 @@ function loadS(){try{return JSON.parse(localStorage.getItem('rwS')||'null')}catc
 function authCall(path,body,method,tok){return fetch(SB+path,{method:method||'POST',headers:{apikey:AK,'Content-Type':'application/json',Authorization:'Bearer '+(tok||AK)},body:body?JSON.stringify(body):undefined}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,j:j}})})}
 function gotSession(j){if(!j||!j.access_token)return false;SESS={at:j.access_token,rt:j.refresh_token,em:(j.user&&j.user.email)||'',exp:Date.now()+((j.expires_in||3600)-60)*1000};saveS(SESS);ids('gate').style.display='none';loadPrivate();return true}
 function loadPrivate(){fetch(SB+'/rest/v1/private_web_payload?select=key,payload',{headers:{apikey:AK,Authorization:'Bearer '+SESS.at}}).then(function(r){return r.ok?r.json():Promise.reject(r.status)}).then(function(rows){
-  rows.forEach(function(r){if(r.key==='dust')DUST=r.payload||{};if(r.key==='media')MEDIA=r.payload||[];if(r.key==='nodemedia')NM=r.payload||{}});
+  rows.forEach(function(r){if(r.key==='dust')DUST=r.payload||{};if(r.key==='media')MEDIA=r.payload||[];if(r.key==='nodemedia')NM=r.payload||{};if(r.key==='mkey')MKEY=r.payload});loadThumbs();
   G=[];Object.keys(DUST).forEach(function(t){DUST[t].forEach(function(it){if((it[1]===3||it[1]===4||it[1]===5||it[1]===7)&&it[0].length>=18&&it[0].length<=110&&G.length<400&&!/^\W/.test(it[0])&&/[.!?\u2026"')]$/.test(it[0]))G.push([it[0],DK[it[1]],''])})});for(var q=G.length-1;q>0;q--){var r2=Math.floor(Math.random()*(q+1)),tmp=G[q];G[q]=G[r2];G[r2]=tmp}
   SENT=[];Object.keys(DUST).forEach(function(t){DUST[t].forEach(function(it){if(it[1]>=1&&it[1]<=5&&it[0].length>25)SENT.push([it[0].toLowerCase(),t,it[0],it[1]])})});
   if(sel>=0)showCard(sel);mediaFor(sel)}).catch(function(){SESS=null;saveS(null);ids('gate').style.display='flex';gm('Signed out. Please sign in again.')})}
@@ -259,7 +269,7 @@ function mediaFor(i){var box=ids('media');if(i<0||!TERM[i]){box.classList.remove
  (NM[t]||[]).forEach(function(x){if(!mlist.some(function(m){return m.small===x[2]||m.medium===x[2]||m.full===x[2]}))mlist.push({t:(x[0]||x[1]||'').replace(/^Wife moment: /,'').slice(0,60),small:x[2],k:x[1]})});
  if(!mlist.length){box.classList.remove('show');return}
  var ml=ids('ml');ml.innerHTML='';mlist.forEach(function(m,k){var sp=document.createElement('span');sp.textContent=((m.k==='audio'?'\u266a ':m.k==='image'?'\u25a3 ':'\u25b6 ')+(m.t||'media')).slice(0,36);sp.onclick=function(){playM(k)};ml.appendChild(sp)});box.classList.add('show');playM(0)}
-function playM(k){mcur=k;var m=mlist[k];ids('mf').src='https://drive.google.com/file/d/'+(m.small||m.medium)+'/preview';ids('mtt').textContent=m.t||'';ids('mopen').href='https://drive.google.com/file/d/'+(m.medium||m.small||m.full||'')+'/view';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)})}
+function playM(k){mcur=k;var m=mlist[k];var lid=m.small||m.medium||m.full;if(THUMB[lid]){showLocal(lid);ids('mtt').textContent=m.t||'';ids('mopen').style.display='none';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)});return}ids('mv').pause&&ids('mv').pause();ids('mv').style.display='none';ids('mi').style.display='none';ids('mf').style.display='block';ids('mopen').style.display='';ids('mf').src='https://drive.google.com/file/d/'+(m.small||m.medium)+'/preview';ids('mtt').textContent=m.t||'';ids('mopen').href='https://drive.google.com/file/d/'+(m.medium||m.small||m.full||'')+'/view';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)})}
 ids('mbig').onclick=function(){var m=mlist[mcur];if(m){ids('mf').src='https://drive.google.com/file/d/'+(m.medium||m.small)+'/preview'}};
 ids('mx').onclick=function(){ids('media').classList.remove('show');ids('mf').src='about:blank'};
 /* speech modes: pace and length of what you say pick the search */
