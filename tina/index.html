@@ -92,7 +92,7 @@ c.addEventListener('change',function(){b.disabled=!c.checked});
 document.getElementById('f').addEventListener('submit',function(ev){
  ev.preventDefault();
  var ENDPOINT='https://wwqjoagdnclaylllzcut.supabase.co/functions/v1/tina-optin';
- var d={name:n.value,phone:p.value,email:e.value,consent:true,consent_text_version:'v1-2026-11-24'};
+ var d={name:n.value,phone:p.value,email:e.value,consent:true,consent_text_version:'v2-2026-11-24-freq5-stop'};
  b.disabled=true;
  fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
   .then(function(r){return r.json()})
