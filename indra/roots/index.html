@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v2.0</title><style>
+<title>Indra's roots web v2.1</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -230,12 +230,12 @@ function nextFly(){var from=sel,cand=[];loadUpTo(Math.min(TOTAL-1,1999));
 ids('b1').onclick=nextFly;
 ids('b2').onclick=function(){showTrail=!showTrail;this.classList.toggle('on',showTrail);drawChips()};
 var STOPW={the:1,and:1,but:1,for:1,you:1,are:1,was:1,with:1,that:1,this:1,then:1,now:1,go:1,to:1,a:1,an:1,of:1,in:1,on:1,it:1,is:1,me:1,my2:1,show:1,take:1,fly:1,say:1,um:1,uh:1,like:1,okay:1,next:1};
-var doneW={},flyQ=[],flyBusy=false;
+var doneW={},flyQ=[],flyBusy=false,LW=[];function addLW(w){var i=-1;try{i=findWord(w)}catch(_){}LW.push({w:w,i:i,t0:Date.now(),dx:(Math.random()-.5)*Math.min(260,W*.5)});if(LW.length>8)LW.shift()}
 function pumpQ(){if(flyBusy)return;var w=flyQ.shift();if(w===undefined)return;flyBusy=true;var i=findWord(w);if(i>=0){flyTo(i,true)}else{ids('ct').textContent='No word like "'+w+'"';ids('cp').textContent='Try another word.';ids('crow').innerHTML='';ids('card').classList.add('show')}setTimeout(function(){flyBusy=false;pumpQ()},i>=0?3800:600)}
 function procWords(k,text,fin){var ws=text.toLowerCase().replace(/[^a-z0-9' ]+/g,' ').trim().split(/\s+/).filter(Boolean);if(ws.length<=4&&/\b(unlock|release|let go|set it free|free it|unlocked)\b/.test(ws.join(' '))){unlock();doneW[k]=ws.length;return}var from=doneW[k]||0,upto=fin?ws.length:ws.length-1;
  for(var j=from;j<upto;j++){var w=ws[j];if(w.length<3||STOPW[w])continue;
   var two=(j>0&&ws[j-1]&&!STOPW[ws[j-1]])?ws[j-1]+' '+w:null;
-  var ti=two?findWord(two):-1;if(two&&ti>=0&&TERM[ti].toLowerCase().indexOf(ws[j-1])>=0&&TERM[ti].toLowerCase().indexOf(w)>=0){if(flyQ.length&&flyQ[flyQ.length-1]===ws[j-1])flyQ.pop();flyQ.push(two)}else flyQ.push(w)}
+  var ti=two?findWord(two):-1;if(two&&ti>=0&&TERM[ti].toLowerCase().indexOf(ws[j-1])>=0&&TERM[ti].toLowerCase().indexOf(w)>=0){if(flyQ.length&&flyQ[flyQ.length-1]===ws[j-1])flyQ.pop();flyQ.push(two);addLW(two)}else{flyQ.push(w);addLW(w)}}
  for(var q2=from;q2<upto;q2++)if(ws[q2].length>2&&!STOPW[ws[q2]])spoken.push(Date.now());
  doneW[k]=Math.max(from,upto);
  if(fin){var kw2=ws.filter(function(w){return w.length>3&&!STOPW[w]}),pc=paceNow();
@@ -291,7 +291,7 @@ function startMic(){var box=ids('say');if(!SRC){box.classList.add('show');ids('s
   rec.start()}catch(err){box.classList.add('show');ids('sayin').placeholder='type a word + Enter'}}
 ids('b3').textContent='Voice';
 ids('b3').onclick=function(){if(listening||micWant){micWant=false;try{rec.stop()}catch(_){}this.classList.remove('on');this.textContent='Voice';return}startMic();this.classList.add('on');this.textContent='Listening'};
-ids('sayin').addEventListener('keydown',function(e){if(e.key==='Enter'){goWord(this.value);this.blur()}});
+ids('sayin').addEventListener('keydown',function(e){if(e.key==='Enter'){addLW(this.value);goWord(this.value);this.blur()}});
 ids('b4').onclick=function(){var i=sel>=0?sel:Math.floor(Math.random()*Math.min(loaded,IMPN));if(sel!==i)flyTo(i,true);var c=ids('card');
  ids('ct').textContent='How heavy is '+TERM[i]+'?';ids('cp').textContent='Now '+wt(i)+' of 10. Weighed '+weighed+' so far. (This stays on this page only.)';var r=ids('crow');r.innerHTML='';
  [['lighter',-1],['heavier',1]].forEach(function(o){var b=document.createElement('button');b.className='t-pill'+(o[1]>0?' go':'');b.textContent=o[0];b.onclick=function(){SC[i]=Math.max(0,Math.min(1,SC[i]+o[1]*.1));weighed++;ids('cp').textContent='Now '+wt(i)+' of 10. Weighed '+weighed+' so far. (This stays on this page only.)'};r.appendChild(b)});c.classList.add('show')};
@@ -315,6 +315,12 @@ setTimeout(function(){(window.requestIdleCallback||function(f){setTimeout(f,0)})
 /* ---- draw ---- */
 var wcache={};function tw(s,fs){var k=fs+s,v=wcache[k];if(v===undefined){g.font=fs+'px Georgia,serif';v=wcache[k]=g.measureText(s).width}return v}
 var lastT=performance.now(),lastCnt='';
+
+/* mood weather: the whole sky takes the colour of the word you are on, with slow drifting motes (lighter when the web is at rest) */
+var MOOD=[0,0,0],MOODA=0,MOTE=[];for(var _m=0;_m<46;_m++)MOTE.push([Math.random(),Math.random(),.2+Math.random()*.8,Math.random()*6.28]);
+function moodDraw(){var tc=sel>=0?TYC[FAM[sel]]:[0,0,0],ta=sel>=0?(LOCK>=0?.2:.13):0;for(var c=0;c<3;c++)MOOD[c]+=(tc[c]-MOOD[c])*.03;MOODA+=(ta-MOODA)*.03;if(MOODA<.004)return;
+ var rg=g.createRadialGradient(W/2,H*.46,Math.min(W,H)*.08,W/2,H*.46,Math.max(W,H)*.75);rg.addColorStop(0,'rgba('+(MOOD[0]|0)+','+(MOOD[1]|0)+','+(MOOD[2]|0)+','+MOODA*.55+')');rg.addColorStop(1,'rgba('+(MOOD[0]*.4|0)+','+(MOOD[1]*.4|0)+','+(MOOD[2]*.4|0)+','+MOODA+')');g.fillStyle=rg;g.fillRect(0,0,W,H);
+ g.save();g.globalCompositeOperation='lighter';g.fillStyle='rgba('+(MOOD[0]|0)+','+(MOOD[1]|0)+','+(MOOD[2]|0)+','+(MOODA*2.2)+')';for(var q=0;q<MOTE.length;q++){var m=MOTE[q],x=((m[0]+T*.004*m[2]+Math.sin(T*.2+m[3])*.01)%1)*W,y=((m[1]-T*.006*m[2])%1+1)%1*H;g.fillRect(x,y,1+m[2]*1.6,1+m[2]*1.6)}g.restore()}
 function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.06;T+=.016;
  if(fpsE>27&&dpr>1.01){dpr=1;rs()}
  /* spin: fling decays; slow drift only when nothing is selected and nobody is touching */
@@ -323,7 +329,7 @@ function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.
  var _f=Date.now()<boostT;cam.k+=(tgt.k-cam.k)*(_f?.016:.1);cam.fx+=(tgt.fx-cam.fx)*(_f?.015:.1);cam.fy+=(tgt.fy-cam.fy)*(_f?.015:.1);cam.fz+=(tgt.fz-cam.fz)*(_f?.015:.1);
  var _ul=LOCK>=0?'block':'none';if(_ul!==lastUl){lastUl=_ul;ids('unl').style.display=_ul}
  var tv=targetV();if(tv>=loaded)loadUpTo(Math.min(TOTAL-1,tv));Vs+=(tv-Vs)*.07;
- g.clearRect(0,0,W,H);var cx=W/2+PANX,cy=H*.46+PANY,S=Math.min(W,H)*.5*cam.k,ca=Math.cos(cam.ay),sa=Math.sin(cam.ay),cb=Math.cos(cam.ax),sb=Math.sin(cam.ax),kr=Math.min(cam.k,3.4),ka=Math.min(cam.k,3),zf=Math.max(0,Math.min(1,(cam.k-1)/3.2));
+ g.clearRect(0,0,W,H);moodDraw();var cx=W/2+PANX,cy=H*.46+PANY,S=Math.min(W,H)*.5*cam.k,ca=Math.cos(cam.ay),sa=Math.sin(cam.ay),cb=Math.cos(cam.ax),sb=Math.sin(cam.ax),kr=Math.min(cam.k,3.4),ka=Math.min(cam.k,3),zf=Math.max(0,Math.min(1,(cam.k-1)/3.2));
  var local=cam.k>2.2,nS=0,bf=[],bm=[],bn=[],cands=[],near=-1,nd=1e9;
  for(var i=0;i<loaded;i++){var a=(Vs-i)/70;if(a>1)a=1;
   if(local){var ddx=X[i]-cam.fx,ddy=Y[i]-cam.fy,ddz=Z[i]-cam.fz,d2=ddx*ddx+ddy*ddy+ddz*ddz;if(d2<.1156){var l=(.34-Math.sqrt(d2))/.14;if(l>1)l=1;if(l>a)a=l}}
@@ -339,6 +345,8 @@ function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.
  g.beginPath();for(var e=0;e<ne;e++){var u=EA[e],v=EB[e];if(!MIN[FAM[u]]&&!MIN[FAM[v]]&&PV[u]&&PV[v]){g.moveTo(PX[u],PY[u]);g.lineTo(PX[v],PY[v])}}g.strokeStyle='rgba(150,205,255,'+(.12+.42*zf)+')';g.lineWidth=.35+.9*zf;g.stroke();
  if(fpsE<30){g.beginPath();for(var e=0;e<ne;e++){var u=EA[e],v=EB[e];if(!(!MIN[FAM[u]]&&!MIN[FAM[v]])&&PV[u]&&PV[v]&&PA[u]>.3&&PA[v]>.3){g.moveTo(PX[u],PY[u]);g.lineTo(PX[v],PY[v])}}g.strokeStyle='rgba(217,180,90,'+(.1+.3*zf)+')';g.lineWidth=.3+.45*zf;g.stroke()}
  if(sel>=0&&PV[sel]){g.beginPath();var nb=NB[sel];for(var q=0;q<nb.length;q++){var v=nb[q];if(PV[v]){g.moveTo(PX[sel],PY[sel]);g.lineTo(PX[v],PY[v])}}g.strokeStyle='rgba(240,216,144,'+(.55+.4*zf)+')';g.lineWidth=.7+.8*zf;g.stroke()}
+ /* threads of light: pulses run along the strongest links into the selected word (faster and brighter when locked) */
+ if(sel>=0&&PV[sel]){var nbT=NB[sel]||[],spd=LOCK===sel?.34:.16;g.save();g.globalCompositeOperation='lighter';for(var q=0;q<nbT.length&&q<24;q++){var v=nbT[q];if(!PV[v])continue;var ph=((T*spd+q*.37)%1),px=PX[v]+(PX[sel]-PX[v])*ph,py=PY[v]+(PY[sel]-PY[v])*ph,rg=g.createRadialGradient(px,py,0,px,py,7+3*zf);rg.addColorStop(0,'rgba(255,238,170,'+(.9*Math.sin(ph*3.14159))+')');rg.addColorStop(1,'rgba(255,238,170,0)');g.fillStyle=rg;g.fillRect(px-10,py-10,20,20)}g.restore()}
  /* trail: a glowing gold path through the words you passed */
  if(showTrail&&trail.length>1){g.save();g.lineCap='round';for(var k=1;k<trail.length;k++){var u=trail[k-1],v=trail[k];if(!PV[u]||!PV[v])continue;g.beginPath();g.moveTo(PX[u],PY[u]);g.lineTo(PX[v],PY[v]);g.strokeStyle='rgba(240,216,144,'+(.25+.6*k/trail.length)+')';g.shadowColor='rgba(217,180,90,.9)';g.shadowBlur=10;g.lineWidth=1.6;g.stroke()}g.restore()}
  var hotNb=sel>=0?HOT:null,lastFill='';
@@ -369,6 +377,13 @@ function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.
  for(var q=0;q<cands.length&&placed<maxL;q++){var c0=cands[q],big=c0.i<IMPN,fs=(big||c0.i===sel)?15:12,w=tw(TERM[c0.i],fs),bx={l:c0.x-w/2-4,r:c0.x+w/2+4,t:c0.y-fs,b:c0.y+4},ok=true;
   for(var z=0;z<boxes.length;z++){var o=boxes[z];if(bx.l<o.r&&bx.r>o.l&&bx.t<o.b&&bx.b>o.t){ok=false;break}}
   if(!ok&&c0.i!==sel&&c0.i!==hover)continue;boxes.push(bx);placed++;g.font=fs+'px Georgia,serif';g.fillStyle='rgba(237,230,214,'+((c0.i===sel||c0.i===hover)?1:.82)+')';g.shadowColor='#000';g.shadowBlur=6;g.fillText(TERM[c0.i],c0.x,c0.y);g.shadowBlur=0}
+ /* spoken words as light: each word you say appears near the top, then drifts into the dot it names and dissolves */
+ for(var q=LW.length-1;q>=0;q--){var l=LW[q],age=(Date.now()-l.t0)/1000;if(age>3.4){LW.splice(q,1);continue}var tx,ty;
+  var pe=age<1.1?0:Math.min(1,(age-1.1)/1.8);pe=pe*pe*(3-2*pe);var sx0=W/2+l.dx,sy0=118;
+  if(l.i>=0&&PV[l.i]){tx=PX[l.i];ty=PY[l.i]}else{tx=sx0;ty=sy0-30}
+  var xx=sx0+(tx-sx0)*pe,yy=sy0+(ty-sy0)*pe,al=age<.35?age/.35:(age<2.2?1:Math.max(0,1-(age-2.2)/1.2)),sc=1-.55*pe;
+  g.save();g.globalAlpha=al;g.globalCompositeOperation='lighter';g.font=(22*sc|0)+'px Georgia,serif';g.textAlign='center';g.fillStyle='rgba(255,236,170,1)';g.shadowColor='rgba(255,214,120,1)';g.shadowBlur=18;g.fillText(l.w,xx,yy);g.fillText(l.w,xx,yy);g.restore();
+  if(pe>.85&&l.i>=0&&PV[l.i]){g.save();g.globalAlpha=al*.6;g.strokeStyle='rgba(255,236,170,1)';g.lineWidth=1.2;g.beginPath();g.arc(tx,ty,PR[l.i]+4+(pe-.85)*90,0,7);g.stroke();g.restore()}}
  /* fly-through: stop for a moment close to a word and its meaning fades in (debounced, so it never jumps while you are still moving) */
  if(LOCK<0&&cam.k>2.6&&cam.k<9&&near>=0&&nd<64&&!touching&&Math.abs(spinV.x)+Math.abs(spinV.y)<.0008&&Math.abs(tgt.k-cam.k)<.03&&Date.now()-lastFly>1800&&!(SENTCARD&&Date.now()<SENTCARD.until)&&Date.now()>glowUntil-3500){
   if(near===nearCand){if(Date.now()-nearSince>500&&sel!==near){sel=near;setHot(near);showCard(near);drawChips()}}else{nearCand=near;nearSince=Date.now()}}else nearCand=-1;
