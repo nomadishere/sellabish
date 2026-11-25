@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Tina: your private space</title>
+<style>
+:root{--ink:#EDE6D6;--muted:#8A8780;--line:rgba(201,150,47,.28);--g:linear-gradient(120deg,#B98A2E,#F0D890 48%,#C9962F);--teal:#3FD6C4;--serif:Georgia,"Iowan Old Style","Times New Roman",serif;--sans:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(60% 40% at 50% 0%,rgba(217,180,90,.14),transparent 70%);pointer-events:none}
+.gt{font-family:var(--serif);font-weight:400;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{border:1px solid var(--line);background:#080808;border-radius:30px;padding:28px;box-shadow:0 0 60px rgba(217,180,90,.07)}
+input{width:100%;padding:14px 16px;font-size:1rem;background:#080808;color:var(--ink);border:1px solid var(--line);border-radius:16px;font-family:var(--sans)}
+input::placeholder{color:var(--muted)}
+button{font-family:var(--sans);cursor:pointer}
+.go{border:0;border-radius:999px;padding:14px 22px;font-size:1rem;background:var(--g);color:#0A0804;box-shadow:0 0 22px rgba(217,180,90,.28)}
+.ghost{border:1px solid rgba(201,150,47,.4);border-radius:999px;padding:12px 20px;font-size:.95rem;background:#0B0B0B;color:var(--ink)}
+.ring{width:96px;height:96px;border-radius:50%;background:conic-gradient(from 210deg,#6B4E16,#FFF1BF,#C9973A,#6B4E16,#F3D58A,#8A6520,#6B4E16);display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(233,196,106,.3);animation:glow 5s ease-in-out infinite;flex:none}
+.ring img{width:88px;height:88px;border-radius:50%;object-fit:cover;object-position:50% 26%;display:block;background:#040404}
+@keyframes glow{50%{box-shadow:0 0 80px rgba(233,196,106,.55)}}
+.diamond{display:inline-block;width:9px;height:9px;background:var(--teal);transform:rotate(45deg);margin-right:10px;box-shadow:0 0 10px var(--teal)}
+.msg{font-size:.88rem;margin-top:12px;color:#d8b46a;min-height:1.2em}.msg.ok{color:var(--teal)}
+/* gate */
+#gate,#closed{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:22px;z-index:5}
+#gate .card,#closed .card{max-width:420px;width:100%;text-align:center}
+#gate h1,#closed h1{font-size:2rem;margin:.4em 0 .2em}
+#gate p,#closed p{color:#b9b19f;margin:0 0 18px;font-size:.95rem}
+#gate input{margin-bottom:10px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+/* app */
+#app{display:none;height:100%;flex-direction:column;max-width:640px;margin:0 auto;position:relative}
+header{display:flex;align-items:center;gap:14px;padding:calc(env(safe-area-inset-top) + 16px) 18px 10px}
+header .who{flex:1}
+header .who b{display:block;font-family:var(--serif);font-weight:400;font-size:1.25rem}
+header .who span{color:var(--muted);font-size:.8rem}
+#log{flex:1;overflow-y:auto;padding:8px 18px 12px;display:flex;flex-direction:column;gap:10px}
+.b{max-width:86%;padding:11px 15px;border-radius:20px;font-size:.98rem;line-height:1.45;border:1px solid rgba(201,150,47,.22);white-space:pre-wrap;word-wrap:break-word}
+.b.t{align-self:flex-start;background:rgba(255,255,255,.04);font-family:var(--serif)}
+.b.p{align-self:flex-end;background:#14110A}
+.empty{color:var(--muted);text-align:center;margin:auto;font-size:.95rem;padding:20px}
+form{display:flex;gap:10px;padding:10px 18px calc(env(safe-area-inset-bottom) + 14px);border-top:1px solid var(--line);background:rgba(0,0,0,.6)}
+form input{flex:1}
+form .go{padding:14px 20px}
+.note{color:var(--muted);font-size:.72rem;text-align:center;padding:0 18px 6px}
+</style></head><body>
+
+<div id="gate"><div class="card">
+  <div class="ring" style="margin:0 auto 6px"><img src="../../img/tina-face-nomakeup.jpg" alt=""></div>
+  <h1 class="gt">Tina</h1>
+  <p>A private space for each of us. Sign in with your own email and the password you set yourself.</p>
+  <input id="g_em" type="email" placeholder="your email" autocomplete="email">
+  <input id="g_pw" type="password" placeholder="your password" autocomplete="current-password">
+  <div class="row"><button class="go" id="g_in">Sign in</button><button class="ghost" id="g_up">First time: set my password</button></div>
+  <div class="row"><button class="ghost" id="g_link" style="font-size:.85rem">Email me a sign-in link instead</button></div>
+  <div class="msg" id="g_m"></div>
+</div></div>
+
+<div id="closed"><div class="card">
+  <div class="ring" style="margin:0 auto 6px"><img src="../../img/tina-face-nomakeup.jpg" alt=""></div>
+  <h1 class="gt">Not open yet</h1>
+  <p>You're signed in, but your space isn't switched on yet. It opens when Woz says so.</p>
+  <button class="ghost" id="c_out">Sign out</button>
+</div></div>
+
+<div id="app">
+  <header>
+    <div class="ring"><img src="../../img/tina-face-nomakeup.jpg" alt="Tina"></div>
+    <div class="who"><b id="hi">Tina</b><span><i class="diamond"></i>Private. Only you can see this.</span></div>
+    <button class="ghost" id="out" style="padding:10px 16px;font-size:.85rem">Sign out</button>
+  </header>
+  <div id="log"></div>
+  <div class="note">Tina is an AI. Her thinking isn't connected yet, so for now she only listens and saves what you say.</div>
+  <form id="f"><input id="t" type="text" placeholder="Say something to Tina" autocomplete="off"><button class="go" type="submit">Send</button></form>
+</div>
+
+<script>
+var SB='https://wwqjoagdnclaylllzcut.supabase.co',AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3cWpvYWdkbmNsYXlsbGx6Y3V0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4MjY4NTYsImV4cCI6MjEwOTQwMjg1Nn0.4eTtjXjAwmDiWbArBjRwG0605IpNn1g15i7q3B6yeWw';
+var OK2={'nomadishere@gmail.com':1,'alexnwalton@gmail.com':1},SESS=null,ME=null,KEY='tinaS1';
+function $(i){return document.getElementById(i)}
+function gm(t,ok){var m=$('g_m');m.textContent=t;m.className='msg'+(ok?' ok':'')}
+function saveS(x){try{localStorage.setItem(KEY,JSON.stringify(x))}catch(_){}}
+function loadS(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){return null}}
+function call(path,body,method,tok,extra){var h={apikey:AK,'Content-Type':'application/json',Authorization:'Bearer '+(tok||AK)};if(extra)for(var k in extra)h[k]=extra[k];
+  return fetch(SB+path,{method:method||'POST',headers:h,body:body?JSON.stringify(body):undefined}).then(function(r){return r.text().then(function(t){var j={};try{j=t?JSON.parse(t):{}}catch(_){}return{ok:r.ok,status:r.status,j:j}})})}
+function show(id){['gate','closed'].forEach(function(x){$(x).style.display=x===id?'flex':'none'});$('app').style.display=id==='app'?'flex':'none'}
+function signedOut(msg){SESS=null;ME=null;saveS(null);show('gate');if(msg)gm(msg)}
+function gotSession(j){if(!j||!j.access_token)return false;
+  SESS={at:j.access_token,rt:j.refresh_token,em:((j.user&&j.user.email)||'').toLowerCase(),exp:Date.now()+((j.expires_in||3600)-60)*1000};saveS(SESS);enter();return true}
+function refreshS(){if(!SESS||Date.now()<SESS.exp)return Promise.resolve();
+  return call('/auth/v1/token?grant_type=refresh_token',{refresh_token:SESS.rt}).then(function(x){if(x.ok&&x.j.access_token){SESS.at=x.j.access_token;SESS.rt=x.j.refresh_token;SESS.exp=Date.now()+((x.j.expires_in||3600)-60)*1000;saveS(SESS)}else signedOut('Signed out. Please sign in again.')})}
+function enter(){ /* server decides whether this person is switched on */
+  call('/rest/v1/tina_web_allow?select=display_name,enabled',null,'GET',SESS.at).then(function(x){
+    if(!x.ok){signedOut('Could not check your space. Please sign in again.');return}
+    var me=x.j&&x.j[0];
+    if(!me||!me.enabled){show('closed');return}
+    ME=me;$('hi').textContent='Hi, '+me.display_name;show('app');loadLog()})}
+function bubble(who,words){var d=document.createElement('div');d.className='b '+(who==='tina'?'t':'p');d.textContent=words;$('log').appendChild(d);$('log').scrollTop=1e9}
+function loadLog(){$('log').innerHTML='';
+  call('/rest/v1/tina_web_turns?select=speaker,words&order=said_at.asc&limit=200',null,'GET',SESS.at).then(function(x){
+    if(!x.ok||!x.j.length){var e=document.createElement('div');e.className='empty';e.id='empty';e.textContent='This is your own space with Tina. Say anything.';$('log').appendChild(e);return}
+    x.j.forEach(function(r){bubble(r.speaker,r.words)})})}
+function saveTurn(speaker,words){return call('/rest/v1/tina_web_turns',{speaker:speaker,words:words},'POST',SESS.at,{Prefer:'return=minimal'})}
+$('f').onsubmit=function(ev){ev.preventDefault();var v=$('t').value.trim();if(!v)return;$('t').value='';var e=$('empty');if(e)e.remove();
+  refreshS().then(function(){bubble('person',v);return saveTurn('person',v)}).then(function(x){
+    if(!x||!x.ok){bubble('tina','I could not save that. Please try again.');return}
+    var reply='I heard you, and I saved it in your private space. My thinking is not connected yet, so I cannot answer back today.';
+    bubble('tina',reply);saveTurn('tina',reply)})};
+$('g_in').onclick=function(){var e=$('g_em').value.trim().toLowerCase(),p=$('g_pw').value;if(!e||!p){gm('Type your email and password.');return}gm('Signing in...',1);
+  call('/auth/v1/token?grant_type=password',{email:e,password:p}).then(function(x){if(x.ok&&gotSession(x.j))return;gm((x.j&&(x.j.msg||x.j.error_description))||'Could not sign in. First time? Tap "set my password".')})};
+$('g_up').onclick=function(){var e=$('g_em').value.trim().toLowerCase(),p=$('g_pw').value;if(!OK2[e]){gm('This space is private. Use your own email.');return}
+  if(!p||p.length<8){gm('Pick a password of 8 or more characters, then tap again.');return}gm('Creating...',1);
+  call('/auth/v1/signup',{email:e,password:p}).then(function(x){
+    if(x.ok&&x.j&&x.j.access_token){gotSession(x.j);return}
+    if(x.ok&&x.j&&x.j.identities&&x.j.identities.length===0){gm('This email already has an account. Tap Sign in.');return}
+    if(x.ok){gm('Check your email and tap the confirm link, then come back and tap Sign in.',1);return}
+    gm((x.j&&(x.j.msg||x.j.error_description))||'Could not create. If you already did, tap Sign in.')})};
+$('g_link').onclick=function(){var e=$('g_em').value.trim().toLowerCase();if(!OK2[e]){gm('This space is private. Use your own email.');return}gm('Sending...',1);
+  call('/auth/v1/otp',{email:e,create_user:false,email_redirect_to:location.origin+location.pathname}).then(function(x){
+    gm(x.ok?'Check your email and tap the link.':((x.j&&(x.j.msg||x.j.error_description))||'Could not send. Try your password.'),x.ok)})};
+function out(){signedOut('')}
+$('out').onclick=out;$('c_out').onclick=out;
+(function(){var h=location.hash||'';
+  if(h.indexOf('access_token=')>=0){var q={};h.slice(1).split('&').forEach(function(p){var a=p.split('=');q[a[0]]=decodeURIComponent(a[1]||'')});
+    try{history.replaceState(null,'',location.pathname)}catch(_){}
+    call('/auth/v1/user',null,'GET',q.access_token).then(function(u){gotSession({access_token:q.access_token,refresh_token:q.refresh_token,expires_in:+q.expires_in||3600,user:u.j})});return}
+  var S=loadS();if(S&&S.at){SESS=S;refreshS().then(function(){if(SESS)enter()})}else show('gate')})();
+</script></body></html>
