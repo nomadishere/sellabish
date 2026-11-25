@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra's web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra's web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Indra's web, Tina style v0.4 (all 5,466 ideas)</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
@@ -182,10 +182,8 @@ function startMic(){var box=ids('say');if(!SRC){box.classList.add('show');ids('s
   rec.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){micWant=false;micSet(false);box.classList.add('show');ids('sayin').placeholder='tap the keyboard mic or type a word + Enter';try{ids('sayin').focus()}catch(_){}}};
   rec.onend=function(){micSet(false);if(micWant){setTimeout(function(){try{rec.start()}catch(_){}},250)}};
   rec.start()}catch(err){box.classList.add('show');ids('sayin').placeholder='type a word + Enter'}}
-ids('b3').onclick=function(){if(listening||micWant){micWant=false;try{rec.stop()}catch(_){}micSet(false);return}startMic()};
-var _tried=0;function _auto(){if(listening||micWant)return;_tried++;startMic()}
-setTimeout(_auto,700);
-(function(){var _once=function(){if(listening)document.removeEventListener('pointerup',_once);else if(!micWant||_tried<3){_auto()}};document.addEventListener('pointerup',_once)})();
+ids('b3').textContent='Voice';
+ids('b3').onclick=function(){if(listening||micWant){micWant=false;try{rec.stop()}catch(_){}this.classList.remove('on');this.textContent='Voice';return}startMic();this.classList.add('on');this.textContent='Listening'};
 ids('sayin').addEventListener('keydown',function(e){if(e.key==='Enter'){goWord(this.value);this.blur()}});
 ids('b4').onclick=function(){var i=sel>=0?sel:Math.floor(Math.random()*Math.min(loaded,IMPN));if(sel!==i)flyTo(i,true);var c=ids('card');
  ids('ct').textContent='How heavy is '+TERM[i]+'?';ids('cp').textContent='Now '+wt(i)+' of 10. Weighed '+weighed+' so far. (This stays on this page only.)';var r=ids('crow');r.innerHTML='';
