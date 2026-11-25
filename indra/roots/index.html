@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v2.4</title><style>
+<title>Indra's roots web v2.5</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -83,8 +83,24 @@ canvas.hov{cursor:pointer}canvas.drag{cursor:grabbing}
 #turnv p{margin:0 0 10px;line-height:1.5;font-size:.95rem;white-space:pre-wrap}
 #turnv #tv_f img{width:100%;border-radius:10px;margin-top:8px}
 #turnv button{float:right;background:none;border:1px solid rgba(63,214,196,.7);color:#3FD6C4;border-radius:999px;padding:6px 14px;font-family:inherit}
+#fs{position:fixed;left:0;right:0;bottom:calc(92px + 30px);height:78px;z-index:5;display:none;gap:6px;padding:6px 10px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;background:linear-gradient(180deg,rgba(8,8,8,0),rgba(8,8,8,.7));border-top:1px solid rgba(63,214,196,.35)}
+#fs.show{display:flex}
+body.hasfs .card{bottom:212px!important}
+#fs .fsi{position:relative;flex:0 0 auto;height:64px;min-width:44px;border-radius:8px;overflow:hidden;border:1px solid rgba(63,214,196,.6);background:#0a0c10;cursor:pointer}
+#fs .fsi img,#fs .fsi video{height:64px;width:auto;max-width:120px;object-fit:cover;display:block}
+#fs .fsi video{position:absolute;left:0;top:0;height:64px;max-width:none;width:100%;object-fit:cover}
+#fs .fsi i{position:absolute;right:3px;bottom:2px;font-style:normal;font-size:10px;color:#fff;text-shadow:0 0 4px #000}
+#fs .fsi.au{width:44px;display:flex;align-items:center;justify-content:center;color:#3FD6C4;font-size:20px}
+#fsv{position:fixed;inset:0;z-index:31;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,5,8,.9);backdrop-filter:blur(6px)}
+#fsv.show{display:flex}
+#fsv_s{width:min(94vw,900px);height:72vh;display:flex;align-items:center;justify-content:center}
+#fsv_s img,#fsv_s video{max-width:100%;max-height:100%;border-radius:10px;border:1px solid rgba(232,198,106,.5);object-fit:contain;background:#000}
+#fsv_s iframe{width:100%;height:100%;border:0;border-radius:10px;background:#000}
+#fsv_bar{display:flex;align-items:center;gap:10px;margin-top:10px;width:min(94vw,900px);color:var(--t-ink);font-family:var(--t-serif);font-size:.9rem}
+#fsv_t{flex:1}
+#fsv button,#fsv a{background:none;border:1px solid rgba(63,214,196,.7);color:#3FD6C4;border-radius:999px;padding:6px 14px;font-family:inherit;text-decoration:none;font-size:.85rem}
 </style></head><body class="t-glow">
-<canvas id="c"></canvas><div id="turnv"><div class="box"><button id="tv_x">Close</button><small id="tv_k"></small><small id="tv_t"></small><div id="tv_b"></div><div id="tv_f"></div></div></div>
+<canvas id="c"></canvas><div id="fs"></div><div id="fsv"><div id="fsv_s"></div><div id="fsv_bar"><button id="fsv_p">‹</button><span id="fsv_t"></span><a id="fsv_o" target="_blank" rel="noopener" style="display:none">Open in Drive ↗</a><button id="fsv_n">›</button><button id="fsv_x">Close</button></div></div><div id="turnv"><div class="box"><button id="tv_x">Close</button><small id="tv_k"></small><small id="tv_t"></small><div id="tv_b"></div><div id="tv_f"></div></div></div>
 <div id="drift"></div>
 <div class="top"><div class="t-label"><span class="t-crystal"></span>&nbsp; Indra's roots web</div><div class="t-label" id="cnt"></div></div>
 <div class="hint" id="hint">drag to spin &middot; pinch to zoom for more ideas &middot; tap a word &middot; double-tap resets</div>
@@ -94,7 +110,7 @@ canvas.hov{cursor:pointer}canvas.drag{cursor:grabbing}
 <input id="g_em" type="email" placeholder="email" autocomplete="email"><input id="g_pw" type="password" placeholder="password" autocomplete="current-password">
 <div><button id="g_in">Sign in</button><button id="g_up">First time: create password</button></div><div class="gm" id="g_m"></div>
 <div style="margin-top:6px"><button id="g_skip" style="opacity:.6;font-size:.72rem">Look at the web without signing in</button></div></div></div>
-<div id="unl" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:132px;z-index:25;padding:7px 18px;border-radius:18px;border:1px solid rgba(63,214,196,.7);background:rgba(8,8,8,.7);color:#3FD6C4;font:.8rem Georgia,serif;letter-spacing:.06em">Unlock</div><div id="media"><span class="mx" id="mx">×</span><iframe id="mf" allow="autoplay;fullscreen" allowfullscreen></iframe><video id="mv" controls playsinline loop muted style="display:none"></video><img id="mi" alt="" style="display:none"><div class="mt"><span id="mtt"></span><span id="mbig" style="text-decoration:underline">bigger</span><a id="mopen" target="_blank" rel="noopener" style="margin-left:12px;padding:6px 12px;border:1px solid #3FD6C4;border-radius:14px;color:#3FD6C4;text-decoration:none;white-space:nowrap">Open in Drive ↗</a></div><div class="ml" id="ml"></div></div>
+<div id="unl" style="display:none;position:fixed;right:14px;top:48px;z-index:25;padding:7px 18px;border-radius:18px;border:1px solid rgba(63,214,196,.7);background:rgba(8,8,8,.7);color:#3FD6C4;font:.8rem Georgia,serif;letter-spacing:.06em">Unlock</div><div id="media"><span class="mx" id="mx">×</span><iframe id="mf" allow="autoplay;fullscreen" allowfullscreen></iframe><video id="mv" controls playsinline loop muted style="display:none"></video><img id="mi" alt="" style="display:none"><div class="mt"><span id="mtt"></span><span id="mbig" style="text-decoration:underline">bigger</span><a id="mopen" target="_blank" rel="noopener" style="margin-left:12px;padding:6px 12px;border:1px solid #3FD6C4;border-radius:14px;color:#3FD6C4;text-decoration:none;white-space:nowrap">Open in Drive ↗</a></div><div class="ml" id="ml"></div></div>
 <div class="trail" id="trail"></div>
 <div class="t-card card" id="card"><h3 class="t-gold" id="ct"></h3><p id="cp"></p><div class="row" id="crow"></div></div>
 <div class="t-pad"><button class="main" id="b1">Fly</button><button id="b2" class="on">Trail</button><button id="b3">Voice</button><button id="b4">Weigh</button><button id="b5" class="on">Words</button></div>
@@ -186,7 +202,7 @@ function showLocal(id){var tv=THUMB[id]||'';var isV=tv.slice(0,2)==='v:';var mv=
 /* media tiles: little, medium or big cards float around the node, size follows zoom */
 var TILEPOS=[],TIMG={};
 function tileImg(m,w){var id=m.small||m.medium||m.full;if(!id)return null;if(THUMB[id]){var o2=TIMG['L'+id];if(!o2){o2=TIMG['L'+id]={im:new Image(),ok:false,bad:false};o2.im.onload=function(){o2.ok=true};o2.im.src=THUMB[id].slice(2)}return o2}var key=id+'_'+w,o=TIMG[key];if(o===undefined){o=TIMG[key]={im:new Image(),ok:false,bad:false};o.im.onload=function(){o.ok=true};o.im.onerror=function(){o.bad=true};o.im.src='https://drive.google.com/thumbnail?id='+id+'&sz=w'+w}return o}
-function drawTiles(){TILEPOS=[];if(sel<0||!PV[sel]||cam.k<2.6||!mlist.length)return;var n=Math.min(mlist.length,40),sz=Math.max(36,Math.min(170,36+(cam.k-2.6)*6)),w=sz<64?120:sz<112?240:480,cx0=PX[sel],cy0=PY[sel];
+function drawTiles(){TILEPOS=[];return;if(sel<0||!PV[sel]||cam.k<2.6||!mlist.length)return;var n=Math.min(mlist.length,40),sz=Math.max(36,Math.min(170,36+(cam.k-2.6)*6)),w=sz<64?120:sz<112?240:480,cx0=PX[sel],cy0=PY[sel];
  for(var q=0;q<n;q++){var m=mlist[q],a=q*2.39996+T*.04,r=(sz*.95+30)*(1+Math.sqrt(q)*.62),x=cx0+Math.cos(a)*r,y=cy0+Math.sin(a)*r*.82;if(x<-sz||x>W+sz||y<-sz||y>H+sz)continue;
   var hw=sz/2,hh=sz*(m.k==='audio'?.5:.62)/1;g.save();g.globalAlpha=.92;g.fillStyle='rgba(10,12,16,.82)';g.strokeStyle=q===mcur?'#E8C66A':'rgba(63,214,196,.8)';g.lineWidth=q===mcur?2:1.2;g.beginPath();if(g.roundRect)g.roundRect(x-hw,y-hh/2*1.2,sz,hh*1.2,6);else g.rect(x-hw,y-hh/2*1.2,sz,hh*1.2);g.fill();g.stroke();g.clip();
   var o=m.k==='audio'?null:tileImg(m,w);if(o&&o.ok){g.drawImage(o.im,x-hw,y-hh/2*1.2,sz,hh*1.2)}else{g.fillStyle='#3FD6C4';g.font=Math.round(sz*.34)+'px Georgia,serif';g.textAlign='center';g.fillText(m.k==='audio'?'♪':m.k==='image'?'▣':'▶',x,y+sz*.08);if(sz>70){g.font='10px Georgia,serif';g.fillStyle='#e8e0d0';g.fillText((m.t||'').slice(0,18),x,y+hh*.55)}}
@@ -275,11 +291,11 @@ ids('g_skip').onclick=function(){ids('gate').style.display='none'};
  var S=loadS();if(S&&S.at){SESS=S;ids('gate').style.display='none';refreshS().then(function(){if(SESS)loadPrivate()})}})();
 /* video pop-up: when the web is on Alexandra, Sydney or Naomi, their small videos appear (private Drive, small 360p first) */
 var mcur=-1,mlist=[];
-function mediaFor(i){var box=ids('media');if(i<0||!TERM[i]){box.classList.remove('show');return}var t=TERM[i],key=/alexandra/i.test(t)?/alexandra|wife/:/sydney/i.test(t)?/sydney/:/naomi/i.test(t)?/naomi/:null;mlist=[];
+function mediaFor(i){var box=ids('media');box.classList.remove('show');if(i<0||!TERM[i]){ids('fs').classList.remove('show');return}var t=TERM[i],key=/alexandra/i.test(t)?/alexandra|wife/:/sydney/i.test(t)?/sydney/:/naomi/i.test(t)?/naomi/:null;mlist=[];
  if(key&&FAM[i]===5&&MEDIA.length)mlist=MEDIA.filter(function(m){return (m.who||[]).some(function(w){return key.test(w)})&&(m.small||m.medium)});
  (NM[t]||[]).forEach(function(x){if(!mlist.some(function(m){return m.small===x[2]||m.medium===x[2]||m.full===x[2]}))mlist.push({t:(x[0]||x[1]||'').replace(/^Wife moment: /,'').slice(0,60),small:x[2],k:x[1]})});
- if(!mlist.length){box.classList.remove('show');return}
- var ml=ids('ml');ml.innerHTML='';mlist.forEach(function(m,k){var sp=document.createElement('span');sp.textContent=((m.k==='audio'?'\u266a ':m.k==='image'?'\u25a3 ':'\u25b6 ')+(m.t||'media')).slice(0,36);sp.onclick=function(){playM(k)};ml.appendChild(sp)});box.classList.add('show');playM(0)}
+ if(!mlist.length){box.classList.remove('show');ids('fs').classList.remove('show');document.body.classList.remove('hasfs');return}
+ var ml=ids('ml');ml.innerHTML='';mlist.forEach(function(m,k){var sp=document.createElement('span');sp.textContent=((m.k==='audio'?'\u266a ':m.k==='image'?'\u25a3 ':'\u25b6 ')+(m.t||'media')).slice(0,36);sp.onclick=function(){playM(k)};ml.appendChild(sp)});fsBuild()}
 function playM(k){mcur=k;var m=mlist[k];var lid=m.small||m.medium||m.full;if(THUMB[lid]){showLocal(lid);ids('mtt').textContent=m.t||'';ids('mopen').style.display='none';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)});return}ids('mv').pause&&ids('mv').pause();ids('mv').style.display='none';ids('mi').style.display='none';ids('mf').style.display='block';ids('mopen').style.display='';ids('mf').src='https://drive.google.com/file/d/'+(m.small||m.medium)+'/preview';ids('mtt').textContent=m.t||'';ids('mopen').href='https://drive.google.com/file/d/'+(m.medium||m.small||m.full||'')+'/view';Array.prototype.forEach.call(ids('ml').children,function(c,j){c.classList.toggle('on',j===k)})}
 ids('mbig').onclick=function(){var m=mlist[mcur];if(m){ids('mf').src='https://drive.google.com/file/d/'+(m.medium||m.small)+'/preview'}};
 ids('mx').onclick=function(){ids('media').classList.remove('show');ids('mf').src='about:blank'};
@@ -322,6 +338,26 @@ function driftOne(){if(!showWords||live>=2||sel>=0||!G.length)return;var s=G[gi+
 function openTurn(i){var b=BEST[i];if(!b)return;var v=ids('turnv');ids('tv_k').textContent=b[1]+' · '+b[2];ids('tv_t').textContent=(b[3]||'chat')+(b[4]?' · turn '+b[4]:'');var body=ids('tv_b');body.textContent='';var p1=document.createElement('p');p1.className='tvs';p1.textContent=b[0];body.appendChild(p1);var p2=document.createElement('p');p2.textContent=b[5]||'';body.appendChild(p2);
  var fl=ids('tv_f');fl.innerHTML='';(b[6]||[]).forEach(function(fid){var im=document.createElement('img');im.src=THUMB[fid]?THUMB[fid].slice(2):'https://drive.google.com/thumbnail?id='+fid+'&sz=w480';fl.appendChild(im)});v.classList.add('show')}
 ids('tv_x').onclick=function(){ids('turnv').classList.remove('show')};
+
+/* v2.5: film strip across the bottom, one clean viewer */
+var FSV={},FSL=false;
+function fsBuild(){var fs=ids('fs');fs.innerHTML='';document.body.classList.remove('hasfs');if(!mlist.length||LOCK<0){fs.classList.remove('show');return}
+ mlist.slice(0,60).forEach(function(m,k){var id=m.small||m.medium||m.full,tv=THUMB[id]||'',isV=m.k==='video'||tv.slice(0,2)==='v:'||(!m.k&&m.small&&tv.slice(0,2)!=='i:');var d=document.createElement('div');d.className='fsi'+(m.k==='audio'?' au':'');
+  if(m.k==='audio'){d.textContent='\u266a';}else{var im=document.createElement('img');im.alt='';im.loading='lazy';im.src=tv?tv.slice(2):'https://drive.google.com/thumbnail?id='+id+'&sz=w240';d.appendChild(im);if(isV){var b=document.createElement('i');b.textContent='\u25b6';d.appendChild(b)}}
+  d.title=m.t||'';d.onclick=function(){openFS(k)};fs.appendChild(d)});fs.classList.add('show');document.body.classList.add('hasfs');fsAnimate()}
+function fsAnimate(){var fs=ids('fs'),n=0;Array.prototype.forEach.call(fs.children,function(d,k){var m=mlist[k],id=m&&(m.small||m.medium||m.full),tv=THUMB[id]||'';if(tv.slice(0,2)!=='v:'||n>=6)return;n++;if(d.querySelector('video'))return;
+  var go=function(u){if(!d.isConnected)return;var v=document.createElement('video');v.src=u;v.muted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.autoplay=true;d.insertBefore(v,d.firstChild);var pr=v.play();pr&&pr.catch&&pr.catch(function(){})};
+  if(LCACHE[id]){go(LCACHE[id]);return}
+  fetch('m/'+id+'.bin').then(function(r){return r.arrayBuffer()}).then(decBuf).then(function(b){var u=URL.createObjectURL(new Blob([b],{type:'video/mp4'}));LCACHE[id]=u;go(u)}).catch(function(){})})}
+var fsCur=-1;
+function openFS(k){var m=mlist[k];if(!m)return;fsCur=k;mcur=k;var id=m.small||m.medium||m.full,tv=THUMB[id]||'',isV=tv.slice(0,2)==='v:',st=ids('fsv_s');st.innerHTML='';ids('fsv_t').textContent=m.t||'';ids('fsv_o').style.display='none';
+ var show=function(u,vid){st.innerHTML='';var e=document.createElement(vid?'video':'img');e.src=u;if(vid){e.controls=true;e.loop=true;e.playsInline=true;e.setAttribute('playsinline','');e.autoplay=true}st.appendChild(e);if(vid){var pr=e.play();pr&&pr.catch&&pr.catch(function(){})}};
+ if(tv){show(tv.slice(2),false);if(LCACHE[id]){show(LCACHE[id],isV)}else fetch('m/'+id+'.bin').then(function(r){return r.arrayBuffer()}).then(decBuf).then(function(b){var u=URL.createObjectURL(new Blob([b],{type:isV?'video/mp4':'image/jpeg'}));LCACHE[id]=u;if(fsCur===k)show(u,isV)}).catch(function(){})}
+ else{var f=document.createElement('iframe');f.src='https://drive.google.com/file/d/'+(m.small||m.medium)+'/preview';f.allow='autoplay';st.appendChild(f);var o=ids('fsv_o');o.href='https://drive.google.com/file/d/'+(m.medium||m.small||m.full||'')+'/view';o.style.display=''}
+ ids('fsv').classList.add('show')}
+function closeFS(){var v=ids('fsv'),vd=v.querySelector('video');if(vd)vd.pause();ids('fsv_s').innerHTML='';v.classList.remove('show');fsCur=-1}
+ids('fsv_x').onclick=closeFS;ids('fsv_p').onclick=function(){openFS((fsCur+mlist.length-1)%mlist.length)};ids('fsv_n').onclick=function(){openFS((fsCur+1)%mlist.length)};
+playM=function(k){openFS(k)};tapTile=function(){return false};
 var driftTimer=null;function driftTick(){driftOne();clearTimeout(driftTimer);driftTimer=setTimeout(driftTick,3600+Math.random()*2600)}
 setTimeout(driftTick,1800);
 /* ---- streaming: the more you zoom, the more of the 5,466 appear (heaviest first); the rest decode quietly in the background ---- */
@@ -431,7 +467,7 @@ function frame(now){var dt=now-lastT;lastT=now;if(dt>0&&dt<200)fpsE+=(dt-fpsE)*.
   var xx=sx0+(tx-sx0)*pe,yy=sy0+(ty-sy0)*pe,al=age<.35?age/.35:(age<2.2?1:Math.max(0,1-(age-2.2)/1.2)),sc=1-.55*pe;
   g.save();g.globalAlpha=al;g.globalCompositeOperation='lighter';g.font=(22*sc|0)+'px Georgia,serif';g.textAlign='center';g.fillStyle='rgba(255,236,170,1)';g.shadowColor='rgba(255,214,120,1)';g.shadowBlur=18;g.fillText(l.w,xx,yy);g.fillText(l.w,xx,yy);g.restore();
   if(pe>.85&&l.i>=0&&PV[l.i]){g.save();g.globalAlpha=al*.6;g.strokeStyle='rgba(255,236,170,1)';g.lineWidth=1.2;g.beginPath();g.arc(tx,ty,PR[l.i]+4+(pe-.85)*90,0,7);g.stroke();g.restore()}}
- dreamDraw(near,nd);revealDraw();riverDraw();
+ dreamDraw(near,nd);revealDraw();riverDraw();if((LOCK>=0)!==FSL){FSL=LOCK>=0;fsBuild()}
  /* fly-through: stop for a moment close to a word and its meaning fades in (debounced, so it never jumps while you are still moving) */
  if(LOCK<0&&cam.k>2.6&&cam.k<9&&near>=0&&nd<64&&!touching&&Math.abs(spinV.x)+Math.abs(spinV.y)<.0008&&Math.abs(tgt.k-cam.k)<.03&&Date.now()-lastFly>1800&&!(SENTCARD&&Date.now()<SENTCARD.until)&&Date.now()>glowUntil-3500){
   if(near===nearCand){if(Date.now()-nearSince>500&&sel!==near){sel=near;setHot(near);showCard(near);drawChips()}}else{nearCand=near;nearSince=Date.now()}}else nearCand=-1;
