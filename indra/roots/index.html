@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v1.17</title><style>
+<title>Indra's roots web v1.18</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -157,7 +157,7 @@ cv.addEventListener('wheel',function(e){e.preventDefault();var dy=e.deltaY*(e.de
 document.addEventListener('contextmenu',function(e){e.preventDefault()});
 addEventListener('keydown',function(e){if(e.target&&e.target.tagName==='INPUT')return;var k=e.key;lastInteract=Date.now();
  if(k==='+'||k==='=')tgt.k=Math.min(400,tgt.k*1.25);else if(k==='-'||k==='_')tgt.k=Math.max(.7,tgt.k/1.25);else if(k==='ArrowLeft')cam.ay-=.12;else if(k==='ArrowRight')cam.ay+=.12;else if(k==='ArrowUp')cam.ax=Math.max(-1.4,cam.ax-.1);else if(k==='ArrowDown')cam.ax=Math.min(1.4,cam.ax+.1);else if(k==='Escape'||k==='0')home();else if(k==='/'){e.preventDefault();ids('b3').click()}});
-function unlock(){if(LOCK>=0){LOCK=-1;lastInteract=Date.now();spinV={x:0,y:0}}}
+function unlock(){if(LOCK>=0){home();lastInteract=Date.now()}}
 ids('unl').onclick=unlock;
 function home(){PANX=PANY=0;LOCK=-1;sel=-1;HOT.fill(0);tgt.k=1.55;tgt.fx=tgt.fy=tgt.fz=0;showCard(-1);spinV={x:0,y:0}}
 /* picking: the closest orb to the finger wins; fingers get a bigger target than a mouse */
@@ -185,9 +185,9 @@ function drawTiles(){TILEPOS=[];if(sel<0||!PV[sel]||cam.k<2.6||!mlist.length)ret
 function tapTile(x,y){for(var q=TILEPOS.length-1;q>=0;q--){var p=TILEPOS[q];if(p&&Math.abs(x-p[0])<p[2]&&Math.abs(y-p[1])<p[3]*1.2){ids('media').classList.add('show');playM(q);return true}}return false}
 function tapDust(x,y,type){if(sel<0||cam.k<=2.2)return false;var dl=DUST[TERM[sel]];if(!dl)return false;var best=-1,bd=1e9,lim=type==='mouse'?12:24;for(var k=0;k<DUSTN;k++){var p=DUSTPOS[k];if(!p)continue;var d=Math.hypot(x-p[0],y-p[1]);if(d<lim&&d<bd){bd=d;best=k}}
  if(best<0)return false;var it=dl[best];if(it[1]===8&&mlist&&mlist.length){var mi=-1;for(var q=0;q<mlist.length;q++){if((mlist[q].t||'').slice(0,24)===it[0].replace(/^Wife moment: /,'').slice(0,24)){mi=q;break}}if(mi>=0){ids('media').classList.add('show');playM(mi);return true}}SENTCARD={node:sel,txt:it[0],until:Date.now()+20000,title:DK[it[1]%DK.length]};showCard(sel);return true}
-function tap(x,y,type){var now=Date.now();if(tapTile(x,y)||tapDust(x,y,type)){lastTap=0;return}var hit=pick(x,y,type==='mouse'?10:22);
+function tap(x,y,type){var now=Date.now();var hit=pick(x,y,type==='mouse'?10:22);if(hit>=0&&hit===sel&&LOCK===sel){unlock();lastTap=0;return}if(tapTile(x,y)||tapDust(x,y,type)){lastTap=0;return}
  if(hit<0&&now-lastTap<380&&Math.hypot(x-lastTapX,y-lastTapY)<40){home();lastTap=0;return}
- lastTap=now;lastTapX=x;lastTapY=y;if(hit>=0&&hit===sel&&LOCK===sel){LOCK=-1;lastInteract=Date.now();spinV={x:0,y:0};return}if(hit>=0)flyTo(hit,true,true);else if(LOCK<0){sel=-1;HOT.fill(0);showCard(-1)}}
+ lastTap=now;lastTapX=x;lastTapY=y;if(hit>=0)flyTo(hit,true,true);else if(LOCK<0){sel=-1;HOT.fill(0);showCard(-1)}}
 /* swoosh: filtered noise sweep, pitch rises with distance flown */
 var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
 ['pointerdown','keydown'].forEach(function(ev){addEventListener(ev,ac,{once:true,passive:true})});
