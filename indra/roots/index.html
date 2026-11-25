@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v1.9</title><style>
+<title>Indra's roots web v1.10</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -95,7 +95,7 @@ canvas.hov{cursor:pointer}canvas.drag{cursor:grabbing}
 <script type="application/json" id="d2">[]</script>
 <script type="application/json" id="d3">[]</script>
 <script type="application/json" id="dust">{}</script>
-<script type="application/json" id="gest">[["Everything is one.","Woz","statement"]]</script>
+<script type="application/json" id="gest">[]</script>
 <script>
 var META=JSON.parse(document.getElementById('meta').textContent),FAMS=META.fams,TOTAL=META.total,CH=META.chunks;
 var X=new Float32Array(TOTAL),Y=new Float32Array(TOTAL),Z=new Float32Array(TOTAL),SC=new Float32Array(TOTAL),
@@ -229,6 +229,7 @@ function authCall(path,body,method,tok){return fetch(SB+path,{method:method||'PO
 function gotSession(j){if(!j||!j.access_token)return false;SESS={at:j.access_token,rt:j.refresh_token,em:(j.user&&j.user.email)||'',exp:Date.now()+((j.expires_in||3600)-60)*1000};saveS(SESS);ids('gate').style.display='none';loadPrivate();return true}
 function loadPrivate(){fetch(SB+'/rest/v1/private_web_payload?select=key,payload',{headers:{apikey:AK,Authorization:'Bearer '+SESS.at}}).then(function(r){return r.ok?r.json():Promise.reject(r.status)}).then(function(rows){
   rows.forEach(function(r){if(r.key==='dust')DUST=r.payload||{};if(r.key==='media')MEDIA=r.payload||[]});
+  G=[];Object.keys(DUST).forEach(function(t){DUST[t].forEach(function(it){if((it[1]===3||it[1]===4||it[1]===5||it[1]===7)&&it[0].length>=18&&it[0].length<=110&&G.length<400&&!/^\W/.test(it[0])&&/[.!?\u2026"')]$/.test(it[0]))G.push([it[0],DK[it[1]],''])})});for(var q=G.length-1;q>0;q--){var r2=Math.floor(Math.random()*(q+1)),tmp=G[q];G[q]=G[r2];G[r2]=tmp}
   SENT=[];Object.keys(DUST).forEach(function(t){DUST[t].forEach(function(it){if(it[1]>=1&&it[1]<=5&&it[0].length>25)SENT.push([it[0].toLowerCase(),t,it[0],it[1]])})});
   if(sel>=0)showCard(sel);mediaFor(sel)}).catch(function(){SESS=null;saveS(null);ids('gate').style.display='flex';gm('Signed out. Please sign in again.')})}
 function refreshS(){if(!SESS||Date.now()<SESS.exp)return Promise.resolve();return authCall('/auth/v1/token?grant_type=refresh_token',{refresh_token:SESS.rt}).then(function(x){if(x.ok)gotSession(x.j);else{SESS=null;saveS(null);ids('gate').style.display='flex'}})}
@@ -274,7 +275,7 @@ ids('b5').onclick=function(){showWords=!showWords;this.classList.toggle('on',sho
 /* ---- drifting Gestalt sentences: from the distance, hold long enough to read, fade back, pop elsewhere ---- */
 var G=JSON.parse(ids('gest').textContent),gi=0,live=0,slots=[0,0];window.__drift=[];
 function clearDrift(){var d=ids('drift');Array.prototype.slice.call(d.children).forEach(function(c){c.remove()});live=0;slots=[0,0]}
-function driftOne(){if(!showWords||live>=2)return;var s=G[gi++%G.length],el=document.createElement('div');el.className='drift';
+function driftOne(){if(!showWords||live>=2||sel>=0||!G.length)return;var s=G[gi++%G.length],el=document.createElement('div');el.className='drift';
  el.appendChild(document.createTextNode(s[0]));if(s[1]){var sm=document.createElement('small');sm.textContent=s[1]+(s[2]?' · '+s[2]:'');el.appendChild(sm)}
  var w=Math.min(300,innerWidth*.78),x=8+Math.random()*Math.max(1,innerWidth-w-16),si=slots[0]?1:0,y=innerHeight*(si?.36:.15)+Math.random()*18;el.style.left=x+'px';el.style.width=w+'px';el.style.top=y+'px';ids('drift').appendChild(el);live++;slots[si]=1;chime();
  var hold=Math.max(3800,Math.min(8000,s[0].length*85)),t0=performance.now(),rc={s:s[0].slice(0,30),len:s[0].length,hold:hold};
