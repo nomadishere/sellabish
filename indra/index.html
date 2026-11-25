@@ -173,12 +173,20 @@ function nextFly(){var from=sel,cand=[];loadUpTo(Math.min(TOTAL-1,1999));
  var pick2=cand[Math.floor(Math.random()*Math.min(5,cand.length))];flyTo(pick2,true)}
 ids('b1').onclick=nextFly;
 ids('b2').onclick=function(){showTrail=!showTrail;this.classList.toggle('on',showTrail);drawChips()};
+var STOPW={the:1,and:1,but:1,for:1,you:1,are:1,was:1,with:1,that:1,this:1,then:1,now:1,go:1,to:1,a:1,an:1,of:1,in:1,on:1,it:1,is:1,me:1,my2:1,show:1,take:1,fly:1,say:1,um:1,uh:1,like:1,okay:1,next:1};
+var doneW={},flyQ=[],flyBusy=false;
+function pumpQ(){if(flyBusy)return;var w=flyQ.shift();if(w===undefined)return;flyBusy=true;var i=findWord(w);if(i>=0){flyTo(i,true)}else{ids('ct').textContent='No word like "'+w+'"';ids('cp').textContent='Try another word.';ids('crow').innerHTML='';ids('card').classList.add('show')}setTimeout(function(){flyBusy=false;pumpQ()},i>=0?1800:600)}
+function procWords(k,text,fin){var ws=text.toLowerCase().replace(/[^a-z0-9' ]+/g,' ').trim().split(/\s+/).filter(Boolean);var from=doneW[k]||0,upto=fin?ws.length:ws.length-1;
+ for(var j=from;j<upto;j++){var w=ws[j];if(w.length<3||STOPW[w])continue;
+  var two=(j>0&&ws[j-1]&&!STOPW[ws[j-1]])?ws[j-1]+' '+w:null;
+  var ti=two?findWord(two):-1;if(two&&ti>=0&&TERM[ti].toLowerCase().indexOf(ws[j-1])>=0&&TERM[ti].toLowerCase().indexOf(w)>=0){if(flyQ.length&&flyQ[flyQ.length-1]===ws[j-1])flyQ.pop();flyQ.push(two)}else flyQ.push(w)}
+ doneW[k]=Math.max(from,upto);if(fin){delete doneW[k]}pumpQ()}
 var rec=null,listening=false,micWant=false,SRC=window.SpeechRecognition||window.webkitSpeechRecognition;
 function micSet(on){listening=on;ids('b3').classList.toggle('on',on)}
 function startMic(){var box=ids('say');if(!SRC){box.classList.add('show');ids('sayin').placeholder='no mic here, type a word + Enter';return}
- try{rec=new SRC();rec.lang='en-US';rec.continuous=true;rec.interimResults=false;rec.maxAlternatives=1;micWant=true;
+ try{rec=new SRC();rec.lang='en-US';rec.continuous=true;rec.interimResults=true;rec.maxAlternatives=1;micWant=true;
   rec.onstart=function(){micSet(true);box.classList.remove('show');try{localStorage.setItem('micOk','1')}catch(_){}};
-  rec.onresult=function(e){for(var k=e.resultIndex;k<e.results.length;k++){if(e.results[k].isFinal){var q=e.results[k][0].transcript;ids('sayin').value=q;goWord(q)}}};
+  rec.onresult=function(e){for(var k=e.resultIndex;k<e.results.length;k++){procWords(k,e.results[k][0].transcript,e.results[k].isFinal)}};
   rec.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){micWant=false;micSet(false);box.classList.add('show');ids('sayin').placeholder='tap the keyboard mic or type a word + Enter';try{ids('sayin').focus()}catch(_){}}};
   rec.onend=function(){micSet(false);if(micWant){setTimeout(function(){try{rec.start()}catch(_){}},250)}};
   rec.start()}catch(err){box.classList.add('show');ids('sayin').placeholder='type a word + Enter'}}
