@@ -90,9 +90,15 @@ var c=document.getElementById('c'),b=document.getElementById('b');
 c.addEventListener('change',function(){b.disabled=!c.checked});
 document.getElementById('f').addEventListener('submit',function(ev){
  ev.preventDefault();
- var ENDPOINT=''; // set to the sign-up edge function URL (Waz)
- var d={name:n.value,phone:p.value,email:e.value,consent:true,consent_text_version:'v1-2026-11-24',at:new Date().toISOString()};
- if(ENDPOINT){fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(function(){})}
- document.getElementById('f').style.display='none';document.getElementById('done').style.display='block';
+ var ENDPOINT='https://wwqjoagdnclaylllzcut.supabase.co/functions/v1/tina-optin';
+ var d={name:n.value,phone:p.value,email:e.value,consent:true,consent_text_version:'v1-2026-11-24'};
+ b.disabled=true;
+ fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
+  .then(function(r){return r.json()})
+  .then(function(j){
+   if(j&&j.ok){document.getElementById('f').style.display='none';document.getElementById('done').style.display='block';}
+   else{b.disabled=false;alert((j&&j.error)||'Could not save. Please try again.');}
+  })
+  .catch(function(){b.disabled=false;alert('Could not save. Please check your connection and try again.');});
 });
 </script></body></html>
