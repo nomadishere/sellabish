@@ -183,7 +183,9 @@ function startMic(){var box=ids('say');if(!SRC){box.classList.add('show');ids('s
   rec.onend=function(){micSet(false);if(micWant){setTimeout(function(){try{rec.start()}catch(_){}},250)}};
   rec.start()}catch(err){box.classList.add('show');ids('sayin').placeholder='type a word + Enter'}}
 ids('b3').onclick=function(){if(listening||micWant){micWant=false;try{rec.stop()}catch(_){}micSet(false);return}startMic()};
-try{if(localStorage.getItem('micOk')==='1'){var _once=function(){document.removeEventListener('pointerup',_once);if(!listening&&!micWant)startMic()};document.addEventListener('pointerup',_once)}}catch(_){}
+var _tried=0;function _auto(){if(listening||micWant)return;_tried++;startMic()}
+setTimeout(_auto,700);
+(function(){var _once=function(){if(listening)document.removeEventListener('pointerup',_once);else if(!micWant||_tried<3){_auto()}};document.addEventListener('pointerup',_once)})();
 ids('sayin').addEventListener('keydown',function(e){if(e.key==='Enter'){goWord(this.value);this.blur()}});
 ids('b4').onclick=function(){var i=sel>=0?sel:Math.floor(Math.random()*Math.min(loaded,IMPN));if(sel!==i)flyTo(i,true);var c=ids('card');
  ids('ct').textContent='How heavy is '+TERM[i]+'?';ids('cp').textContent='Now '+wt(i)+' of 10. Weighed '+weighed+' so far. (This stays on this page only.)';var r=ids('crow');r.innerHTML='';
