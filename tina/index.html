@@ -26,6 +26,7 @@ h1{font-size:clamp(2.6rem,7vw,4.6rem);line-height:1.02;margin:.1em 0 .25em;lette
 .scr{position:absolute;inset:0;padding:54px 18px 22px;display:flex;flex-direction:column;align-items:center;gap:16px}
 .ring{width:128px;height:128px;border-radius:50%;background:conic-gradient(from 210deg,#6B4E16,#FFF1BF,#C9973A,#6B4E16,#F3D58A,#8A6520,#6B4E16);display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(233,196,106,.35);animation:glow 4s ease-in-out infinite}
 .ring i{width:118px;height:118px;border-radius:50%;background:#040404;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.7rem}
+.ring i img{width:118px;height:118px;border-radius:50%;object-fit:cover;object-position:50% 26%;display:block}
 @keyframes glow{50%{box-shadow:0 0 80px rgba(233,196,106,.55)}}
 .bub{align-self:stretch;border:1px solid rgba(201,150,47,.22);background:#14110A;border-radius:18px;padding:10px 13px;font-size:.78rem;color:#d8cfbd}
 .bub.t{font-family:var(--serif);background:rgba(255,255,255,.04);animation:rise .9s both}
@@ -60,7 +61,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 50px;color:var(--muted);f
   <a class="pill go" href="#sign">Sign up for her texts</a>
  </div>
  <div class="stage"><div class="phone"><div class="notch"></div><div class="scr">
-   <div class="ring"><i class="gt">Tina</i></div>
+   <div class="ring"><i><img src="../img/tina-face.jpg" alt="Tina, an AI character (AI-generated image)" width="118" height="118"></i></div>
    <div class="bub t">Hey, you. What's on your mind?</div>
    <div class="bub u">Remind me to call Mom Sunday.</div>
    <div class="bub t t2">Done. I'll nudge you at 4.</div>
