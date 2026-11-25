@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Indra roots web"><meta name="theme-color" content="#000000"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Indra's roots web v2.6</title><style>
+<title>Indra's roots web v2.7</title><style>
 /* TINA STYLE v2 (shared). One file for Tina, Alex's page, Juicy and the idea web.
    v1 = Izzy-as-Michelle's Tina page (locked Nov 24 2026). v2 adds the app pieces: ring states, bubbles, settings, game pad, crystal.
    Rule: change a token here once and every page changes. Never copy these values into a page. */
@@ -497,10 +497,11 @@ function moodDraw(){cloudDraw();var tc=sel>=0?TYC[FAM[sel]]:[0,0,0],ta=sel>=0?(L
 /* v2.2: time river, film strip, dream mode, faces */
 var RIV=false,RIVH=24,RIVP=[],DREAM={i:-1,t0:0,next:0},FACEC={};
 var FUSED={};
-function firstImg(i){var t=TERM[i];if(FACEC[i]!==undefined)return FACEC[i];var key=/alexandra/i.test(t)?/alexandra|wife/:/sydney/i.test(t)?/sydney/:/naomi/i.test(t)?/naomi/:null,r=null,idOf=function(m){return m.small||m.medium||m.full};
- if(key&&FAM[i]===5&&MEDIA.length){var c=MEDIA.filter(function(m){return (m.who||[]).some(function(w){return key.test(w)})&&(m.small||m.medium)});
-  var solo=c.filter(function(m){return (m.who||[]).length<2&&!FUSED[idOf(m)]}),free=c.filter(function(m){return !FUSED[idOf(m)]});r=solo[0]||free[0]||null}
- if(!r){var a=NM[t];if(a)for(var q=0;q<a.length;q++){var x=a[q];if(x[2]&&!FUSED[x[2]]&&x[1]!=='audio'){r={t:(x[0]||'').slice(0,40),small:x[2],k:x[1]};break}}}
+function firstImg(i){var t=TERM[i];if(FACEC[i]!==undefined)return FACEC[i];var nm=/alexandra/i.test(t)?'a':/sydney/i.test(t)?'s':/naomi/i.test(t)?'n':null,r=null,idOf=function(m){return m.small||m.medium||m.full},
+ POS={a:/wife|alexandra/i,s:/sydney|pookie|three people/i,n:/naomi/i},NEG={a:/naomi/i,s:/naomi|wife/i,n:/wife|alexandra/i};
+ if(nm&&FAM[i]===5){var pool=MEDIA.filter(function(m){return m.small||m.medium}).concat((NM[t]||[]).filter(function(x){return x[2]&&x[1]!=='audio'}).map(function(x){return {t:(x[0]||'').slice(0,60),small:x[2],k:x[1]}}));
+  for(var q=0;q<pool.length;q++){var m=pool[q],tt=m.t||'';if(m.k==='audio'||FUSED[idOf(m)])continue;if(POS[nm].test(tt)&&!NEG[nm].test(tt)){r=m;break}}}
+ else if(!nm){var a=NM[t];if(a)for(var q2=0;q2<a.length;q2++){var x=a[q2];if(x[2]&&!FUSED[x[2]]&&x[1]!=='audio'){r={t:(x[0]||'').slice(0,40),small:x[2],k:x[1]};break}}}
  if(r){FUSED[idOf(r)]=1;FACEC[i]=r}return r}
 function personKey(i){return FAM[i]===5&&/alexandra|sydney|naomi/i.test(TERM[i])}
 function riverDraw(){var th=RIV?96:RIVH;RIVH+=((RIV?96:24)-RIVH)*.18;th=RIVH;var y0=H-92-th;
