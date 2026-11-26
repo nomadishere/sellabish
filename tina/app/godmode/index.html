@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v1.0</title>
+<title>God mode v1.1</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -271,4 +271,7 @@ var M=window.GMODES||{};
 M.whisper=function(){whisper(true)};M.loud=function(){whisper(false)};M.rewind=rewind;M.miracles=miracles;M.miracle=miracles;M.wave=function(){wave(true)};M.contacts=function(){wave(true);film("contacts")};M.images=function(){wave(true);film("images")};M.videos=function(){wave(true);film("videos")};M.texts=function(){wave(true);film("texts")};
 M.library=function(){shelves("library")};M.shelf=M.library;M.book=M.library;M.brain=function(){shelves("brain")};
 })();
-</script></body></html>
+</script><script>(function(){var ov=document.getElementById("ov"),f=document.getElementById("web"),last=null;function send(on){if(on===last)return;last=on;try{f.contentWindow.postMessage({godmode:"pause",on:on},"*")}catch(e){}}
+function chk(){send(!!(ov&&ov.classList.contains("show")))}
+if(ov)new MutationObserver(chk).observe(ov,{attributes:true,attributeFilter:["class"]});f.addEventListener("load",function(){last=null;chk()})})()</script>
+</body></html>
