@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v0.6</title>
+<title>God mode v0.7</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -41,15 +41,15 @@ body.in #web{display:block}
 body.in #wrap{pointer-events:none}
 body.in .hdr,body.in form#send,body.in .err,body.in .m,body.in #mv{pointer-events:auto}
 body.in .hdr{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:0 0 18px 18px;padding-left:10px;padding-right:10px}
-body.in .m{background:rgba(8,8,8,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+body.in .m{background:rgba(8,8,8,.28);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 body.in form#send{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:18px 18px 0 0;padding-left:10px;padding-right:10px;border-top:1px solid var(--line)}
-body.in form#send input{background:rgba(11,11,11,.75)}
+body.in form#send input{background:rgba(11,11,11,.4)}
 #tg{display:none;position:fixed;top:12px;right:12px;z-index:7;border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:999px;font-size:13px;padding:9px 16px;cursor:pointer;white-space:nowrap}
 body.in #tg{display:inline-block}
 body.chat #tg{display:none}
 #mv{border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.6);border-radius:999px;font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap}
 body.in:not(.chat) #chat{display:none!important}
-body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom:12px;width:min(460px,calc(100vw - 24px));height:auto!important;z-index:6;background:rgba(0,0,0,.38);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:0 14px;overflow:hidden}
+body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom:12px;width:min(460px,calc(100vw - 24px));height:auto!important;z-index:6;background:rgba(0,0,0,.12);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:0 14px;overflow:hidden}
 body.in.chat .hdr{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 body.in.chat form#send{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 @media(max-width:600px){body.in.chat #chat{left:8px;right:8px;top:8px;bottom:8px;width:auto}}
