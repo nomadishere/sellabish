@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v1.2</title>
+<title>God mode v1.3 tech</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -118,6 +118,24 @@ body.day #bar button.on{background:linear-gradient(180deg,#d9fff9,#8fece0 50%,#5
 body.day #ppl,body.day #ov{background:rgba(255,253,249,.94);color:#2b251c;border-color:rgba(150,130,100,.35)}
 body.day #ppl button,body.day #ppl .h{color:#2b251c}
 body.day #toast,body.day #brief{background:rgba(255,253,249,.95);color:#2b251c}
+
+/* v1.3 TECH: HUD chamfered cells, mono labels, neon hairlines, status ticks */
+#bar{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;border-radius:0;clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);background:linear-gradient(180deg,rgba(6,14,16,.86),rgba(2,6,8,.9));border:0;box-shadow:inset 0 0 0 1px rgba(64,224,208,.45),inset 0 0 24px rgba(64,224,208,.12);padding:6px 8px;gap:3px}
+#bar:before{content:"";position:absolute;left:12px;right:12px;top:0;height:1px;background:linear-gradient(90deg,transparent,#40E0D0,transparent);opacity:.9}
+#bar button{border-radius:0;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);font:600 11px ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:#9fe9e0;background:linear-gradient(180deg,rgba(64,224,208,.14),rgba(64,224,208,.02) 55%,rgba(0,0,0,.35));border:0;box-shadow:inset 0 0 0 1px rgba(64,224,208,.28),inset 0 1px 0 rgba(180,255,248,.35);text-shadow:0 0 8px rgba(64,224,208,.6);padding:9px 10px}
+#bar button:hover{filter:none;transform:none;color:#fff;box-shadow:inset 0 0 0 1px #40E0D0,0 0 14px rgba(64,224,208,.6),inset 0 0 12px rgba(64,224,208,.3)}
+#bar button:active{transform:scale(.96);box-shadow:inset 0 0 0 1px #40E0D0,inset 0 0 16px rgba(64,224,208,.6)}
+#bar button.on{color:#021412;background:linear-gradient(180deg,#9ffcf1,#40E0D0 55%,#1fb3a5);text-shadow:none;box-shadow:inset 0 0 0 1px #c9fff8,0 0 18px rgba(64,224,208,.8)}
+#bar button.on:after{content:"";position:absolute;left:8px;right:8px;bottom:2px;height:2px;background:#021412;opacity:.6}
+#bar button#bsend,#bar button#bsend:hover{color:#2a1c00;background:linear-gradient(180deg,#fff3c4,#e8c872 55%,#b8892f);box-shadow:inset 0 0 0 1px #fff0b8,0 0 18px rgba(232,200,114,.55);text-shadow:none}
+body.day #bar{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(232,244,243,.92));box-shadow:inset 0 0 0 1px rgba(0,150,138,.55),0 10px 26px rgba(0,100,95,.22)}
+body.day #bar:before{background:linear-gradient(90deg,transparent,#00a79a,transparent)}
+body.day #bar button{color:#075a52;text-shadow:none;background:linear-gradient(180deg,#fff,#e4f6f4 55%,#d3ece9);box-shadow:inset 0 0 0 1px rgba(0,150,138,.4),inset 0 1px 0 #fff}
+body.day #bar button:hover{color:#00332e;box-shadow:inset 0 0 0 1px #00a79a,0 0 12px rgba(0,167,154,.4)}
+body.day #bar button.on{color:#00332e;background:linear-gradient(180deg,#b9fff7,#52e6d6 55%,#27c2b3);box-shadow:inset 0 0 0 1px #fff,0 0 14px rgba(0,190,175,.55)}
+body.day #bar button#bsend{color:#3a2a00}
+#ppl,#ov{border-radius:0;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);border:0;box-shadow:inset 0 0 0 1px rgba(64,224,208,.4)}
+#ov button#ovx{border-radius:0;font:600 11px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase}
 </style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bday" type="button">Day</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
 <div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat" data-who="Izzy">Izzy</button><button data-k="chat" data-who="Waz">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="brief"></div><div id="strip"><div id="sel"><button data-s="contacts" class="on">Contacts</button><button data-s="images">Images</button><button data-s="videos">Videos</button><button data-s="texts">Texts</button></div><div id="film"></div></div><div id="ov"><div class="ovh"><b id="ovt"></b><button id="ovx" type="button">Close</button></div><div id="ovb"></div></div><div id="wrap">
 
