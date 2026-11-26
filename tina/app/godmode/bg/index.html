@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode (web background v0.1)</title>
+<title>God mode (web background v0.2)</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -68,7 +68,7 @@ body.web #wrap #mv{pointer-events:auto!important}
   <div class="hdr">
     <img class="av" src="https://sellabish.com/img/tina-face-nomakeup.jpg" alt="" onerror="this.style.visibility='hidden'">
     <div style="flex:1"><h2 class="gold">God mode</h2><div class="sub" id="conv">Private. Only members can see this.</div></div>
-    <button id="mv" type="button">Move the web</button><button class="link" id="out">Sign out</button>
+    <button id="mv" type="button">Load the web</button><button class="link" id="out">Sign out</button>
   </div>
   <div id="msgs"></div>
   <div class="err" id="err2"></div>
@@ -96,7 +96,7 @@ function enter(){
     return fetch(U+"/rest/v1/members?user_id=eq."+u.id+"&select=member&limit=1",{headers:hdr()})
   }).then(function(r){return r.json()}).then(function(a){
     if(!a||!a.length)throw new Error("This login is not a member of God mode.");
-    me=a[0].member;document.body.classList.add("in");var wf=$("web");if(!wf.getAttribute("src"))wf.setAttribute("src","/indra/roots/");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
+    me=a[0].member;document.body.classList.add("in");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
   }).catch(function(e){clear();S=null;document.body.classList.remove("in","web");$("web").removeAttribute("src");$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
 }
 function poll(){
@@ -116,7 +116,7 @@ $("pw").addEventListener("keydown",function(e){if(e.key==="Enter")$("go").onclic
 $("send").onsubmit=function(e){e.preventDefault();var t=$("tx").value.trim();if(!t)return;
   fetch(U+"/rest/v1/messages",{method:"POST",headers:Object.assign(hdr(),{Prefer:"return=minimal"}),body:JSON.stringify({conversation_id:CONV,speaker_name:me,words:t})})
   .then(function(r){if(!r.ok)return r.text().then(function(x){throw new Error(x)});$("tx").value="";poll()}).catch(function(e){$("err2").textContent="Not sent: "+e.message})};
-$("mv").onclick=function(){var on=document.body.classList.toggle("web");$("mv").textContent=on?"Back to chat":"Move the web"};
+$("mv").onclick=function(){var wf=$("web");if(!wf.getAttribute("src")){wf.setAttribute("src","/indra/roots/");document.body.classList.add("web");$("mv").textContent="Back to chat";return}var on=document.body.classList.toggle("web");$("mv").textContent=on?"Back to chat":"Move the web"};
 $("out").onclick=function(){clear();S=null;me=null;clearInterval(timer);location.reload()};
 (function(){var s=load();if(s&&s.r){S={access_token:s.a,refresh_token:s.r,expires_at:s.e};
   if(s.e&&s.e*1000<Date.now()+60000){refresh().then(enter).catch(function(){clear();S=null})}else enter()}})();
