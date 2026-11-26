@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode</title>
+<title>God mode v0.5</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -35,7 +35,25 @@ form#send input{margin:0;flex:1}
 form#send .btn{width:auto;padding:0 22px}
 .err{color:#ff8a8a;font-size:13px;min-height:18px;margin-top:8px}
 .hide{display:none!important}
-</style></head><body><div id="wrap">
+#web{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:0;background:#000;display:none}
+body.in #web{display:block}
+#wrap{position:relative;z-index:2}
+body.in #wrap{pointer-events:none}
+body.in .hdr,body.in form#send,body.in .err,body.in .m,body.in #mv{pointer-events:auto}
+body.in .hdr{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:0 0 18px 18px;padding-left:10px;padding-right:10px}
+body.in .m{background:rgba(8,8,8,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+body.in form#send{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:18px 18px 0 0;padding-left:10px;padding-right:10px;border-top:1px solid var(--line)}
+body.in form#send input{background:rgba(11,11,11,.75)}
+#tg{display:none;position:fixed;top:12px;right:12px;z-index:7;border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:999px;font-size:13px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+body.in #tg{display:inline-block}
+body.chat #tg{display:none}
+#mv{border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.6);border-radius:999px;font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap}
+body.in:not(.chat) #chat{display:none!important}
+body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom:12px;width:min(460px,calc(100vw - 24px));height:auto!important;z-index:6;background:rgba(0,0,0,.38);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:0 14px;overflow:hidden}
+body.in.chat .hdr{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+body.in.chat form#send{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+@media(max-width:600px){body.in.chat #chat{left:8px;right:8px;top:8px;bottom:8px;width:auto}}
+</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><button id="tg" type="button">God mode chat</button><div id="wrap">
 
 <div id="login">
   <h1 class="gold">God mode</h1>
@@ -50,7 +68,7 @@ form#send .btn{width:auto;padding:0 22px}
   <div class="hdr">
     <img class="av" src="https://sellabish.com/img/tina-face-nomakeup.jpg" alt="" onerror="this.style.visibility='hidden'">
     <div style="flex:1"><h2 class="gold">God mode</h2><div class="sub" id="conv">Private. Only members can see this.</div></div>
-    <button class="link" id="out">Sign out</button>
+    <button id="mv" type="button">Close</button><button class="link" id="out">Sign out</button>
   </div>
   <div id="msgs"></div>
   <div class="err" id="err2"></div>
@@ -78,8 +96,8 @@ function enter(){
     return fetch(U+"/rest/v1/members?user_id=eq."+u.id+"&select=member&limit=1",{headers:hdr()})
   }).then(function(r){return r.json()}).then(function(a){
     if(!a||!a.length)throw new Error("This login is not a member of God mode.");
-    me=a[0].member;$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
-  }).catch(function(e){clear();S=null;$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
+    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)&&!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
+  }).catch(function(e){clear();S=null;document.body.classList.remove("in","web");$("web").removeAttribute("src");$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
 }
 function poll(){
   fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&order=created_at.asc&limit=500&select=id,speaker_name,words,created_at",{headers:hdr()})
@@ -98,6 +116,8 @@ $("pw").addEventListener("keydown",function(e){if(e.key==="Enter")$("go").onclic
 $("send").onsubmit=function(e){e.preventDefault();var t=$("tx").value.trim();if(!t)return;
   fetch(U+"/rest/v1/messages",{method:"POST",headers:Object.assign(hdr(),{Prefer:"return=minimal"}),body:JSON.stringify({conversation_id:CONV,speaker_name:me,words:t})})
   .then(function(r){if(!r.ok)return r.text().then(function(x){throw new Error(x)});$("tx").value="";poll()}).catch(function(e){$("err2").textContent="Not sent: "+e.message})};
+$("tg").onclick=function(){document.body.classList.add("chat");var b=$("msgs");b.scrollTop=b.scrollHeight};
+$("mv").onclick=function(){document.body.classList.remove("chat")};
 $("out").onclick=function(){clear();S=null;me=null;clearInterval(timer);location.reload()};
 (function(){var s=load();if(s&&s.r){S={access_token:s.a,refresh_token:s.r,expires_at:s.e};
   if(s.e&&s.e*1000<Date.now()+60000){refresh().then(enter).catch(function(){clear();S=null})}else enter()}})();
