@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v0.8</title>
+<title>God mode v0.9</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -40,33 +40,33 @@ body.in #web{display:block}
 #wrap{position:relative;z-index:2}
 body.in #wrap{pointer-events:none}
 body.in .hdr,body.in form#send,body.in .err,body.in .m,body.in #mv{pointer-events:auto}
-body.in .hdr{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:0 0 18px 18px;padding-left:10px;padding-right:10px}
-body.in .m{background:rgba(8,8,8,.28);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-body.in form#send{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:18px 18px 0 0;padding-left:10px;padding-right:10px;border-top:1px solid var(--line)}
+body.in .hdr{background:rgba(0,0,0,.55);border-radius:0 0 18px 18px;padding-left:10px;padding-right:10px}
+body.in .m{background:rgba(8,8,8,.5);}
+body.in form#send{background:rgba(0,0,0,.55);border-radius:18px 18px 0 0;padding-left:10px;padding-right:10px;border-top:1px solid var(--line)}
 body.in form#send input{background:rgba(11,11,11,.4)}
 #mv{border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.6);border-radius:999px;font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap}
 body.in:not(.chat) #chat{display:none!important}
-body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom:12px;width:min(460px,calc(100vw - 24px));height:auto!important;z-index:6;background:rgba(0,0,0,.12);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:0 14px;overflow:hidden}
-body.in.chat .hdr{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-body.in.chat form#send{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom:12px;width:min(460px,calc(100vw - 24px));height:auto!important;z-index:6;background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:0 14px;overflow:hidden}
+body.in.chat .hdr{background:none;}
+body.in.chat form#send{background:none;}
 @media(max-width:600px){body.in.chat #chat{left:8px;right:8px;top:8px;bottom:8px;width:auto}}
 #mic{display:none;width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--turq);background:rgba(0,0,0,.55);color:var(--turq);cursor:pointer;padding:0;align-items:center;justify-content:center}
 #mic.ok{display:inline-flex}
 #mic svg{width:20px;height:20px;fill:currentColor}
 #mic.on{background:var(--turq);color:#000;animation:glow 1.1s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(64,224,208,.7)}50%{box-shadow:0 0 14px 6px rgba(64,224,208,.55)}}
-#bar{display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:7;gap:2px;padding:4px;border-radius:14px;background:rgba(0,0,0,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1)}
+#bar{display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:7;gap:2px;padding:4px;border-radius:14px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1)}
 body.in #bar{display:flex}
 #bar button{background:none;border:0;color:#cfeee9;font:500 13px system-ui,sans-serif;letter-spacing:.04em;padding:8px 14px;border-radius:10px;cursor:pointer;white-space:nowrap}
 #bar button:hover,#bar button.on{background:rgba(64,224,208,.16);color:#40E0D0}
 #bar button span{font-size:10px;opacity:.7}
-#ppl{display:none;position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:8;width:min(300px,calc(100vw - 24px));max-height:70vh;overflow:auto;padding:8px;border-radius:16px;background:rgba(0,0,0,.4);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
+#ppl{display:none;position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:8;width:min(300px,calc(100vw - 24px));max-height:70vh;overflow:auto;padding:8px;border-radius:16px;background:rgba(6,6,8,.88);border:1px solid rgba(255,255,255,.12)}
 #ppl.show{display:block}
 #ppl .h{font:600 10px system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#d9b95a;padding:10px 8px 4px}
 #ppl button{display:block;width:100%;text-align:left;background:none;border:0;color:#eaf7f5;font:14px system-ui,sans-serif;padding:8px;border-radius:8px;cursor:pointer}
 #ppl button:hover{background:rgba(64,224,208,.14)}
 #ppl small{opacity:.55;margin-left:6px}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#40E0D0;font:14px system-ui,sans-serif;padding:10px 16px;border-radius:12px;border:1px solid rgba(64,224,208,.4);opacity:0;pointer-events:none;transition:opacity .25s;max-width:calc(100vw - 32px);text-align:center}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9;background:rgba(0,0,0,.55);color:#40E0D0;font:14px system-ui,sans-serif;padding:10px 16px;border-radius:12px;border:1px solid rgba(64,224,208,.4);opacity:0;pointer-events:none;transition:opacity .25s;max-width:calc(100vw - 32px);text-align:center}
 #toast.show{opacity:1}
 body.in.chat #chat{top:60px}
 @media(max-width:700px){#bar button{padding:8px 8px;font-size:12px}}
@@ -114,13 +114,13 @@ function enter(){
     return fetch(U+"/rest/v1/members?user_id=eq."+u.id+"&select=member&limit=1",{headers:hdr()})
   }).then(function(r){return r.json()}).then(function(a){
     if(!a||!a.length)throw new Error("This login is not a member of God mode.");
-    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
+    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(function(){if(!document.hidden)poll()},4000)
   }).catch(function(e){clear();S=null;document.body.classList.remove("in","web");$("web").removeAttribute("src");$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
 }
 function poll(){
-  fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&order=created_at.asc&limit=500&select=id,speaker_name,words,created_at",{headers:hdr()})
+  fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&order=created_at.desc&limit=80&select=id,speaker_name,words,created_at",{headers:hdr()})
   .then(function(r){if(r.status===401){return refresh().then(poll).then(function(){throw 0})}return r.json()})
-  .then(function(a){if(!Array.isArray(a))return;
+  .then(function(a){if(!Array.isArray(a))return;a.reverse();
     var tail=a.length?a[a.length-1].id:0;if(tail===last&&a.length===document.querySelectorAll(".m").length)return;last=tail;
     var h="";a.forEach(function(m){var mine=m.speaker_name===me;var d=new Date(m.created_at);
       h+='<div class="m'+(mine?' me':'')+'"><div class="who">'+esc(nm(m.speaker_name))+'</div><div class="w">'+esc(m.words)+'</div><div class="t">'+d.toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+'</div></div>'});
