@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v0.9</title>
+<title>God mode v1.0</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -70,8 +70,42 @@ body.in #bar{display:flex}
 #toast.show{opacity:1}
 body.in.chat #chat{top:60px}
 @media(max-width:700px){#bar button{padding:8px 8px;font-size:12px}}
-</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
-<div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat">Izzy</button><button data-k="chat">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="wrap">
+
+#bar{max-width:calc(100vw - 16px);overflow-x:auto;scrollbar-width:none}
+#bar::-webkit-scrollbar{display:none}
+#mc{color:#d9b95a;font-weight:700}
+#ppl button.glow::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:8px;background:#40E0D0;box-shadow:0 0 10px 3px rgba(64,224,208,.8)}
+#ppl button.dim{opacity:.45}
+#brief{display:none;position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:9;width:min(420px,calc(100vw - 24px));padding:12px 14px;border-radius:14px;background:rgba(6,6,8,.9);border:1px solid rgba(217,185,90,.5);color:#eaf7f5;font:14px system-ui,sans-serif;line-height:1.4}
+#brief.show{display:block}
+#brief b{display:block;color:#d9b95a;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+#brief p{margin:5px 0}
+#brief button{margin-top:6px;background:none;border:1px solid rgba(64,224,208,.5);color:#40E0D0;border-radius:10px;padding:5px 12px;cursor:pointer}
+#strip{display:none;position:fixed;left:8px;right:8px;bottom:88px;z-index:7;height:58px;border-radius:14px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.1);overflow:hidden}
+body.in #strip.show{display:flex}
+#sel{display:flex;flex:0 0 auto;gap:2px;padding:6px;border-right:1px solid rgba(255,255,255,.1)}
+#sel button{background:none;border:0;color:#cfeee9;font:12px system-ui,sans-serif;padding:6px 8px;border-radius:8px;cursor:pointer}
+#sel button.on{background:rgba(64,224,208,.18);color:#40E0D0}
+#film{flex:1;display:flex;align-items:center;gap:8px;padding:0 10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#film::-webkit-scrollbar{display:none}
+#film .it{flex:0 0 auto;min-width:92px;height:38px;border-radius:9px;background:linear-gradient(145deg,rgba(255,240,200,.12),rgba(63,214,196,.1));border:1px solid rgba(217,185,90,.4);color:#f1e2b6;font:12px system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:0 10px;cursor:pointer;white-space:nowrap}
+#film .it.soon{opacity:.5;cursor:default}
+#ov{display:none;position:fixed;inset:0;z-index:10;background:rgba(3,4,6,.93);overflow:auto;padding:18px 16px 60px;color:#eaf7f5;font:15px system-ui,sans-serif}
+#ov.show{display:block}
+#ov .ovh{display:flex;justify-content:space-between;align-items:center;max-width:620px;margin:0 auto 14px}
+#ov .ovh b{font:600 12px system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#d9b95a}
+#ov button#ovx{background:none;border:1px solid rgba(64,224,208,.5);color:#40E0D0;border-radius:10px;padding:6px 14px;cursor:pointer}
+#ovb{max-width:620px;margin:0 auto}
+#ovb .cd{padding:12px 14px;margin:0 0 10px;border-radius:14px;border:1px solid rgba(217,185,90,.4);background:linear-gradient(145deg,rgba(255,240,200,.07),rgba(63,214,196,.05));opacity:0;transform:translateY(8px);transition:opacity .9s,transform .9s;line-height:1.45}
+#ovb .cd.in{opacity:1;transform:none}
+#ovb .cd small{display:block;opacity:.55;margin-top:6px;font-size:11px}
+#ovb .sh{display:flex;justify-content:space-between;cursor:pointer}
+#ovb .sh i{font-style:normal;color:#d9b95a}
+body.whisper #chat{opacity:0;pointer-events:none;transition:opacity .7s}
+body.whisper.hear #chat{opacity:1;pointer-events:auto}
+#bar button.on{background:rgba(64,224,208,.16);color:#40E0D0}
+</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
+<div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat" data-who="Izzy">Izzy</button><button data-k="chat" data-who="Waz">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="brief"></div><div id="strip"><div id="sel"><button data-s="contacts" class="on">Contacts</button><button data-s="images">Images</button><button data-s="videos">Videos</button><button data-s="texts">Texts</button></div><div id="film"></div></div><div id="ov"><div class="ovh"><b id="ovt"></b><button id="ovx" type="button">Close</button></div><div id="ovb"></div></div><div id="wrap">
 
 <div id="login">
   <h1 class="gold">God mode</h1>
@@ -161,7 +195,7 @@ document.getElementById("ppl").onclick=function(e){var b=e.target.closest("butto
 document.getElementById("bgame").onclick=function(){T("Opening the Kira game. It works on devices signed into your Tailscale.");window.open(GAME,"_blank","noopener")};
 document.getElementById("bsend").onclick=function(){var w=W();if(!w){T("Load the web first.");return}try{var d=w.document,ct=d.getElementById("ct").textContent.trim(),cp=d.getElementById("cp").textContent.trim();if(!ct){T("Tap an orb first, then Send to chat.");return}var tx=document.getElementById("tx");tx.value=(tx.value?tx.value+" ":"")+"[orb: "+ct+(cp?" - "+cp.slice(0,240):"")+"] ";document.body.classList.add("chat");tx.focus();T("Orb added to your message. Press Send when ready.")}catch(e){T("Could not read that orb.")}};
 function go(word,label){var w=W();if(!w){T("Load the web first.");return}try{w.goWord(word);T(label)}catch(e){T(label+" did not find it.")}}
-var MODES={family:function(){go("family","Family mode")},dad:function(){go("dad","Dad mode")},anniversary:function(){go("anniversary","Anniversary mode")},video:function(){go("anniversary","Video mode: showing the anniversary")},"2019":function(){go("2019","2019 mode")},feeling:function(){go("feeling","Feeling mode")},web:function(){var w=W();if(w){try{w.cam.k=1;T("Web mode: all of it")}catch(e){T("Web mode")}}else T("Load the web first.")},spread:function(){MODES.web()},bloom:function(){var w=W();if(w){try{w.cam.k=Math.min(6,(w.cam.k||1)*1.8);T("Bloom mode: closer")}catch(e){T("Bloom mode")}}},open:function(){T("Open mode: tap an orb to open its card.")},library:function(){T("Library mode: first version coming.")},shelf:function(){T("Shelf mode: first version coming.")},book:function(){T("Book mode: first version coming.")},brain:function(){T("Brain mode: first version coming.")}};
+var MODES=window.GMODES={family:function(){go("family","Family mode")},dad:function(){go("dad","Dad mode")},anniversary:function(){go("anniversary","Anniversary mode")},video:function(){go("anniversary","Video mode: showing the anniversary")},"2019":function(){go("2019","2019 mode")},feeling:function(){go("feeling","Feeling mode")},web:function(){var w=W();if(w){try{w.cam.k=1;T("Web mode: all of it")}catch(e){T("Web mode")}}else T("Load the web first.")},spread:function(){MODES.web()},bloom:function(){var w=W();if(w){try{w.cam.k=Math.min(6,(w.cam.k||1)*1.8);T("Bloom mode: closer")}catch(e){T("Bloom mode")}}},open:function(){T("Open mode: tap an orb to open its card.")},library:function(){T("Library mode: first version coming.")},shelf:function(){T("Shelf mode: first version coming.")},book:function(){T("Book mode: first version coming.")},brain:function(){T("Brain mode: first version coming.")}};
 var R=window.SpeechRecognition||window.webkitSpeechRecognition,bm=document.getElementById("bmode"),rec=null,on=false;
 if(!R){bm.style.display="none"}else bm.onclick=function(){if(on){try{rec.stop()}catch(e){}return}
  rec=new R();rec.continuous=false;rec.interimResults=false;rec.lang=navigator.language||"en-US";
@@ -169,5 +203,72 @@ if(!R){bm.style.display="none"}else bm.onclick=function(){if(on){try{rec.stop()}
  rec.onend=function(){on=false;bm.classList.remove("on");bm.textContent="Say a mode"};
  rec.onerror=function(){on=false;bm.classList.remove("on");bm.textContent="Say a mode"};
  try{rec.start();on=true;bm.classList.add("on");bm.textContent="Listening..."}catch(e){}};
+})();
+
+(function(){
+function $g(i){return document.getElementById(i)}
+function T2(m){var t=$g("toast");t.textContent=m;t.classList.add("show");clearTimeout(T2.h);T2.h=setTimeout(function(){t.classList.remove("show")},3200)}
+function W2(){var f=$g("web");try{return f&&f.contentWindow&&f.contentWindow.flyTo?f.contentWindow:null}catch(e){return null}}
+function esc2(t){var d=document.createElement("div");d.textContent=t==null?"":t;return d.innerHTML}
+function sb(){return typeof S!=="undefined"&&S&&typeof me!=="undefined"&&me}
+function ov(title,html){$g("ovt").textContent=title;$g("ovb").innerHTML=html;$g("ov").classList.add("show");setTimeout(function(){var c=$g("ovb").querySelectorAll(".cd"),i=0;(function n(){if(i<c.length){c[i++].classList.add("in");setTimeout(n,380)}})()},60)}
+$g("ovx").onclick=function(){$g("ov").classList.remove("show")};
+/* miracles */
+function mcount(){if(!sb())return;fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&words=ilike.*miracle*&select=id",{headers:Object.assign(hdr(),{Prefer:"count=exact",Range:"0-0"})}).then(function(r){var c=r.headers.get("content-range");if(c){var n=c.split("/")[1];if(n&&n!=="*")$g("mc").textContent=n}}).catch(function(){})}
+function miracles(){if(!sb()){T2("Sign in first.");return}fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&words=ilike.*miracle*&order=created_at.desc&limit=40&select=speaker_name,words,created_at",{headers:hdr()}).then(function(r){return r.json()}).then(function(a){if(!Array.isArray(a)||!a.length){ov("Miracles",'<div class="cd in">No miracles saved yet. Say "save miracle" in the chat and it lands here.</div>');return}
+ ov("Miracles "+a.length,a.map(function(m){return '<div class="cd">'+esc2(m.words)+'<small>'+esc2(m.speaker_name)+" · "+new Date(m.created_at).toLocaleString([],{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+'</small></div>'}).join(""))}).catch(function(){T2("Could not load miracles.")})}
+$g("bmir").onclick=miracles;
+/* whisper */
+var wh=false,hearT=null;
+function hear(){if(!wh)return;document.body.classList.add("hear");clearTimeout(hearT);hearT=setTimeout(function(){document.body.classList.remove("hear")},7000)}
+function whisper(on){wh=on===undefined?!wh:on;document.body.classList.toggle("whisper",wh);$g("bwh").classList.toggle("on",wh);if(!wh)document.body.classList.remove("hear");T2(wh?"Whisper on. Chat fades until you speak or type.":"Whisper off.")}
+$g("bwh").onclick=function(){whisper()};
+document.addEventListener("keydown",hear);
+try{new MutationObserver(function(){if($g("mic").classList.contains("on"))hear()}).observe($g("mic"),{attributes:true,attributeFilter:["class"]})}catch(e){}
+/* rewind */
+var rwT=null;
+function rewind(){var w=W2();if(rwT){clearInterval(rwT);rwT=null;$g("brew").classList.remove("on");T2("Rewind stopped.");return}
+ if(!w||!w.trail||w.trail.length<2){T2("Nothing to rewind yet. Fly around first.");return}
+ var tr=w.trail.slice(),i=0;$g("brew").classList.add("on");
+ function step(){if(i>=tr.length){clearInterval(rwT);rwT=null;$g("brew").classList.remove("on");T2("Rewind done.");return}try{w.flyTo(tr[i],false,false)}catch(e){}T2("Rewind "+(i+1)+" of "+tr.length+": "+(w.TERM?w.TERM[tr[i]]:""));i++}
+ step();rwT=setInterval(step,2200)}
+$g("brew").onclick=rewind;
+/* library and brain first versions */
+function shelves(kind){var w=W2();if(!w||!w.FAM||!w.SC||!w.TERM){T2("Load the web first.");return}
+ var names=w.TYN,cnt={},best={};for(var i=0;i<w.FAM.length;i++){var f=w.FAM[i];if(kind==="brain"&&f!==0&&f!==1)continue;cnt[f]=(cnt[f]||0)+1;if(best[f]===undefined||w.SC[i]>w.SC[best[f]])best[f]=i}
+ var rows=Object.keys(cnt).map(function(f){return '<div class="cd sh" data-i="'+best[f]+'"><span>'+esc2(names[f]||("kind "+f))+'</span><i>'+cnt[f]+'</i></div>'}).join("");
+ if(kind==="brain"){var gs=[];for(var j=0;j<w.FAM.length;j++)if(w.FAM[j]===0)gs.push(j);rows=gs.map(function(j){return '<div class="cd sh" data-i="'+j+'"><span>'+esc2(w.TERM[j])+'</span><i>root</i></div>'}).join("")}
+ ov(kind==="brain"?"Brain: root groups":"Library: shelves",rows);
+ $g("ovb").onclick=function(e){var c=e.target.closest(".sh");if(!c)return;$g("ov").classList.remove("show");try{w.flyTo(+c.dataset.i,true,false)}catch(x){}}}
+$g("blib").onclick=function(){shelves("library")};
+/* wave strip */
+var CONTACTS=["Empress Alexandra","Joey","Mom","Ace","Sydney","Nusheen","Naomi","Cath"];
+function film(kind){var f=$g("film");f.innerHTML="";document.querySelectorAll("#sel button").forEach(function(b){b.classList.toggle("on",b.dataset.s===kind)});
+ if(kind==="contacts"){CONTACTS.forEach(function(n){var d=document.createElement("div");d.className="it";d.textContent=n;d.onclick=function(){T2(n+": texting from here waits for your yes.")};f.appendChild(d)})}
+ else{var w=W2(),n=0;try{n=w&&w.MEDIA?w.MEDIA.length:0}catch(e){}["a","b","c","d","e","f"].forEach(function(){var d=document.createElement("div");d.className="it soon";d.textContent=kind+" coming"+(n?" ("+n+" media in web)":"");f.appendChild(d)})}}
+$g("sel").onclick=function(e){var b=e.target.closest("button");if(b)film(b.dataset.s)};
+function wave(on){var st=$g("strip");var show=on===undefined?!st.classList.contains("show"):on;st.classList.toggle("show",show);$g("bwave").classList.toggle("on",show);if(show)film("contacts")}
+$g("bwave").onclick=function(){wave()};
+(function(){var f=$g("film"),dir=0,raf=0;function tick(){if(dir)f.scrollLeft+=dir*6;raf=dir?requestAnimationFrame(tick):0}
+ f.addEventListener("mousemove",function(e){var r=f.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;dir=x<.18?-1:x>.82?1:0;if(dir&&!raf)raf=requestAnimationFrame(tick)});
+ f.addEventListener("mouseleave",function(){dir=0});
+ var down=0;f.addEventListener("mousedown",function(e){down=e.clientX});window.addEventListener("mouseup",function(){down=0});
+ f.addEventListener("mousemove",function(e){if(down&&e.buttons){f.scrollLeft-=e.clientX-down;down=e.clientX}})})();
+/* presence glow */
+function presence(){if(!sb()||document.hidden)return;fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&order=created_at.desc&limit=120&select=speaker_name,created_at",{headers:hdr()}).then(function(r){return r.json()}).then(function(a){if(!Array.isArray(a))return;var lastAt={};a.forEach(function(m){if(!lastAt[m.speaker_name])lastAt[m.speaker_name]=new Date(m.created_at).getTime()});
+ document.querySelectorAll("#ppl button[data-who]").forEach(function(b){var t=lastAt[b.dataset.who],on=t&&Date.now()-t<30*60000;b.classList.toggle("glow",!!on);b.classList.toggle("dim",!on)})}).catch(function(){})}
+/* morning brief */
+var seenKey="gm_last_seen",briefed=false;
+function stamp(){try{localStorage.setItem(seenKey,String(Date.now()))}catch(e){}}
+function brief(){if(briefed||!sb())return;briefed=true;var ls=0;try{ls=+localStorage.getItem(seenKey)||0}catch(e){}stamp();if(!ls)return;
+ fetch(U+"/rest/v1/messages?conversation_id=eq."+CONV+"&created_at=gt."+encodeURIComponent(new Date(ls).toISOString())+"&speaker_name=neq."+encodeURIComponent(me)+"&order=created_at.desc&limit=4&select=speaker_name,words",{headers:hdr()}).then(function(r){return r.json()}).then(function(a){if(!Array.isArray(a)||!a.length)return;
+ var b=$g("brief");b.innerHTML='<b>While you were gone</b>'+a.reverse().map(function(m){return "<p><i>"+esc2(m.speaker_name)+":</i> "+esc2(String(m.words).slice(0,180))+"</p>"}).join("")+'<button type="button" id="bx">Got it</button>';b.classList.add("show");$g("bx").onclick=function(){b.classList.remove("show")}}).catch(function(){})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)stamp()});window.addEventListener("pagehide",stamp);setInterval(stamp,60000);
+setInterval(function(){if(document.body.classList.contains("in")){brief();mcount();presence()}},30000);
+var boot=setInterval(function(){if(sb()){clearInterval(boot);brief();mcount();presence()}},1500);
+/* voice modes */
+var M=window.GMODES||{};
+M.whisper=function(){whisper(true)};M.loud=function(){whisper(false)};M.rewind=rewind;M.miracles=miracles;M.miracle=miracles;M.wave=function(){wave(true)};M.contacts=function(){wave(true);film("contacts")};M.images=function(){wave(true);film("images")};M.videos=function(){wave(true);film("videos")};M.texts=function(){wave(true);film("texts")};
+M.library=function(){shelves("library")};M.shelf=M.library;M.book=M.library;M.brain=function(){shelves("brain")};
 })();
 </script></body></html>
