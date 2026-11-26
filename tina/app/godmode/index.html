@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v0.5</title>
+<title>God mode v0.6</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -53,6 +53,11 @@ body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom
 body.in.chat .hdr{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 body.in.chat form#send{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 @media(max-width:600px){body.in.chat #chat{left:8px;right:8px;top:8px;bottom:8px;width:auto}}
+#mic{display:none;width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--turq);background:rgba(0,0,0,.55);color:var(--turq);cursor:pointer;padding:0;align-items:center;justify-content:center}
+#mic.ok{display:inline-flex}
+#mic svg{width:20px;height:20px;fill:currentColor}
+#mic.on{background:var(--turq);color:#000;animation:glow 1.1s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(64,224,208,.7)}50%{box-shadow:0 0 14px 6px rgba(64,224,208,.55)}}
 </style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><button id="tg" type="button">God mode chat</button><div id="wrap">
 
 <div id="login">
@@ -72,7 +77,7 @@ body.in.chat form#send{background:none;-webkit-backdrop-filter:none;backdrop-fil
   </div>
   <div id="msgs"></div>
   <div class="err" id="err2"></div>
-  <form id="send"><input id="tx" placeholder="Say something" autocomplete="off"><button class="btn" type="submit">Send</button></form>
+  <form id="send"><input id="tx" placeholder="Say something" autocomplete="off"><button id="mic" type="button" aria-label="Talk" title="Talk"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V22h2v-3.08A7 7 0 0 0 19 12z"/></svg></button><button class="btn" type="submit">Send</button></form>
 </div>
 
 </div>
@@ -96,7 +101,7 @@ function enter(){
     return fetch(U+"/rest/v1/members?user_id=eq."+u.id+"&select=member&limit=1",{headers:hdr()})
   }).then(function(r){return r.json()}).then(function(a){
     if(!a||!a.length)throw new Error("This login is not a member of God mode.");
-    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)&&!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
+    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(poll,3000)
   }).catch(function(e){clear();S=null;document.body.classList.remove("in","web");$("web").removeAttribute("src");$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
 }
 function poll(){
@@ -121,4 +126,16 @@ $("mv").onclick=function(){document.body.classList.remove("chat")};
 $("out").onclick=function(){clear();S=null;me=null;clearInterval(timer);location.reload()};
 (function(){var s=load();if(s&&s.r){S={access_token:s.a,refresh_token:s.r,expires_at:s.e};
   if(s.e&&s.e*1000<Date.now()+60000){refresh().then(enter).catch(function(){clear();S=null})}else enter()}})();
+
+(function(){var R=window.SpeechRecognition||window.webkitSpeechRecognition,b=document.getElementById("mic");if(!R||!b)return;b.classList.add("ok");
+var r=null,on=false,base="";
+function stop(){on=false;b.classList.remove("on");try{r&&r.stop()}catch(e){}}
+b.onclick=function(){if(on){stop();return}
+ r=new R();r.continuous=true;r.interimResults=true;r.lang=navigator.language||"en-US";
+ var tx=document.getElementById("tx");base=tx.value?tx.value.replace(/\s+$/,"")+" ":"";
+ r.onresult=function(e){var t="";for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;tx.value=base+t.trim()};
+ r.onend=function(){on=false;b.classList.remove("on");tx.focus()};
+ r.onerror=function(e){on=false;b.classList.remove("on");if(e.error==="not-allowed"||e.error==="service-not-allowed")document.getElementById("err2").textContent="Mic is blocked. Allow the microphone for this site in the browser."};
+ try{r.start();on=true;b.classList.add("on")}catch(e){}};
+document.getElementById("send").addEventListener("submit",function(){if(on)stop()},true)})();
 </script></body></html>
