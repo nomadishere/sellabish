@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>God mode v0.7</title>
+<title>God mode v0.8</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -44,9 +44,6 @@ body.in .hdr{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdr
 body.in .m{background:rgba(8,8,8,.28);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 body.in form#send{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:18px 18px 0 0;padding-left:10px;padding-right:10px;border-top:1px solid var(--line)}
 body.in form#send input{background:rgba(11,11,11,.4)}
-#tg{display:none;position:fixed;top:12px;right:12px;z-index:7;border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:999px;font-size:13px;padding:9px 16px;cursor:pointer;white-space:nowrap}
-body.in #tg{display:inline-block}
-body.chat #tg{display:none}
 #mv{border:1px solid var(--turq);color:var(--turq);background:rgba(0,0,0,.6);border-radius:999px;font-size:12px;padding:7px 12px;cursor:pointer;white-space:nowrap}
 body.in:not(.chat) #chat{display:none!important}
 body.in.chat #chat{pointer-events:auto;position:fixed;right:12px;top:12px;bottom:12px;width:min(460px,calc(100vw - 24px));height:auto!important;z-index:6;background:rgba(0,0,0,.12);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:0 14px;overflow:hidden}
@@ -58,7 +55,23 @@ body.in.chat form#send{background:none;-webkit-backdrop-filter:none;backdrop-fil
 #mic svg{width:20px;height:20px;fill:currentColor}
 #mic.on{background:var(--turq);color:#000;animation:glow 1.1s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(64,224,208,.7)}50%{box-shadow:0 0 14px 6px rgba(64,224,208,.55)}}
-</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><button id="tg" type="button">God mode chat</button><div id="wrap">
+#bar{display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:7;gap:2px;padding:4px;border-radius:14px;background:rgba(0,0,0,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1)}
+body.in #bar{display:flex}
+#bar button{background:none;border:0;color:#cfeee9;font:500 13px system-ui,sans-serif;letter-spacing:.04em;padding:8px 14px;border-radius:10px;cursor:pointer;white-space:nowrap}
+#bar button:hover,#bar button.on{background:rgba(64,224,208,.16);color:#40E0D0}
+#bar button span{font-size:10px;opacity:.7}
+#ppl{display:none;position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:8;width:min(300px,calc(100vw - 24px));max-height:70vh;overflow:auto;padding:8px;border-radius:16px;background:rgba(0,0,0,.4);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
+#ppl.show{display:block}
+#ppl .h{font:600 10px system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#d9b95a;padding:10px 8px 4px}
+#ppl button{display:block;width:100%;text-align:left;background:none;border:0;color:#eaf7f5;font:14px system-ui,sans-serif;padding:8px;border-radius:8px;cursor:pointer}
+#ppl button:hover{background:rgba(64,224,208,.14)}
+#ppl small{opacity:.55;margin-left:6px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#40E0D0;font:14px system-ui,sans-serif;padding:10px 16px;border-radius:12px;border:1px solid rgba(64,224,208,.4);opacity:0;pointer-events:none;transition:opacity .25s;max-width:calc(100vw - 32px);text-align:center}
+#toast.show{opacity:1}
+body.in.chat #chat{top:60px}
+@media(max-width:700px){#bar button{padding:8px 8px;font-size:12px}}
+</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
+<div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat">Izzy</button><button data-k="chat">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="wrap">
 
 <div id="login">
   <h1 class="gold">God mode</h1>
@@ -121,7 +134,6 @@ $("pw").addEventListener("keydown",function(e){if(e.key==="Enter")$("go").onclic
 $("send").onsubmit=function(e){e.preventDefault();var t=$("tx").value.trim();if(!t)return;
   fetch(U+"/rest/v1/messages",{method:"POST",headers:Object.assign(hdr(),{Prefer:"return=minimal"}),body:JSON.stringify({conversation_id:CONV,speaker_name:me,words:t})})
   .then(function(r){if(!r.ok)return r.text().then(function(x){throw new Error(x)});$("tx").value="";poll()}).catch(function(e){$("err2").textContent="Not sent: "+e.message})};
-$("tg").onclick=function(){document.body.classList.add("chat");var b=$("msgs");b.scrollTop=b.scrollHeight};
 $("mv").onclick=function(){document.body.classList.remove("chat")};
 $("out").onclick=function(){clear();S=null;me=null;clearInterval(timer);location.reload()};
 (function(){var s=load();if(s&&s.r){S={access_token:s.a,refresh_token:s.r,expires_at:s.e};
@@ -138,4 +150,24 @@ b.onclick=function(){if(on){stop();return}
  r.onerror=function(e){on=false;b.classList.remove("on");if(e.error==="not-allowed"||e.error==="service-not-allowed")document.getElementById("err2").textContent="Mic is blocked. Allow the microphone for this site in the browser."};
  try{r.start();on=true;b.classList.add("on")}catch(e){}};
 document.getElementById("send").addEventListener("submit",function(){if(on)stop()},true)})();
+
+(function(){var GAME="http://100.90.60.123:8000/kira";
+function T(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(T.h);T.h=setTimeout(function(){t.classList.remove("show")},3200)}
+function W(){var f=document.getElementById("web");try{return f&&f.contentWindow&&f.contentWindow.flyTo?f.contentWindow:null}catch(e){return null}}
+function ppl(on){document.getElementById("ppl").classList.toggle("show",on);document.getElementById("bppl").classList.toggle("on",on)}
+document.getElementById("bchat").onclick=function(){ppl(false);document.body.classList.toggle("chat")};
+document.getElementById("bppl").onclick=function(){ppl(!document.getElementById("ppl").classList.contains("show"))};
+document.getElementById("ppl").onclick=function(e){var b=e.target.closest("button");if(!b)return;ppl(false);if(b.dataset.k==="chat")document.body.classList.add("chat");else T(b.firstChild.textContent.trim()+": chat opens here soon. Sending to people waits for your yes.")};
+document.getElementById("bgame").onclick=function(){T("Opening the Kira game. It works on devices signed into your Tailscale.");window.open(GAME,"_blank","noopener")};
+document.getElementById("bsend").onclick=function(){var w=W();if(!w){T("Load the web first.");return}try{var d=w.document,ct=d.getElementById("ct").textContent.trim(),cp=d.getElementById("cp").textContent.trim();if(!ct){T("Tap an orb first, then Send to chat.");return}var tx=document.getElementById("tx");tx.value=(tx.value?tx.value+" ":"")+"[orb: "+ct+(cp?" - "+cp.slice(0,240):"")+"] ";document.body.classList.add("chat");tx.focus();T("Orb added to your message. Press Send when ready.")}catch(e){T("Could not read that orb.")}};
+function go(word,label){var w=W();if(!w){T("Load the web first.");return}try{w.goWord(word);T(label)}catch(e){T(label+" did not find it.")}}
+var MODES={family:function(){go("family","Family mode")},dad:function(){go("dad","Dad mode")},anniversary:function(){go("anniversary","Anniversary mode")},video:function(){go("anniversary","Video mode: showing the anniversary")},"2019":function(){go("2019","2019 mode")},feeling:function(){go("feeling","Feeling mode")},web:function(){var w=W();if(w){try{w.cam.k=1;T("Web mode: all of it")}catch(e){T("Web mode")}}else T("Load the web first.")},spread:function(){MODES.web()},bloom:function(){var w=W();if(w){try{w.cam.k=Math.min(6,(w.cam.k||1)*1.8);T("Bloom mode: closer")}catch(e){T("Bloom mode")}}},open:function(){T("Open mode: tap an orb to open its card.")},library:function(){T("Library mode: first version coming.")},shelf:function(){T("Shelf mode: first version coming.")},book:function(){T("Book mode: first version coming.")},brain:function(){T("Brain mode: first version coming.")}};
+var R=window.SpeechRecognition||window.webkitSpeechRecognition,bm=document.getElementById("bmode"),rec=null,on=false;
+if(!R){bm.style.display="none"}else bm.onclick=function(){if(on){try{rec.stop()}catch(e){}return}
+ rec=new R();rec.continuous=false;rec.interimResults=false;rec.lang=navigator.language||"en-US";
+ rec.onresult=function(e){var t=e.results[0][0].transcript.toLowerCase();var m=t.match(/([a-z0-9]+)\s+mode/),k=m&&m[1];if(k&&MODES[k])MODES[k]();else T('Heard "'+t+'". Say a mode, like "family mode".')};
+ rec.onend=function(){on=false;bm.classList.remove("on");bm.textContent="Say a mode"};
+ rec.onerror=function(){on=false;bm.classList.remove("on");bm.textContent="Say a mode"};
+ try{rec.start();on=true;bm.classList.add("on");bm.textContent="Listening..."}catch(e){}};
+})();
 </script></body></html>
