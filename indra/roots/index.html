@@ -118,7 +118,7 @@ body.ctlon.hasfs .card{bottom:258px!important}
 #fsv_bar{display:flex;align-items:center;gap:10px;margin-top:10px;width:min(94vw,900px);color:var(--t-ink);font-family:var(--t-serif);font-size:.9rem}
 #fsv_t{flex:1}
 #fsv button,#fsv a{background:none;border:1px solid rgba(63,214,196,.7);color:#3FD6C4;border-radius:999px;padding:6px 14px;font-family:inherit;text-decoration:none;font-size:.85rem}
-</style></head><body class="t-glow">
+html.day,html.day body{background:radial-gradient(120% 90% at 50% 0%,#fffefb,#f1ece4 70%)!important}html.day #c{filter:invert(1) hue-rotate(180deg) saturate(1.6) contrast(1.05)}</style></head><body class="t-glow">
 <canvas id="c"></canvas><div id="fs"></div><div id="fsv"><div id="fsv_s"></div><div id="fsv_bar"><button id="fsv_p">‹</button><span id="fsv_t"></span><a id="fsv_o" target="_blank" rel="noopener" style="display:none">Open in Drive ↗</a><button id="fsv_n">›</button><button id="fsv_x">Close</button></div></div><div id="ctl"></div><div id="mw"><canvas id="mwc"></canvas><div id="mw_top"><input id="mw_in" placeholder="say or type: Italy, Thanksgiving 2020, joy, summer…" autocomplete="off"><button id="mw_mic">🎤</button><button id="mw_x">Close</button></div><div id="mw_chips"></div><div id="mw_bar"><span id="mw_n"></span><button id="mw_play">Play these</button></div></div><div id="turnv"><div class="box"><button id="tv_x">Close</button><small id="tv_k"></small><small id="tv_t"></small><div id="tv_b"></div><div id="tv_f"></div></div></div>
 <div id="drift"></div>
 <div class="top"><div class="t-label"><span class="t-crystal"></span>&nbsp; Indra's roots web</div><div class="t-label" id="cnt"></div></div>
@@ -174,7 +174,7 @@ function wt(i){return Math.max(1,Math.min(10,Math.round(1+9*SC[i])))}
 function rad(i){return (.9+Math.pow(SC[i],1.6)*9)*TYM[FAM[i]]}
 /* camera */
 var cam={ay:0,ax:.25,k:1.55,fx:0,fy:0,fz:0},tgt={k:1.55,fx:0,fy:0,fz:0},Vs=IMPN+60;
-var PAUSED=false,FC=0,SKIPPED=0;window.addEventListener('message',function(e){if(e.data&&e.data.godmode==='pause')PAUSED=!!e.data.on});var PANX=0,PANY=0,pm=null,lastUl='none',LOCK=-1,sel=-1,hover=-1,trail=[],showTrail=true,showWords=true,weighed=0,T=0,lastInteract=0,nearCand=-1,nearSince=0,lastFly=0,nShown=0,fpsE=16,spinV={x:0,y:0},samples=[];
+var PAUSED=false,FC=0,SKIPPED=0,DAY=false;window.addEventListener('message',function(e){if(e.data&&e.data.godmode==='pause')PAUSED=!!e.data.on;if(e.data&&e.data.godmode==='theme'){DAY=!!e.data.day;document.documentElement.classList.toggle('day',DAY)}});var PANX=0,PANY=0,pm=null,lastUl='none',LOCK=-1,sel=-1,hover=-1,trail=[],showTrail=true,showWords=true,weighed=0,T=0,lastInteract=0,nearCand=-1,nearSince=0,lastFly=0,nShown=0,fpsE=16,spinV={x:0,y:0},samples=[];
 /* ---- pointers: one finger spins (with a real fling), two fingers pinch ---- */
 var ptrs={},drag=false,moved=0,downT=0,lx=0,ly=0,pd0=0,k0=1,lastTap=0,lastTapX=0,lastTapY=0;
 function rotK(){return .0055/Math.sqrt(Math.max(1,cam.k))}
@@ -559,7 +559,7 @@ function frame(now){if(PAUSED){lastT=now;requestAnimationFrame(frame);return}
  function drawSet(list){for(var q=0;q<list.length;q++){var i=list[q],r=PR[i],x=PX[i],y=PY[i],a=PA[i];if(r<.55)continue;
    var imp=!MIN[FAM[i]],b=imp?8:Math.min(7,Math.floor(SC[i]*8)),ty=FAM[i]*9+b;
    if(r<2.3){var f=TC[ty];if(f!==lastFill){g.fillStyle=f;lastFill=f}g.globalAlpha=a*(.4+.5*Math.min(1,PP[i]));var s2=Math.max(1.1,r*1.6);g.fillRect(x-s2/2,y-s2/2,s2,s2)}
-   else{var _z=PZ[i],_dep=_z<-.3?0:(_z<.3?1:2);g.globalAlpha=a*(_dep===0?.34:_dep===1?.78:1);var sz=r*(_dep===0?5.2:6.4);g.drawImage(SPR[ty],x-sz/2,y-sz/2,sz,sz);if(_dep===2&&r>4){g.globalAlpha=a*.85;g.fillStyle='rgba(255,255,255,.9)';g.beginPath();g.ellipse(x-r*.28,y-r*.34,r*.26,r*.15,-.6,0,7);g.fill();g.globalAlpha=a*.35;g.fillStyle='rgba(255,255,255,1)';g.beginPath();g.arc(x+r*.3,y+r*.35,r*.1,0,7);g.fill();lastFill=''}}
+   else{var _z=PZ[i],_dep=_z<-.3?0:(_z<.3?1:2);g.globalAlpha=a*(_dep===0?.34:_dep===1?.78:1);var sz=r*(_dep===0?5.2:6.4);g.drawImage(SPR[ty],x-sz/2,y-sz/2,sz,sz);if(_dep===2&&r>4){g.globalAlpha=a*.85;g.fillStyle=DAY?'rgba(0,0,0,.9)':'rgba(255,255,255,.9)';g.beginPath();g.ellipse(x-r*.28,y-r*.34,r*.26,r*.15,-.6,0,7);g.fill();g.globalAlpha=a*.35;g.fillStyle='rgba(255,255,255,1)';g.beginPath();g.arc(x+r*.3,y+r*.35,r*.1,0,7);g.fill();lastFill=''}}
    if(r>2.3){g.globalAlpha=a;
     
     if(hotNb&&HOT[i]===1){g.strokeStyle='rgba(240,216,144,.55)';g.lineWidth=.8;g.beginPath();g.arc(x,y,r+4,0,7);g.stroke()}
