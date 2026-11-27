@@ -1,6 +1,6 @@
 <!doctype html>
 <html data-mode="night" data-vibe="pearl" lang="en"><head><meta charset="utf-8">
-<title>God mode v1.4</title>
+<title>God mode v1.5</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -131,6 +131,18 @@ html[data-mode=day] #bar button:not(#bsend){background:linear-gradient(180deg,rg
 body.day #toast,body.day #brief{background:var(--card);color:var(--ink)}
 .m.d1{filter:blur(3px);opacity:.42;transform:scale(.95);transition:filter .5s,opacity .5s,transform .5s}.m.d2{filter:blur(1.4px);opacity:.72;transform:scale(.975);transition:filter .5s,opacity .5s,transform .5s}
 html[data-mode=day] .m{background:var(--card);color:var(--ink)}
+
+/* v1.5 Michelle fixes: Close ring, quiet Sign out, pill input, gold Send */
+#mv{width:38px;height:38px;padding:0;border-radius:50%;font-size:0!important;display:inline-flex;align-items:center;justify-content:center;border:.5px solid var(--line2)!important;background:var(--glassfill)!important;color:var(--ink)!important;box-shadow:inset 0 .5px 0 rgba(255,255,255,.4),0 1px 2px var(--shadow)!important}
+#mv:before{content:"";width:14px;height:14px;background:linear-gradient(45deg,transparent 46%,currentColor 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,currentColor 46% 54%,transparent 54%)}
+#mv:active{transform:scale(.96)}
+#out{height:30px;padding:0 13px;border-radius:999px;font:400 11.5px Georgia,"Times New Roman",serif!important;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)!important;background:transparent!important;border:.5px solid var(--line)!important;text-decoration:none!important}
+#out:active{color:var(--ink)!important;border-color:var(--line2)!important}
+#send input#tx{height:48px;border-radius:999px;border:.5px solid var(--line);background:var(--glassfill);color:var(--ink);padding:0 20px;box-shadow:inset 0 1px 2px var(--shadow)}
+#send input#tx:focus{border-color:var(--line2)}
+#send .btn{height:46px;border:0;border-radius:999px;padding:0 26px;font:600 15px Georgia,"Times New Roman",serif;letter-spacing:.03em;color:var(--medalink);background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 50%,rgba(0,0,0,.1)),linear-gradient(180deg,#F0D890,#C9962F);box-shadow:inset 0 .5px 0 rgba(255,255,255,.8),inset 0 -.5px 0 rgba(90,55,5,.35),0 1px 3px rgba(var(--gl),.35)}
+#send .btn:active{filter:brightness(.92);transform:scale(.97)}
+#mic{border:.5px solid var(--line2)!important;background:var(--glassfill)!important}
 </style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bday" type="button">Day</button><button id="bvibe" type="button">Pearl</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
 <div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat" data-who="Izzy">Izzy</button><button data-k="chat" data-who="Waz">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="brief"></div><div id="strip"><div id="sel"><button data-s="contacts" class="on">Contacts</button><button data-s="images">Images</button><button data-s="videos">Videos</button><button data-s="texts">Texts</button></div><div id="film"></div></div><div id="ov"><div class="ovh"><b id="ovt"></b><button id="ovx" type="button">Close</button></div><div id="ovb"></div></div><div id="wrap">
 
@@ -305,6 +317,7 @@ if(ov)new MutationObserver(chk).observe(ov,{attributes:true,attributeFilter:["cl
 function apply(){R.dataset.mode=day?"day":"night";R.dataset.vibe=vibe;document.body.classList.toggle("day",day);b.textContent=day?"Night":"Day";v.textContent=vibe[0].toUpperCase()+vibe.slice(1);try{localStorage.setItem("gm_day",day?"1":"0");localStorage.setItem("gm_vibe",vibe)}catch(e){}try{f.contentWindow.postMessage({godmode:"theme",day:day,vibe:vibe},"*")}catch(e){}}
 b.onclick=function(){day=!day;apply()};v.onclick=function(){vibe=V[(V.indexOf(vibe)+1)%3];apply()};f.addEventListener("load",apply);apply();
 if(window.GMODES){window.GMODES.day=function(){day=true;apply()};window.GMODES.night=function(){day=false;apply()};window.GMODES.pearl=function(){day=true;vibe="pearl";apply()};window.GMODES.sky=function(){day=true;vibe="sky";apply()};window.GMODES.rose=function(){day=true;vibe="rose";apply()}}
-var M=document.getElementById("msgs");function blur(){if(!M)return;var k=[].slice.call(M.querySelectorAll(".m")),n=k.length;k.forEach(function(e,i){var d=n-1-i;e.classList.toggle("d1",d>=5);e.classList.toggle("d2",d===3||d===4)})}
+var M=document.getElementById("msgs");function blur(){if(!M)return;var k=[].slice.call(M.querySelectorAll(".m")),t=M.getBoundingClientRect().top-2,v=k.filter(function(e){return e.getBoundingClientRect().top>=t});k.forEach(function(e){e.classList.remove("d1","d2")});if(v.length>3){v[0].classList.add("d1");v[1].classList.add("d2")}}
+if(M)M.addEventListener("scroll",function(){clearTimeout(blur.h);blur.h=setTimeout(blur,60)},{passive:true});
 if(M){new MutationObserver(function(){blur()}).observe(M,{childList:true});blur()}})()</script>
 </body></html>
