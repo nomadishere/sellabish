@@ -142,6 +142,9 @@ html.day #nb{display:none}
 .t-pad button:active{transform:scale(.96);filter:brightness(.94)}
 html.day .t-pad{background:rgba(255,255,255,.8)!important;border-color:rgba(184,134,43,.4)!important}
 html.day .t-pad button:not(.main){background:linear-gradient(180deg,#fff,#f4efe8)!important;color:#2A2418!important}
+.t-pad button.on{color:#EDE6D6!important;border-color:rgba(201,150,47,.4)!important;box-shadow:inset 0 .5px 0 rgba(255,255,255,.4),0 1px 2px rgba(0,0,0,.5)!important;position:relative}
+.t-pad button.on:before{content:"";position:absolute;top:5px;left:50%;width:5px;height:5px;margin-left:-2.5px;transform:rotate(45deg);background:#3FD6C4;box-shadow:0 0 5px rgba(63,214,196,.7)}
+html.day .t-pad button.on{color:#2A2418!important}
 </style></head><body class="t-glow">
 <div id="nb"><i></i><i></i><i></i><i></i></div><canvas id="c"></canvas><div id="fs"></div><div id="fsv"><div id="fsv_s"></div><div id="fsv_bar"><button id="fsv_p">‹</button><span id="fsv_t"></span><a id="fsv_o" target="_blank" rel="noopener" style="display:none">Open in Drive ↗</a><button id="fsv_n">›</button><button id="fsv_x">Close</button></div></div><div id="ctl"></div><div id="mw"><canvas id="mwc"></canvas><div id="mw_top"><input id="mw_in" placeholder="say or type: Italy, Thanksgiving 2020, joy, summer…" autocomplete="off"><button id="mw_mic">🎤</button><button id="mw_x">Close</button></div><div id="mw_chips"></div><div id="mw_bar"><span id="mw_n"></span><button id="mw_play">Play these</button></div></div><div id="turnv"><div class="box"><button id="tv_x">Close</button><small id="tv_k"></small><small id="tv_t"></small><div id="tv_b"></div><div id="tv_f"></div></div></div>
 <div id="drift"></div>
@@ -212,7 +215,13 @@ cx.putImageData(im,0,0);CHR[key]=cv;return cv}
 (function(){var BALL=chromeBall;for(var t=0;t<TYC.length;t++){var hh=Math.round(rgbHue(TYC[t])/10)*10,lowSat=(Math.max.apply(0,TYC[t])-Math.min.apply(0,TYC[t]))<70;var ball=BALL(lowSat?200:((hh+330)%360),72);for(var b=0;b<9;b++){var imp=b===8,s=imp?.95:(b+.5)/8,rgb=TYC[t],c=document.createElement('canvas');c.width=c.height=192;var x=c.getContext('2d');
  var ga=.16+.6*s*s,gl=x.createRadialGradient(96,96,10,96,96,96);gl.addColorStop(0,'rgba('+rgb+','+ga+')');gl.addColorStop(.35,'rgba('+rgb+','+ga*.45+')');gl.addColorStop(1,'rgba('+rgb+',0)');x.fillStyle=gl;x.fillRect(0,0,192,192);
  x.drawImage(ball,60,60,72,72);SPR.push(c);TC.push('rgb('+rgb+')')}}})();
-function mkDaySprites(){if(SPRD)return;SPRD=SPR.map(function(c){var n=document.createElement('canvas');n.width=n.height=c.width;var x=n.getContext('2d');x.drawImage(c,0,0);var im=x.getImageData(0,0,c.width,c.height),d=im.data;for(var i=0;i<d.length;i+=4){var r=255-d[i],g=255-d[i+1],b=255-d[i+2];d[i]=Math.max(0,Math.min(255,-.574*r+1.43*g+.144*b));d[i+1]=Math.max(0,Math.min(255,.426*r+.43*g+.144*b));d[i+2]=Math.max(0,Math.min(255,.426*r+1.43*g-.856*b))}x.putImageData(im,0,0);return n})}
+function dayOf(c){var n=document.createElement('canvas');n.width=c.width;n.height=c.height;var x=n.getContext('2d');x.drawImage(c,0,0);var im=x.getImageData(0,0,c.width,c.height),d=im.data;for(var i=0;i<d.length;i+=4){var r=255-d[i],g=255-d[i+1],b=255-d[i+2];d[i]=Math.max(0,Math.min(255,-.574*r+1.43*g+.144*b));d[i+1]=Math.max(0,Math.min(255,.426*r+.43*g+.144*b));d[i+2]=Math.max(0,Math.min(255,.426*r+1.43*g-.856*b))}x.putImageData(im,0,0);return n}
+function mkDaySprites(){if(SPRD)return;SPRD=SPR.map(dayOf)}
+/* v1.6 near balls: per-node hue, ~half gold, rest teal/magenta/blue/green/orange, slow drift in 10 degree steps */
+var NBH={},NBD={},HLH={},HLD={},HUES=[40,175,310,215,130,25];
+function nbHue(i,T){var u=((i*2654435761)>>>0)%1000/1000,base=u<.5?40:HUES[1+Math.min(4,Math.floor((u-.5)*10))];return(Math.round((base+34*Math.sin(T*.16+i*1.7))/10)*10+360)%360}
+function nbBall(h){return DAY?(NBD[h]||(NBD[h]=dayOf(chromeBall(h,72)))):(NBH[h]||(NBH[h]=chromeBall(h,72)))}
+function nbHalo(h){var M=DAY?HLD:HLH;if(M[h])return M[h];var c=document.createElement('canvas');c.width=c.height=192;var x=c.getContext('2d'),k=h2r_(h,.9,.55).map(function(v){return Math.round(v*255)}),rgb=k.join(','),gl=x.createRadialGradient(96,96,10,96,96,96);gl.addColorStop(0,'rgba('+rgb+',1)');gl.addColorStop(.35,'rgba('+rgb+',.45)');gl.addColorStop(1,'rgba('+rgb+',0)');x.fillStyle=gl;x.fillRect(0,0,192,192);return M[h]=DAY?dayOf(c):c}
 var BEST=[],DUST={},MEDIA=[],NM={},DUSTPOS=[],DUSTN=0,MKEY=null,THUMB={},THL=false;
 var TYN=['group','root','thing','feeling','quality','person','place','media','sub thing','trigger word','agent'];
 /* dust kinds: small stars around a node. item = [text, kind, optional link]. kinds below, each its own color */
@@ -606,7 +615,7 @@ function frame(now){if(PAUSED){lastT=now;requestAnimationFrame(frame);return}
  function drawSet(list){for(var q=0;q<list.length;q++){var i=list[q],r=PR[i],x=PX[i],y=PY[i],a=PA[i];if(r<.55)continue;
    var imp=!MIN[FAM[i]],b=imp?8:Math.min(7,Math.floor(SC[i]*8)),ty=FAM[i]*9+b;
    if(r<2.3){var f=TC[ty];if(f!==lastFill){g.fillStyle=f;lastFill=f}g.globalAlpha=a*(.4+.5*Math.min(1,PP[i]));var s2=Math.max(1.1,r*1.6);g.fillRect(x-s2/2,y-s2/2,s2,s2)}
-   else{var _z=PZ[i],_dep=_z<-.3?0:(_z<.3?1:2);var _sn=Math.sin(T*2.4+i*2.3),_pu=_dep===0?1:.7+.3*_sn;g.globalAlpha=a*(_dep===0?.34:_dep===1?.78:1)*_pu;var sz=r*(_dep===0?5.2:(_dep===2?8:6.4))*(_dep===0?1:1+.07*_sn);g.drawImage((DAY&&SPRD?SPRD:SPR)[ty],x-sz/2,y-sz/2,sz,sz);lastFill=''}
+   else{var _z=PZ[i],_dep=_z<-.3?0:(_z<.3?1:2);var _sn=Math.sin(T*2.4+i*2.3),_pu=_dep===0?1:.7+.3*_sn;g.globalAlpha=a*(_dep===0?.34:_dep===1?.78:1)*_pu;var sz=r*(_dep===0?5.2:(_dep===2?8:6.4))*(_dep===0?1:1+.07*_sn);if(_dep===2){var _h=nbHue(i,T),_s=imp?.95:(b+.5)/8,_ga=.16+.6*_s*_s,_g0=g.globalAlpha;g.globalAlpha=_g0*Math.min(1,_ga/.55);g.drawImage(nbHalo(_h),x-sz/2,y-sz/2,sz,sz);g.globalAlpha=_g0;g.drawImage(nbBall(_h),x-sz*.1875,y-sz*.1875,sz*.375,sz*.375)}else g.drawImage((DAY&&SPRD?SPRD:SPR)[ty],x-sz/2,y-sz/2,sz,sz);lastFill=''}
    if(r>2.3){g.globalAlpha=a;
     
     if(hotNb&&HOT[i]===1){g.strokeStyle='rgba(240,216,144,.55)';g.lineWidth=.8;g.beginPath();g.arc(x,y,r+4,0,7);g.stroke()}
