@@ -1,6 +1,6 @@
 <!doctype html>
 <html data-mode="night" data-vibe="pearl" lang="en"><head><meta charset="utf-8">
-<title>God mode v1.9</title>
+<title>God mode v1.10</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -150,7 +150,7 @@ html[data-mode=day] .m{background:var(--card);color:var(--ink)}
 #mic{width:38px;height:38px;border-radius:50%;border:.5px solid rgba(201,150,47,.5)!important;background:var(--glassfill)!important;color:var(--ink)!important;box-shadow:inset 0 .5px 0 rgba(255,255,255,.4),0 1px 2px var(--shadow)!important}
 #mic svg{width:17px;height:17px}
 #mic.on{background:linear-gradient(180deg,#F0D890,#C9962F)!important;color:var(--medalink)!important;animation:none!important}
-</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bday" type="button">Day</button><button id="bvibe" type="button">Pearl</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
+</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bmute" type="button" aria-label="Mute all sounds">Sound on</button><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bday" type="button">Day</button><button id="bvibe" type="button">Pearl</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
 <div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat" data-who="Izzy">Izzy</button><button data-k="chat" data-who="Waz">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="brief"></div><div id="strip"><div id="sel"><button data-s="contacts" class="on">Contacts</button><button data-s="images">Images</button><button data-s="videos">Videos</button><button data-s="texts">Texts</button></div><div id="film"></div></div><div id="ov"><div class="ovh"><b id="ovt"></b><button id="ovx" type="button">Close</button></div><div id="ovb"></div></div><div id="wrap">
 
 <div id="login">
@@ -194,7 +194,7 @@ function enter(){
     return fetch(U+"/rest/v1/members?user_id=eq."+u.id+"&select=member&limit=1",{headers:hdr()})
   }).then(function(r){return r.json()}).then(function(a){
     if(!a||!a.length)throw new Error("This login is not a member of God mode.");
-    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/?v=19")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(function(){if(!document.hidden)poll()},4000)
+    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/?v=20")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(function(){if(!document.hidden)poll()},4000)
   }).catch(function(e){clear();S=null;document.body.classList.remove("in","web");$("web").removeAttribute("src");$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
 }
 function poll(){
@@ -219,14 +219,17 @@ $("out").onclick=function(){clear();S=null;me=null;clearInterval(timer);location
 (function(){var s=load();if(s&&s.r){S={access_token:s.a,refresh_token:s.r,expires_at:s.e};
   if(s.e&&s.e*1000<Date.now()+60000){refresh().then(enter).catch(function(){clear();S=null})}else enter()}})();
 
+(function(){var b=document.getElementById("bmute");if(!b)return;var m=false;try{m=localStorage.getItem("gm_mute")==="1"}catch(e){}
+function apply(){b.textContent=m?"Muted":"Sound on";b.classList.toggle("on",m);try{localStorage.setItem("gm_mute",m?"1":"0")}catch(e){}var f=document.getElementById("web");try{f&&f.contentWindow&&f.contentWindow.postMessage({gmMute:m},"*")}catch(e){}}
+b.onclick=function(){m=!m;apply()};var f=document.getElementById("web");if(f)f.addEventListener("load",apply);apply()})();
 (function(){var R=window.SpeechRecognition||window.webkitSpeechRecognition,b=document.getElementById("mic");if(!R||!b)return;b.classList.add("ok");
 var r=null,on=false,base="";
 function stop(){on=false;b.classList.remove("on");try{r&&r.stop()}catch(e){}}
 b.onclick=function(){if(on){stop();return}
- r=new R();r.continuous=true;r.interimResults=true;r.lang=navigator.language||"en-US";
+ r=new R();r.continuous=false;r.interimResults=true;r.lang=navigator.language||"en-US";
  var tx=document.getElementById("tx");base=tx.value?tx.value.replace(/\s+$/,"")+" ":"";
- r.onresult=function(e){var t="";for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;tx.value=base+t.trim()};
- r.onend=function(){on=false;b.classList.remove("on");tx.focus()};
+ r.onresult=function(e){var t="";for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;tx.value=base+t.trim();tx.scrollLeft=tx.scrollWidth};
+ r.onend=function(){if(on){base=tx.value?tx.value.replace(/\s+$/,"")+" ":"";try{r.start();return}catch(e){}}on=false;b.classList.remove("on");tx.focus()};
  r.onerror=function(e){on=false;b.classList.remove("on");if(e.error==="not-allowed"||e.error==="service-not-allowed")document.getElementById("err2").textContent="Mic is blocked. Allow the microphone for this site in the browser."};
  try{r.start();on=true;b.classList.add("on")}catch(e){}};
 document.getElementById("send").addEventListener("submit",function(){if(on)stop()},true)})();

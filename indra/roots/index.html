@@ -261,14 +261,16 @@ function tap(x,y,type){var now=Date.now();var hit=pick(x,y,type==='mouse'?10:22)
  if(hit<0&&now-lastTap<380&&Math.hypot(x-lastTapX,y-lastTapY)<40){home();lastTap=0;return}
  lastTap=now;lastTapX=x;lastTapY=y;if(hit>=0)flyTo(hit,true,true);else if(LOCK<0){sel=-1;HOT.fill(0);showCard(-1)}}
 /* swoosh: filtered noise sweep, pitch rises with distance flown */
-var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+window.__muted=false;try{window.__muted=localStorage.getItem('gm_mute')==='1'}catch(e){}
+addEventListener('message',function(e){if(e&&e.data&&typeof e.data.gmMute==='boolean'){window.__muted=e.data.gmMute;if(AC&&window.__muted){try{AC.suspend()}catch(x){}}}});
+var AC=null;function ac(){if(window.__muted)return null;if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
 ['pointerdown','keydown'].forEach(function(ev){addEventListener(ev,ac,{once:true,passive:true})});
 window.__sw=0;
 function swoosh(dist){var a=ac();if(!a)return;window.__sw++;var d=Math.max(1.6,Math.min(2.6,1.6+dist*1.0)),n=a.sampleRate*d,b=a.createBuffer(1,n,a.sampleRate),x=b.getChannelData(0);for(var i=0;i<n;i++)x[i]=(Math.random()*2-1)*(1-i/n);
  var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='bandpass';f.Q.value=2.2;f.frequency.setValueAtTime(300,a.currentTime);f.frequency.exponentialRampToValueAtTime(1100+dist*500,a.currentTime+d*.7);f.frequency.exponentialRampToValueAtTime(500,a.currentTime+d);
  var g2=a.createGain();g2.gain.setValueAtTime(.0001,a.currentTime);g2.gain.exponentialRampToValueAtTime(.1,a.currentTime+d*.45);g2.gain.exponentialRampToValueAtTime(.0001,a.currentTime+d);s.connect(f);f.connect(g2);g2.connect(a.destination);s.start();
 }
-function chime(){var a=AC;if(!a||a.state!=='running')return;var o=a.createOscillator(),g2=a.createGain();o.type='sine';o.frequency.value=[784,880,988,1175][Math.floor(Math.random()*4)];g2.gain.setValueAtTime(.0001,a.currentTime);g2.gain.exponentialRampToValueAtTime(.025,a.currentTime+.4);g2.gain.exponentialRampToValueAtTime(.0001,a.currentTime+2.4);o.connect(g2);g2.connect(a.destination);o.start();o.stop(a.currentTime+2.5)}
+function chime(){var a=AC;if(window.__muted||!a||a.state!=='running')return;var o=a.createOscillator(),g2=a.createGain();o.type='sine';o.frequency.value=[784,880,988,1175][Math.floor(Math.random()*4)];g2.gain.setValueAtTime(.0001,a.currentTime);g2.gain.exponentialRampToValueAtTime(.025,a.currentTime+.4);g2.gain.exponentialRampToValueAtTime(.0001,a.currentTime+2.4);o.connect(g2);g2.connect(a.destination);o.start();o.stop(a.currentTime+2.5)}
 /* ---- fly, card, trail ---- */
 function setHot(i){HOT.fill(0);if(i<0)return;HOT[i]=2;var nb=NB[i];if(!nb)return;for(var q=0;q<nb.length;q++){loadUpTo(nb[q]);HOT[nb[q]]=1}}
 var boostT=0;function flyTo(i,push,fast){PANX=PANY=0;boostT=fast?0:Date.now()+6000;loadUpTo(i);var dd=sel>=0?Math.hypot(X[i]-X[sel],Y[i]-Y[sel],Z[i]-Z[sel]):.6;if(i!==sel)swoosh(dd);sel=i;LOCK=i;setHot(i);tgt.fx=X[i];tgt.fy=Y[i];tgt.fz=Z[i];tgt.k=Math.max(tgt.k,3.2);spinV={x:0,y:0};
