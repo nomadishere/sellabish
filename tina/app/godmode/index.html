@@ -1,6 +1,6 @@
 <!doctype html>
 <html data-mode="night" data-vibe="pearl" lang="en"><head><meta charset="utf-8">
-<title>God mode v1.7</title>
+<title>God mode v1.8</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -194,7 +194,7 @@ function enter(){
     return fetch(U+"/rest/v1/members?user_id=eq."+u.id+"&select=member&limit=1",{headers:hdr()})
   }).then(function(r){return r.json()}).then(function(a){
     if(!a||!a.length)throw new Error("This login is not a member of God mode.");
-    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/?v=17")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(function(){if(!document.hidden)poll()},4000)
+    me=a[0].member;document.body.classList.add("in");if(!/[?&]web=0/.test(location.search)){if(!$("web").getAttribute("src"))$("web").setAttribute("src","/indra/roots/?v=18")}else document.body.classList.add("chat");$("login").classList.add("hide");$("chat").classList.remove("hide");poll();timer=setInterval(function(){if(!document.hidden)poll()},4000)
   }).catch(function(e){clear();S=null;document.body.classList.remove("in","web");$("web").removeAttribute("src");$("login").classList.remove("hide");$("chat").classList.add("hide");$("err").textContent=e.message})
 }
 function poll(){
