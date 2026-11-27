@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<title>God mode v1.3 tech</title>
+<html data-mode="night" data-vibe="pearl" lang="en"><head><meta charset="utf-8">
+<title>God mode v1.4</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -105,38 +105,33 @@ body.whisper #chat{opacity:0;pointer-events:none;transition:opacity .7s}
 body.whisper.hear #chat{opacity:1;pointer-events:auto}
 #bar button.on{background:rgba(64,224,208,.16);color:#40E0D0}
 
-/* v1.2 glossy candy glass buttons + day mode */
-#bar{background:linear-gradient(180deg,rgba(40,44,48,.72),rgba(8,10,12,.78));border:1px solid rgba(255,255,255,.18);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.28);gap:4px;padding:5px}
-#bar button{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.03) 48%,rgba(0,0,0,.25) 52%,rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 4px rgba(0,0,0,.35),0 3px 8px rgba(0,0,0,.4);text-shadow:0 1px 0 rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s,filter .12s}
-#bar button:hover{filter:brightness(1.25) saturate(1.2);transform:translateY(-1px)}
-#bar button:active{transform:translateY(1px) scale(.97);box-shadow:inset 0 2px 5px rgba(0,0,0,.55)}
-#bar button.on{background:linear-gradient(180deg,rgba(130,255,240,.45),rgba(64,224,208,.12) 50%,rgba(0,60,56,.4) 52%,rgba(64,224,208,.2));color:#e8fffb;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 16px rgba(64,224,208,.55)}
-body.day{background:#fbf8f3}
-body.day #bar{background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(238,232,224,.85));border:1px solid rgba(255,255,255,.95);box-shadow:0 12px 30px rgba(120,100,70,.28),inset 0 1px 0 #fff}
-body.day #bar button{color:#3a3328;text-shadow:0 1px 0 rgba(255,255,255,.8);background:linear-gradient(180deg,#fff,#f4efe8 48%,#e6dfd4 52%,#f6f1ea);border:1px solid rgba(150,130,100,.35);box-shadow:inset 0 1px 0 #fff,inset 0 -2px 4px rgba(150,130,100,.25),0 3px 8px rgba(120,100,70,.25)}
-body.day #bar button.on{background:linear-gradient(180deg,#d9fff9,#8fece0 50%,#5fd6c8 52%,#a9f2e8);color:#064a44;box-shadow:inset 0 1px 0 #fff,0 0 14px rgba(40,200,185,.5)}
-body.day #ppl,body.day #ov{background:rgba(255,253,249,.94);color:#2b251c;border-color:rgba(150,130,100,.35)}
-body.day #ppl button,body.day #ppl .h{color:#2b251c}
-body.day #toast,body.day #brief{background:rgba(255,253,249,.95);color:#2b251c}
-
-/* v1.3 TECH: HUD chamfered cells, mono labels, neon hairlines, status ticks */
-#bar{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;border-radius:0;clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);background:linear-gradient(180deg,rgba(6,14,16,.86),rgba(2,6,8,.9));border:0;box-shadow:inset 0 0 0 1px rgba(64,224,208,.45),inset 0 0 24px rgba(64,224,208,.12);padding:6px 8px;gap:3px}
-#bar:before{content:"";position:absolute;left:12px;right:12px;top:0;height:1px;background:linear-gradient(90deg,transparent,#40E0D0,transparent);opacity:.9}
-#bar button{border-radius:0;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);font:600 11px ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:#9fe9e0;background:linear-gradient(180deg,rgba(64,224,208,.14),rgba(64,224,208,.02) 55%,rgba(0,0,0,.35));border:0;box-shadow:inset 0 0 0 1px rgba(64,224,208,.28),inset 0 1px 0 rgba(180,255,248,.35);text-shadow:0 0 8px rgba(64,224,208,.6);padding:9px 10px}
-#bar button:hover{filter:none;transform:none;color:#fff;box-shadow:inset 0 0 0 1px #40E0D0,0 0 14px rgba(64,224,208,.6),inset 0 0 12px rgba(64,224,208,.3)}
-#bar button:active{transform:scale(.96);box-shadow:inset 0 0 0 1px #40E0D0,inset 0 0 16px rgba(64,224,208,.6)}
-#bar button.on{color:#021412;background:linear-gradient(180deg,#9ffcf1,#40E0D0 55%,#1fb3a5);text-shadow:none;box-shadow:inset 0 0 0 1px #c9fff8,0 0 18px rgba(64,224,208,.8)}
-#bar button.on:after{content:"";position:absolute;left:8px;right:8px;bottom:2px;height:2px;background:#021412;opacity:.6}
-#bar button#bsend,#bar button#bsend:hover{color:#2a1c00;background:linear-gradient(180deg,#fff3c4,#e8c872 55%,#b8892f);box-shadow:inset 0 0 0 1px #fff0b8,0 0 18px rgba(232,200,114,.55);text-shadow:none}
-body.day #bar{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(232,244,243,.92));box-shadow:inset 0 0 0 1px rgba(0,150,138,.55),0 10px 26px rgba(0,100,95,.22)}
-body.day #bar:before{background:linear-gradient(90deg,transparent,#00a79a,transparent)}
-body.day #bar button{color:#075a52;text-shadow:none;background:linear-gradient(180deg,#fff,#e4f6f4 55%,#d3ece9);box-shadow:inset 0 0 0 1px rgba(0,150,138,.4),inset 0 1px 0 #fff}
-body.day #bar button:hover{color:#00332e;box-shadow:inset 0 0 0 1px #00a79a,0 0 12px rgba(0,167,154,.4)}
-body.day #bar button.on{color:#00332e;background:linear-gradient(180deg,#b9fff7,#52e6d6 55%,#27c2b3);box-shadow:inset 0 0 0 1px #fff,0 0 14px rgba(0,190,175,.55)}
-body.day #bar button#bsend{color:#3a2a00}
-#ppl,#ov{border-radius:0;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);border:0;box-shadow:inset 0 0 0 1px rgba(64,224,208,.4)}
-#ov button#ovx{border-radius:0;font:600 11px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase}
-</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bday" type="button">Day</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
+/* v1.4 Michelle look v6: flat frosted glass, tokens for night/day + pearl/sky/rose */
+html{--crystal:#3FD6C4;--serif:Georgia,"Iowan Old Style","Times New Roman",serif}
+html[data-mode=night]{--ink:#EDE6D6;--muted:#8A8780;--accent:#D9B45A;--hi:#F0D890;--grad:linear-gradient(120deg,#B98A2E,#F0D890 48%,#C9962F);--line:rgba(201,150,47,.3);--line2:rgba(201,150,47,.55);--card:rgba(14,14,14,.82);--shadow:rgba(0,0,0,.7);--spec:rgba(255,255,255,.34);--medalink:#0A0804;--glassfill:rgba(16,16,16,.78);--rim:rgba(217,180,90,.22);--gl:217,180,90}
+html[data-mode=day]{--ink:#2A2418;--muted:#8a8272;--card:rgba(255,255,255,.86);--shadow:rgba(60,40,10,.22);--medalink:#fff;--glassfill:rgba(255,255,255,.72)}
+html[data-mode=day][data-vibe=pearl]{--accent:#B8862B;--hi:#8a6215;--grad:linear-gradient(120deg,#A9781F,#E8C46A 48%,#B8862B);--line:rgba(184,134,43,.35);--line2:rgba(184,134,43,.7);--rim:rgba(184,134,43,.28);--gl:184,134,43}
+html[data-mode=day][data-vibe=sky]{--ink:#12303A;--accent:#12A596;--hi:#0b7a6f;--grad:linear-gradient(120deg,#0d9a8c,#7fe3d6 48%,#12A596);--line:rgba(18,165,150,.35);--line2:rgba(18,165,150,.7);--rim:rgba(18,165,150,.28);--gl:18,165,150}
+html[data-mode=day][data-vibe=rose]{--ink:#3A2024;--accent:#C9806A;--hi:#9b4e3b;--grad:linear-gradient(120deg,#b86f5a,#f1c3b0 48%,#C9806A);--line:rgba(201,128,106,.38);--line2:rgba(201,128,106,.75);--rim:rgba(201,128,106,.3);--gl:201,128,106}
+body.day{background:#fff}
+#bar{background:var(--glassfill);border:.5px solid var(--line);border-radius:999px;box-shadow:0 1px 2px var(--shadow),0 10px 30px -14px var(--shadow);gap:5px;padding:5px 7px;font-family:system-ui,-apple-system,sans-serif}
+#bar button{position:relative;height:36px;padding:0 13px;border-radius:999px;font:500 12.5px/1 system-ui,-apple-system,sans-serif;letter-spacing:.01em;text-transform:none;color:var(--ink);text-shadow:none;border:.5px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 55%,rgba(255,255,255,.05)),var(--glassfill);box-shadow:inset 0 .5px 0 rgba(255,255,255,.45),inset 0 -.5px 0 rgba(0,0,0,.18),0 1px 2px var(--shadow);transition:transform .14s ease,box-shadow .5s ease,filter .4s}
+html[data-mode=day] #bar button:not(#bsend){background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(246,243,238,.8)),var(--glassfill);box-shadow:inset 0 .5px 0 #fff,inset 0 -.5px 0 rgba(60,40,10,.12),0 1px 2px rgba(60,40,10,.14)}
+#bar button:hover{filter:brightness(1.08)}
+#bar button:active{transform:scale(.97);box-shadow:inset 0 1px 3px rgba(0,0,0,.25);filter:brightness(.94)}
+#bar button.on{color:var(--hi);border-color:var(--line2);box-shadow:inset 0 .5px 0 rgba(255,255,255,.55),0 0 0 .5px var(--line2),0 1px 2px var(--shadow);background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(var(--gl),.12)),var(--glassfill)}
+#bar button.on:before{content:"";position:absolute;bottom:-5px;left:50%;width:4px;height:4px;margin-left:-2px;background:var(--crystal);transform:rotate(45deg);opacity:.85}
+#bar button#bsend,#bar button#bsend:hover{height:38px;border:0;color:var(--medalink);font-family:var(--serif);font-weight:600;letter-spacing:.03em;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 50%,rgba(0,0,0,.10)),linear-gradient(180deg,#F0D890,#C9962F);box-shadow:inset 0 .5px 0 rgba(255,255,255,.8),inset 0 -.5px 0 rgba(90,55,5,.35),0 1px 3px rgba(var(--gl),.35)}
+#bar button span{font-size:10px;opacity:.9;background:var(--grad);color:var(--medalink);border-radius:999px;padding:1px 6px;margin-left:4px;font-weight:600}
+#bvibe{display:none}html[data-mode=day] #bvibe{display:inline-block}
+#ppl,#ov{background:var(--card);border:.5px solid var(--line2);box-shadow:inset 0 .5px 0 rgba(255,255,255,.5),0 -14px 36px -22px var(--shadow);color:var(--ink)}
+#ov{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#ov button#ovx{width:38px;height:38px;padding:0;border-radius:50%;border:.5px solid var(--line2);color:var(--ink);background:var(--glassfill);font-size:15px}
+#ov button#ovx{font-size:0;display:inline-flex;align-items:center;justify-content:center}#ov button#ovx:before{content:"\2715";font-size:14px;line-height:1}
+#ppl button,#ppl .h{color:var(--ink)}
+body.day #toast,body.day #brief{background:var(--card);color:var(--ink)}
+.m.d1{filter:blur(3px);opacity:.42;transform:scale(.95);transition:filter .5s,opacity .5s,transform .5s}.m.d2{filter:blur(1.4px);opacity:.72;transform:scale(.975);transition:filter .5s,opacity .5s,transform .5s}
+html[data-mode=day] .m{background:var(--card);color:var(--ink)}
+</style></head><body><iframe id="web" title="Indra roots web" allow="fullscreen"></iframe><div id="bar"><button id="bchat" type="button">Chat</button><button id="bppl" type="button">People <span>&#9662;</span></button><button id="bgame" type="button">Game</button><button id="bmir" type="button">Miracles <span id="mc">0</span></button><button id="bwave" type="button">Wave</button><button id="brew" type="button">Rewind</button><button id="bwh" type="button">Whisper</button><button id="blib" type="button">Library</button><button id="bday" type="button">Day</button><button id="bvibe" type="button">Pearl</button><button id="bmode" type="button">Say a mode</button><button id="bsend" type="button">Send to chat</button></div>
 <div id="ppl"><div class="h">Group chats</div><button data-k="chat">God mode chat <small>Izzy, Waz and Juicy</small></button><div class="h">Agents</div><button data-k="chat" data-who="Izzy">Izzy</button><button data-k="chat" data-who="Waz">Waz</button><button data-k="soon">Ace</button><button data-k="soon">Jayden</button><button data-k="soon">Michelle</button><button data-k="soon">Mosaic</button><div class="h">Top nine</div><button data-k="soon">Empress Alexandra</button><button data-k="soon">Joey</button><button data-k="soon">Mom</button><button data-k="soon">Ace</button><button data-k="soon">Joey (second)</button><button data-k="soon">Sydney</button><button data-k="soon">Nusheen</button><button data-k="soon">Naomi</button><button data-k="soon">Cath</button></div><div id="toast"></div><div id="brief"></div><div id="strip"><div id="sel"><button data-s="contacts" class="on">Contacts</button><button data-s="images">Images</button><button data-s="videos">Videos</button><button data-s="texts">Texts</button></div><div id="film"></div></div><div id="ov"><div class="ovh"><b id="ovt"></b><button id="ovx" type="button">Close</button></div><div id="ovb"></div></div><div id="wrap">
 
 <div id="login">
@@ -306,8 +301,10 @@ M.library=function(){shelves("library")};M.shelf=M.library;M.book=M.library;M.br
 </script><script>(function(){var ov=document.getElementById("ov"),f=document.getElementById("web"),last=null;function send(on){if(on===last)return;last=on;try{f.contentWindow.postMessage({godmode:"pause",on:on},"*")}catch(e){}}
 function chk(){send(!!(ov&&ov.classList.contains("show")))}
 if(ov)new MutationObserver(chk).observe(ov,{attributes:true,attributeFilter:["class"]});f.addEventListener("load",function(){last=null;chk()})})()</script>
-<script>(function(){var b=document.getElementById("bday"),f=document.getElementById("web"),day=false;try{day=localStorage.getItem("gm_day")==="1"}catch(e){}
-function apply(){document.body.classList.toggle("day",day);b.textContent=day?"Night":"Day";try{localStorage.setItem("gm_day",day?"1":"0")}catch(e){}try{f.contentWindow.postMessage({godmode:"theme",day:day},"*")}catch(e){}}
-b.onclick=function(){day=!day;apply()};f.addEventListener("load",apply);apply();
-if(window.GMODES){window.GMODES.day=function(){day=true;apply()};window.GMODES.night=function(){day=false;apply()}}})()</script>
+<script>(function(){var b=document.getElementById("bday"),v=document.getElementById("bvibe"),f=document.getElementById("web"),day=false,vibe="pearl",V=["pearl","sky","rose"],R=document.documentElement;try{day=localStorage.getItem("gm_day")==="1";vibe=localStorage.getItem("gm_vibe")||"pearl"}catch(e){}
+function apply(){R.dataset.mode=day?"day":"night";R.dataset.vibe=vibe;document.body.classList.toggle("day",day);b.textContent=day?"Night":"Day";v.textContent=vibe[0].toUpperCase()+vibe.slice(1);try{localStorage.setItem("gm_day",day?"1":"0");localStorage.setItem("gm_vibe",vibe)}catch(e){}try{f.contentWindow.postMessage({godmode:"theme",day:day,vibe:vibe},"*")}catch(e){}}
+b.onclick=function(){day=!day;apply()};v.onclick=function(){vibe=V[(V.indexOf(vibe)+1)%3];apply()};f.addEventListener("load",apply);apply();
+if(window.GMODES){window.GMODES.day=function(){day=true;apply()};window.GMODES.night=function(){day=false;apply()};window.GMODES.pearl=function(){day=true;vibe="pearl";apply()};window.GMODES.sky=function(){day=true;vibe="sky";apply()};window.GMODES.rose=function(){day=true;vibe="rose";apply()}}
+var M=document.getElementById("msgs");function blur(){if(!M)return;var k=[].slice.call(M.querySelectorAll(".m")),n=k.length;k.forEach(function(e,i){var d=n-1-i;e.classList.toggle("d1",d>=5);e.classList.toggle("d2",d===3||d===4)})}
+if(M){new MutationObserver(function(){blur()}).observe(M,{childList:true});blur()}})()</script>
 </body></html>
